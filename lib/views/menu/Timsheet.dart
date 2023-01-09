@@ -74,7 +74,7 @@ class _TimesheetState extends State<Timesheet> {
                       Row(
                         children: [
                           Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
-                          Text("01:00h", style: TextStyle(fontSize: 12),),
+                          Text("01:00h", style: TextStyle(fontSize: 12, color: Config().subText),),
                         ],
                       )
                     ],
@@ -86,6 +86,13 @@ class _TimesheetState extends State<Timesheet> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Config().primary,
+        child: Icon(Icons.add),
+        onPressed: (){
+
+        },
       ),
     );
   }
