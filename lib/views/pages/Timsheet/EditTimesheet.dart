@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 
-class addTimsheet extends StatefulWidget {
-  const addTimsheet({super.key});
+class EditTimesheet extends StatefulWidget {
+  const EditTimesheet({super.key});
 
   @override
-  State<addTimsheet> createState() => _addTimsheetState();
+  State<EditTimesheet> createState() => _EditTimesheetState();
 }
 
-class _addTimsheetState extends State<addTimsheet> {
+class _EditTimesheetState extends State<EditTimesheet> {
 
   List options = [
     {'title': 'Prospecting', 'isActive': false},
@@ -72,7 +72,7 @@ class _addTimsheetState extends State<addTimsheet> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("Add Timesheet",
+        title: Text("Edit Timesheet",
             style: TextStyle(color: Colors.black, fontSize: 18)),
         centerTitle: true,
         actions: [
@@ -80,7 +80,7 @@ class _addTimsheetState extends State<addTimsheet> {
             padding: const EdgeInsets.only(right: 10),
             child: Center(
                 child: Text(
-              "Done",
+              "Update",
               style: TextStyle(color: Colors.green, fontSize: 16),
             )),
           )

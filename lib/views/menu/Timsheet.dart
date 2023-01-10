@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
+import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 
 class Timesheet extends StatefulWidget {
   const Timesheet({super.key});
@@ -66,22 +67,27 @@ class _TimesheetState extends State<Timesheet> {
               shrinkWrap: true,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return ListTile(
-                  shape: Border.all(color: Config().line, width: 0.5),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Mengerjakan Tugas $index", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
-                      Row(
-                        children: [
-                          Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
-                          Text("01:00h", style: TextStyle(fontSize: 12, color: Config().subText),),
-                        ],
-                      )
-                    ],
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet()));
+                  },
+                  child: ListTile(
+                    shape: Border.all(color: Config().line, width: 0.5),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Mengerjakan Tugas $index", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+                        Row(
+                          children: [
+                            Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
+                            Text("01:00h", style: TextStyle(fontSize: 12, color: Config().subText),),
+                          ],
+                        )
+                      ],
+                    ),
+                    subtitle: Text("08:00 - 09:00", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Config().primary),),
+                    // trailing: Text("01:00h", sty),
                   ),
-                  subtitle: Text("08:00 - 09:00", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Config().primary),),
-                  // trailing: Text("01:00h", sty),
                 );
               },
             )
