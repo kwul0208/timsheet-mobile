@@ -2,6 +2,7 @@ import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
 
 class Timesheet extends StatefulWidget {
   const Timesheet({super.key});
@@ -91,7 +92,7 @@ class _TimesheetState extends State<Timesheet> {
         backgroundColor: Config().primary,
         child: Icon(Icons.add),
         onPressed: (){
-
+          Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet()));
         },
       ),
     );
