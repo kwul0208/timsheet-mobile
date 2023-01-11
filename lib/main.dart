@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
+import 'package:timsheet_mobile/views/pages/Auth/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const Timesheet(),
+      // home: const Timesheet(),
+      home: Login(),
     );
   }
 }
