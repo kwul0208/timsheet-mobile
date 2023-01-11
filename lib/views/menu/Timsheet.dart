@@ -42,6 +42,7 @@ class _TimesheetState extends State<Timesheet> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Config().primary,
         title: Text("Timsheet"),
         centerTitle: true,
@@ -70,6 +71,54 @@ class _TimesheetState extends State<Timesheet> {
               height: 10,
               color: Config().line,
             ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 7, 
+                              height: 7,
+                              decoration: BoxDecoration(
+                                color: Config().primary,
+                                borderRadius: BorderRadius.circular(5)
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text("Total Time", style: TextStyle(color: Config().subText),),
+                          ],
+                        ),
+                        Text("10:00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 7, 
+                              height: 7,
+                              decoration: BoxDecoration(
+                                color: Config().primary,
+                                borderRadius: BorderRadius.circular(5)
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text('Overtime', style: TextStyle(color: Config().subText))
+                          ],
+                        ),
+                        Text("01:00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -84,7 +133,7 @@ class _TimesheetState extends State<Timesheet> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Mengerjakan Tugas $index", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
+                        Text("Mengerjakan Tugas $index", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
                         Row(
                           children: [
                             Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
@@ -93,7 +142,7 @@ class _TimesheetState extends State<Timesheet> {
                         )
                       ],
                     ),
-                    subtitle: Text("08:00 - 09:00", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Config().primary),),
+                    subtitle: Text("08:00 - 09:00", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: Config().primary),),
                     // trailing: Text("01:00h", sty),
                   ),
                 );
