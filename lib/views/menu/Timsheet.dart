@@ -2,6 +2,8 @@ import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:timsheet_mobile/Models/Timesheet/TimesheetApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 
@@ -16,9 +18,15 @@ class _TimesheetState extends State<Timesheet> {
   DateTime _dateTime = DateTime(DateTime.now().year, DateTime.now().month, 1);
   DateTime _selectedDate = DateTime.now();
 
+  // data
+  List<TimesheetModel>? _timesheet;
+  Future<dynamic>? _futureTimesheet;
+
   @override
   void initState(){
     super.initState();
+
+    // _futureTimesheet = getTimesheet();
   }
 
 
@@ -103,4 +111,12 @@ class _TimesheetState extends State<Timesheet> {
       ),
     );
   }
+
+  // API
+  Future<void> getTimesheet()async{
+    _timesheet = await TimesheetApi.getDataCategory(context);
+    print('timesheet');
+    print(_timesheet);
+  }
+
 }
