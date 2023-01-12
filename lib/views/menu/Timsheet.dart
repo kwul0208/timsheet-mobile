@@ -1,12 +1,15 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 import 'package:timsheet_mobile/Helper/Helper.dart';
+import 'package:intl/intl.dart';
 
 class Timesheet extends StatefulWidget {
   const Timesheet({super.key});
@@ -26,8 +29,11 @@ class _TimesheetState extends State<Timesheet> {
   @override
   void initState(){
     super.initState();
-      print('oke');
-    _futureTimesheet = getTimesheet();
+
+    // time now
+    DateTime dt = DateTime.parse(DateTime.now().toString());
+    String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
+    _futureTimesheet = getTimesheet(formattedDate);
   }
 
 
@@ -56,7 +62,11 @@ class _TimesheetState extends State<Timesheet> {
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2022, 12, 01),
                   lastDate: DateTime(2024, 01, 01),
-                  onDateSelected: (date) => print(date),
+                  onDateSelected: (date){
+                    String formattedDate = DateFormat("yyyy-MM-dd").format(date);                        
+                    getTimesheet(formattedDate);
+
+                  },
                   leftMargin: 20,
                   monthColor: Colors.blueGrey,
                   dayColor: Colors.teal[200],
@@ -78,50 +88,55 @@ class _TimesheetState extends State<Timesheet> {
                 future: _futureTimesheet,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+                    return Consumer<TimesheetState>(
+                      builder: (context, data, _) {
+                        print(data.refresh);
+                        return Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
+                              Column(
                                 children: [
-                                  Container(
-                                    width: 7, 
-                                    height: 7,
-                                    decoration: BoxDecoration(
-                                      color: Config().primary,
-                                      borderRadius: BorderRadius.circular(5)
-                                    ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 7, 
+                                        height: 7,
+                                        decoration: BoxDecoration(
+                                          color: Config().primary,
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text("Total Time", style: TextStyle(color: Config().subText),),
+                                    ],
                                   ),
-                                  SizedBox(width: 5),
-                                  Text("Total Time", style: TextStyle(color: Config().subText),),
+                                  Text("${Helper().formatedTime(time: _timesheet![0].time_duration)}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
                                 ],
                               ),
-                              Text("${Helper().formatedTime(time: _timesheet![0].time_duration)}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Row(
+                              Column(
                                 children: [
-                                  Container(
-                                    width: 7, 
-                                    height: 7,
-                                    decoration: BoxDecoration(
-                                      color: Config().primary,
-                                      borderRadius: BorderRadius.circular(5)
-                                    ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 7, 
+                                        height: 7,
+                                        decoration: BoxDecoration(
+                                          color: Config().primary,
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text('Overtime', style: TextStyle(color: Config().subText))
+                                    ],
                                   ),
-                                  SizedBox(width: 5),
-                                  Text('Overtime', style: TextStyle(color: Config().subText))
+                                  Text("00:00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                                 ],
                               ),
-                              Text("00:00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                             ],
                           ),
-                        ],
-                      ),
+                        );
+                      }
                     );
                   }else{
                     return SizedBox();
@@ -133,45 +148,50 @@ class _TimesheetState extends State<Timesheet> {
               future: _futureTimesheet,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _timesheet![0].timesheet.length,
-                    itemBuilder: (context, i) {
-                      return GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet()));
-                        },
-                        child: ListTile(
-                          shape: Border.all(color: Config().line, width: 0.5),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Text("${_timesheet![0].timesheet[i]['description']}", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
-                              Flexible(
-                                child: RichText(
-                                overflow: TextOverflow.ellipsis, // this will help add dots after maxLines
-                                maxLines: 2, // max lines after that dots comes
-                                // strutStyle: StrutStyle(fontSize: 12.0),
-                                text: TextSpan(
-                                        style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-                                        text: "${_timesheet![0].timesheet[i]['description']}"
-                                      ),
-                                  ),
-                                ),
-                              Row(
+                  return Consumer<TimesheetState>(
+                    builder: (context, data, _) {
+                      print(data.refresh);
+                      return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _timesheet![0].timesheet.length,
+                        itemBuilder: (context, i) {
+                          return GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet()));
+                            },
+                            child: ListTile(
+                              shape: Border.all(color: Config().line, width: 0.5),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
-                                  Text("${Helper().formatedTime(time: _timesheet![0].timesheet[i]['timeduration'])}", style: TextStyle(fontSize: 12, color: Config().subText),),
+                                  // Text("${_timesheet![0].timesheet[i]['description']}", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),),
+                                  Flexible(
+                                    child: RichText(
+                                    overflow: TextOverflow.ellipsis, // this will help add dots after maxLines
+                                    maxLines: 2, // max lines after that dots comes
+                                    // strutStyle: StrutStyle(fontSize: 12.0),
+                                    text: TextSpan(
+                                            style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                                            text: "${_timesheet![0].timesheet[i]['description']}"
+                                          ),
+                                      ),
+                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.timer_outlined, size: 16,color: Config().primary,),
+                                      Text("${Helper().formatedTime(time: _timesheet![0].timesheet[i]['timeduration'])}", style: TextStyle(fontSize: 12, color: Config().subText),),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
-                          ),
-                          subtitle: Text("${_timesheet![0].timesheet[i]['timestart']} - ${_timesheet![0].timesheet[i]['timefinish']}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: Config().primary),),
-                          // trailing: Text("01:00h", sty),
-                        ),
+                              ),
+                              subtitle: Text("${_timesheet![0].timesheet[i]['timestart']} - ${_timesheet![0].timesheet[i]['timefinish']}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: Config().primary),),
+                              // trailing: Text("01:00h", sty),
+                            ),
+                          );
+                        },
                       );
-                    },
+                    }
                   );
                 }else{
                   return const Center(
@@ -195,10 +215,13 @@ class _TimesheetState extends State<Timesheet> {
   }
 
   // API
-  Future<void> getTimesheet()async{
-    _timesheet = await TimesheetApi.getDataCategory(context);
-    print('timesheet');
-    print(_timesheet);
+  Future<void> getTimesheet(date)async{
+    // _timesheet!.clear();
+
+    _timesheet = await TimesheetApi.getDataCategory(context, date);
+    Provider.of<TimesheetState>(context, listen: false).changeRefresh();
+
+
   }
 
 }
