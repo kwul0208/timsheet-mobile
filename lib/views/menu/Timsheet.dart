@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,8 @@ class Timesheet extends StatefulWidget {
 class _TimesheetState extends State<Timesheet> {
   DateTime _dateTime = DateTime(DateTime.now().year, DateTime.now().month, 1);
   DateTime _selectedDate = DateTime.now();
+  String dateForAdd = '';
+
 
   // data
   List<TimesheetModel>? _timesheet;
@@ -33,7 +37,23 @@ class _TimesheetState extends State<Timesheet> {
     // time now
     DateTime dt = DateTime.parse(DateTime.now().toString());
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
+    dateForAdd = formattedDate;
     _futureTimesheet = getTimesheet(formattedDate);
+  }
+
+  Future<void> _displaySecondView(Widget view) async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => view));
+        print(result);
+
+    if (!mounted) return;
+
+    if (result == dateForAdd) {
+      Timer(Duration(milliseconds: 100), () {
+        getTimesheet(result);
+        print('reloaddd');
+      });
+    }
   }
 
 
@@ -64,6 +84,7 @@ class _TimesheetState extends State<Timesheet> {
                   lastDate: DateTime(2024, 01, 01),
                   onDateSelected: (date){
                     String formattedDate = DateFormat("yyyy-MM-dd").format(date);                        
+                    dateForAdd = formattedDate;
                     getTimesheet(formattedDate);
 
                   },
@@ -208,7 +229,8 @@ class _TimesheetState extends State<Timesheet> {
         backgroundColor: Config().primary,
         child: Icon(Icons.add),
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet()));
+          _displaySecondView(addTimsheet(date: dateForAdd));
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet(date: dateForAdd)));
         },
       ),
     );
