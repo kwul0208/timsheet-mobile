@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Helper{
   formatedTime({required int time}) {
           int h, m, s;
@@ -11,5 +13,10 @@ class Helper{
       String result = "$h h:$m m";
 
       return result;
+  }
+
+   bool isValidTimeRange(TimeOfDay startTime, TimeOfDay endTime) {
+    return ((endTime.hour > startTime.hour) || (endTime.minute > startTime.minute))
+        ;
   }
 }

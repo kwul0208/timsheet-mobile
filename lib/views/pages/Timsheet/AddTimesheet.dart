@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:timsheet_mobile/Helper/Helper.dart';
+import 'package:timsheet_mobile/Models/Timesheet/TimeExistApi.dart';
 
 class addTimsheet extends StatefulWidget {
   const addTimsheet({super.key, required this.date});
@@ -18,6 +20,9 @@ class _addTimsheetState extends State<addTimsheet> {
   // view
   bool _load = false;
 
+  late TimeOfDay _timeOfDayStart;
+  late TimeOfDay _timeOfDayEnd;
+
   List options = [
     {'title': 'Prospecting', 'isActive': false},
     {'title': 'Daily Routine', 'isActive': false},
@@ -30,6 +35,7 @@ class _addTimsheetState extends State<addTimsheet> {
     {'title': 'Project', 'isActive': false},
   ];
 
+
   // form
   TextEditingController dateinput = TextEditingController(); 
   TextEditingController timeStart = TextEditingController(); 
@@ -37,6 +43,8 @@ class _addTimsheetState extends State<addTimsheet> {
   TextEditingController description = TextEditingController();
   String mode = '';
 
+  // data api
+  List _timeX = [];
 
 
   @override
@@ -44,6 +52,7 @@ class _addTimsheetState extends State<addTimsheet> {
     super.initState();
 
     dateinput.text = widget.date;
+    getTimeExist();
   }
 
 
@@ -99,20 +108,65 @@ class _addTimsheetState extends State<addTimsheet> {
                 padding: const EdgeInsets.only(right: 10),
                 child: TextButton(
                   onPressed: (){
-                    setState(() {
-                      _load = true;
-                    });
-                    postTimesheet().then((value) {
-                      setState(() {
-                        _load= false;
-                      });
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("${value['message']}"),
-                    ));
-                    value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                    // return null;
+                    // setState(() {
+                    //   _load = true;
+                    // });
 
-                    
-                    });
+                     // -- try
+                    //  cek first isi 
+                    if (_timeX.isEmpty) {
+                      postTimesheet().then((value) {
+                        setState(() {
+                          _load= false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("${value['message']}"),
+                        ));
+                        value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                      });
+                    }else{
+                      print('ada');
+                      String last_timeX = _timeX.last;
+                      int idx = last_timeX.indexOf(":");
+                      List parts = [last_timeX.substring(0,idx).trim(), last_timeX.substring(idx+1).trim()];
+                      var V_end_time = TimeOfDay(hour: int.parse("${parts[0]}"), minute: int.parse("${parts[1]}"));
+                      
+                      // check start time nya kurang dari time akhir input ga, kalo kurang dicek dulu biar  input end time nya ga lebih dari V_end_time(inputan terakhir)
+                      bool check_start_time = Helper().isValidTimeRange(_timeOfDayStart, V_end_time);
+                      if(check_start_time == true){
+                        // check end time nya kalo lebih ya ga valid
+                        bool check_end_time = Helper().isValidTimeRange(_timeOfDayEnd, V_end_time);
+                        if (check_end_time == false ) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Time Not Valid!"),
+                          ));
+                        }else{
+                          print('valid');
+                          postTimesheet().then((value) {
+                            setState(() {
+                              _load= false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("${value['message']}"),
+                            ));
+                            value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                          });
+                        }
+                      }else{
+                        print('valid');
+                        postTimesheet().then((value) {
+                          setState(() {
+                            _load= false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("${value['message']}"),
+                          ));
+                          value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                        });
+                      }
+                    }                    
+                                // -- end  
                   },
                   child: Text("Save"),
                 ),
@@ -182,20 +236,35 @@ class _addTimsheetState extends State<addTimsheet> {
                           );
 
                           if (pickedTime != null) {
-                            print('timing');
-                            print(pickedTime.format(context)); //output 10:51 PM
-                            // DateTime parsedTime = DateFormat.jm()
-                            //     .parse(pickedTime.format(context).toString());
-                            // //converting to DateTime so that we can further format on different pattern.
-                            // print(parsedTime); //output 1970-01-01 22:53:00.000
-                            // String formattedTime =
-                            //     DateFormat('HH:mm:ss').format(parsedTime);
-                            // print(formattedTime); //output 14:59:00
-                            // //DateFormat() is from intl package, you can format the time on any pattern you need.
+                            print('timingx');
+                            _timeOfDayStart = pickedTime;
+                            // print(pickedTime.format(context)); //output 10:51 PM
 
-                            setState(() {
-                              timeStart.text = pickedTime.format(context); //set the value of text field.
-                            });
+                            //output 1970-01-01 22:53:00.000
+                            DateTime parsedTime = DateFormat.jm()
+                                .parse(pickedTime.format(context).toString());
+                                print(parsedTime);
+                                
+                            DateTime v_time = DateFormat.jm()
+                                .parse(pickedTime.format(context).toString()).add(Duration(minutes: 1));
+
+                            //output 14:59:00
+                            String formattedTime =
+                                DateFormat('HH:mm').format(parsedTime);
+                            String v_f_time =
+                                DateFormat('HH:mm').format(v_time);
+                            
+                            // validation
+                            if (_timeX.contains(v_f_time)) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("time ${formattedTime} is not allowed"),
+                              ));
+                            }else{
+                              setState(() {
+                                // timeStart.text = pickedTime.format(context); //set the value of text field.
+                                timeStart.text = formattedTime; //set the value of text field.
+                              });
+                            };
                           } else {
                             print("Time is not selected");
                           }
@@ -220,11 +289,34 @@ class _addTimsheetState extends State<addTimsheet> {
                           );
 
                           if (pickedTime != null) {
-                            print(pickedTime.format(context)); //output 10:51 PM
+                            _timeOfDayEnd = pickedTime;
 
-                            setState(() {
-                              timeEnd.text = pickedTime.format(context); //set the value of text field.
-                            });
+                            // print(pickedTime.format(context)); //output 10:51 PM
+
+                            //output 1970-01-01 22:53:00.000
+                            DateTime parsedTime = DateFormat.jm()
+                                .parse(pickedTime.format(context).toString());
+                            DateTime v_time = DateFormat.jm()
+                                .parse(pickedTime.format(context).toString()).add(Duration(minutes: -1));
+
+                            //output 14:59:00
+                            String formattedTime =
+                                DateFormat('HH:mm').format(parsedTime);
+                            String v_f_time =
+                                DateFormat('HH:mm').format(v_time);
+                            
+                            // validation
+                            if (_timeX.contains(v_f_time)) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("time ${formattedTime} is not allowed"),
+                              ));
+                            }else{
+                              setState(() {
+                                // timeEnd.text = pickedTime.format(context); //set the value of text field.
+                                timeEnd.text = formattedTime; //set the value of text field.
+                              });
+                            };
+
                           } else {
                             print("Time is not selected");
                           }
@@ -294,6 +386,16 @@ class _addTimsheetState extends State<addTimsheet> {
   String baseUrl = Config().url;
 
   Future postTimesheet()async{
+    print({
+      "timestart": "${timeStart.text}",
+      "timefinish": "${timeEnd.text}",
+      "date": "${dateinput.text}",
+      "is_overtime": "0",
+      "input_from": "pms",
+      "description": "${description.text}",
+      "employees_id": "575",
+      "tmode_id": "13"
+    });
     // return {"status": true, "message": "success"};
     var headers = {
       'Content-Type': 'application/json'
@@ -312,6 +414,7 @@ class _addTimsheetState extends State<addTimsheet> {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    // print(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
       var x = await response.stream.bytesToString();
@@ -327,5 +430,11 @@ class _addTimsheetState extends State<addTimsheet> {
     else {
       return {"status": false, "message": "${response.reasonPhrase}"};
     }
+  }
+
+  getTimeExist() async{
+    print('timex');
+    _timeX = await TimeExistapi.getTime(context, widget.date);
+    print(_timeX);
   }
 }
