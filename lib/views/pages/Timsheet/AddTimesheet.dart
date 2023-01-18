@@ -109,9 +109,9 @@ class _addTimsheetState extends State<addTimsheet> {
                 child: TextButton(
                   onPressed: (){
                     // return null;
-                    // setState(() {
-                    //   _load = true;
-                    // });
+                    setState(() {
+                      _load = true;
+                    });
 
                      // -- try
                     //  cek first isi 
@@ -142,7 +142,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               content: Text("Time Not Valid!"),
                           ));
                         }else{
-                          print('valid');
+                          print('valid1');
                           postTimesheet().then((value) {
                             setState(() {
                               _load= false;
@@ -154,7 +154,7 @@ class _addTimsheetState extends State<addTimsheet> {
                           });
                         }
                       }else{
-                        print('valid');
+                        print('valid2');
                         postTimesheet().then((value) {
                           setState(() {
                             _load= false;
@@ -236,23 +236,26 @@ class _addTimsheetState extends State<addTimsheet> {
                           );
 
                           if (pickedTime != null) {
-                            print('timingx');
-                            _timeOfDayStart = pickedTime;
-                            // print(pickedTime.format(context)); //output 10:51 PM
+                          _timeOfDayStart = pickedTime;
 
-                            //output 1970-01-01 22:53:00.000
-                            DateTime parsedTime = DateFormat.jm()
-                                .parse(pickedTime.format(context).toString());
-                                print(parsedTime);
-                                
-                            DateTime v_time = DateFormat.jm()
-                                .parse(pickedTime.format(context).toString()).add(Duration(minutes: 1));
+                          // formating dateime
+                          var inputFormat = DateFormat('HH:mm');
+                          var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
 
-                            //output 14:59:00
-                            String formattedTime =
-                                DateFormat('HH:mm').format(parsedTime);
-                            String v_f_time =
-                                DateFormat('HH:mm').format(v_time);
+                          var outputFormat = DateFormat('hh:mm a');
+                          var outputDate = outputFormat.format(inputDate);
+                          print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
+
+                          DateTime x = DateFormat.jm()
+                                .parse(outputDate).add(Duration(minutes: 1));
+                                print(x);
+
+                            //output 14:59
+                            String formattedTime = pickedTime.format(context);
+                            String v_f_time = DateFormat('HH:mm').format(x);
+                            print(formattedTime);
+                            print(v_f_time);
+                            // end formating datetime
                             
                             // validation
                             if (_timeX.contains(v_f_time)) {
@@ -291,20 +294,24 @@ class _addTimsheetState extends State<addTimsheet> {
                           if (pickedTime != null) {
                             _timeOfDayEnd = pickedTime;
 
-                            // print(pickedTime.format(context)); //output 10:51 PM
+                                       // formating dateime
+                            var inputFormat = DateFormat('HH:mm');
+                            var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
 
-                            //output 1970-01-01 22:53:00.000
-                            DateTime parsedTime = DateFormat.jm()
-                                .parse(pickedTime.format(context).toString());
-                            DateTime v_time = DateFormat.jm()
-                                .parse(pickedTime.format(context).toString()).add(Duration(minutes: -1));
+                            var outputFormat = DateFormat('hh:mm a');
+                            var outputDate = outputFormat.format(inputDate);
+                            print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
 
-                            //output 14:59:00
-                            String formattedTime =
-                                DateFormat('HH:mm').format(parsedTime);
-                            String v_f_time =
-                                DateFormat('HH:mm').format(v_time);
-                            
+                            DateTime x = DateFormat.jm()
+                                .parse(outputDate).add(Duration(minutes: 1));
+                                print(x);
+
+                            //output 14:59
+                            String formattedTime = pickedTime.format(context);
+                            String v_f_time = DateFormat('HH:mm').format(x);
+                            print(formattedTime);
+                            print(v_f_time);
+                            // end formating datetime
                             // validation
                             if (_timeX.contains(v_f_time)) {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

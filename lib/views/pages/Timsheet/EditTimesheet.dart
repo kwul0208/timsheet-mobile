@@ -3,7 +3,13 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 
 class EditTimesheet extends StatefulWidget {
-  const EditTimesheet({super.key});
+  const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc});
+
+  final int id;
+  final String date;
+  final String timeStart;
+  final String timeEnd;
+  final String desc;
 
   @override
   State<EditTimesheet> createState() => _EditTimesheetState();
@@ -27,12 +33,22 @@ class _EditTimesheetState extends State<EditTimesheet> {
   TextEditingController dateinput = TextEditingController(); 
   TextEditingController timeStart = TextEditingController(); 
   TextEditingController timeEnd = TextEditingController(); 
+  TextEditingController description = TextEditingController();
+  String mode = '';
+
 
 
 
   @override
   void initState(){
     super.initState();
+
+    // initial value
+    dateinput.text = widget.date;
+    timeStart.text = widget.timeStart;
+    timeEnd.text = widget.timeEnd;
+    description.text = widget.desc;
+
   }
 
 
@@ -203,6 +219,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
               ),
               SizedBox(height: 30,),
               TextFormField(
+                controller: description,
                 decoration: InputDecoration(
                   label: Text("Description"),
                   border: OutlineInputBorder(

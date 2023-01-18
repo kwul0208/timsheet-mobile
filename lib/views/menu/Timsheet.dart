@@ -179,7 +179,7 @@ class _TimesheetState extends State<Timesheet> {
                         itemBuilder: (context, i) {
                           return GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],)));
                             },
                             child: ListTile(
                               shape: Border.all(color: Config().line, width: 0.5),
