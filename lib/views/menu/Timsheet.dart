@@ -21,6 +21,8 @@ class Timesheet extends StatefulWidget {
 }
 
 class _TimesheetState extends State<Timesheet> {
+  String _scrollDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
   DateTime _dateTime = DateTime(DateTime.now().year, DateTime.now().month, 1);
   DateTime _selectedDate = DateTime.now();
   String dateForAdd = '';
@@ -44,14 +46,23 @@ class _TimesheetState extends State<Timesheet> {
   Future<void> _displaySecondView(Widget view) async {
     var result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => view));
+        print('asd');
         print(result);
+// setState(() {
+//           _scrollDate = "2023-01-15";
+//         });
 
     if (!mounted) return;
-
+          print('result');
+      print(result);
     if (result == dateForAdd) {
+
       Timer(Duration(milliseconds: 100), () {
         getTimesheet(result);
         print('reloaddd');
+        setState(() {
+          _scrollDate = dateForAdd;
+        });
       });
     }
   }
@@ -79,11 +90,12 @@ class _TimesheetState extends State<Timesheet> {
           children: [
             SizedBox(height: 5),
             CalendarTimeline(
-                  initialDate: DateTime.now(),
+                  initialDate: DateTime.parse(_scrollDate),
                   firstDate: DateTime(2022, 12, 01),
                   lastDate: DateTime(2024, 01, 01),
                   onDateSelected: (date){
-                    String formattedDate = DateFormat("yyyy-MM-dd").format(date);                        
+                    String formattedDate = DateFormat("yyyy-MM-dd").format(date);
+                    print(dateForAdd);                        
                     dateForAdd = formattedDate;
                     getTimesheet(formattedDate);
 
@@ -179,7 +191,10 @@ class _TimesheetState extends State<Timesheet> {
                         itemBuilder: (context, i) {
                           return GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],)));
+                              setState(() {
+                                _scrollDate = dateForAdd;
+                              });
+                              _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],));
                             },
                             child: ListTile(
                               shape: Border.all(color: Config().line, width: 0.5),
@@ -229,6 +244,9 @@ class _TimesheetState extends State<Timesheet> {
         backgroundColor: Config().primary,
         child: Icon(Icons.add),
         onPressed: (){
+          setState(() {
+            _scrollDate = dateForAdd;
+          });
           _displaySecondView(addTimsheet(date: dateForAdd));
           // Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet(date: dateForAdd)));
         },
