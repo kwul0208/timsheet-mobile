@@ -2,17 +2,23 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/views/menu/Dashboard.dart';
+import 'package:timsheet_mobile/views/menu/Overtime.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
+import 'package:timsheet_mobile/views/menu/WFH.dart';
 import 'package:timsheet_mobile/views/pages/Auth/login.dart';
 
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
+
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
   runApp(MultiProvider(
@@ -44,7 +50,49 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: Timesheet(),
-      home: Login(),
+      home: MyHomePage()
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _curentIndex = 0;
+
+  void onTapBar(int index) {
+    setState(() {
+      _curentIndex = index;
+    });
+  }
+
+  List<Widget> _children = [Dashboard(), Timesheet(), Overtime(), WFH()];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _children.elementAt(_curentIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Dashboard"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.task), label: "Timesheet"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.work), label: "Overtime"),
+          BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: "WFH"),
+        ],
+        onTap: onTapBar,
+        currentIndex: _curentIndex,
+        selectedItemColor: Config().primary,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+      ),
     );
   }
 }
