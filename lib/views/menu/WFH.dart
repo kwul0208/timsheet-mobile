@@ -11,6 +11,7 @@ class WFH extends StatelessWidget {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Config().primary,

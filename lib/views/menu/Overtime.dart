@@ -11,6 +11,7 @@ class Overtime extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Config().primary,
