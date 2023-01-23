@@ -9,6 +9,7 @@ import 'package:timsheet_mobile/Models/Timesheet/TimesheetApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
+import 'package:timsheet_mobile/views/pages/Timsheet/DetailTimesheet.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 import 'package:timsheet_mobile/Helper/Helper.dart';
 import 'package:intl/intl.dart';
@@ -196,7 +197,8 @@ class _TimesheetState extends State<Timesheet> {
                               setState(() {
                                 _scrollDate = dateForAdd;
                               });
-                              _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],));
+                              _displaySecondView(DetailTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'],  date_input: _timesheet![0].timesheet[i]['date_input'] ,timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], time_duration: _timesheet![0].timesheet[i]['timeduration'],desc: _timesheet![0].timesheet[i]['description'], date_modified: _timesheet![0].timesheet[i]['date_modified'], tmode_name: _timesheet![0].timesheet[i]['tmode_name'],));
+                              // _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],));
                             },
                             child: ListTile(
                               shape: Border.all(color: Config().line, width: 0.5),

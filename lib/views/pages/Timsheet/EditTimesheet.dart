@@ -291,7 +291,10 @@ class _EditTimesheetState extends State<EditTimesheet> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("${value['message']}"),
                         ));
-                        value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                        value['status'] == true ? {
+                          Navigator.pop(context, dateinput.text),
+                          Navigator.pop(context, dateinput.text)
+                        } : null;
                       });
                     },
                     child: const Text(
