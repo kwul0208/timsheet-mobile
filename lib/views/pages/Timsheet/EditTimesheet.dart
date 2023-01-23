@@ -116,20 +116,6 @@ class _EditTimesheetState extends State<EditTimesheet> {
             title: Text("Edit Timesheet",
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             centerTitle: true,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Icon(Icons.delete, color: Colors.red, size: 30,),
-              )
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 10),
-              //   child: Center(
-              //       child: Text(
-              //     "Update",
-              //     style: TextStyle(color: Colors.green, fontSize: 16),
-              //   )),
-              // )
-            ],
           ),
           body: SingleChildScrollView(
             child: Padding(
