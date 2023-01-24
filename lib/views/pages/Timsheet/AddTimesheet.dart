@@ -8,6 +8,8 @@ import 'package:timsheet_mobile/Helper/Helper.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimeExistApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
 
 class addTimsheet extends StatefulWidget {
   const addTimsheet({super.key, required this.date});
@@ -19,8 +21,10 @@ class addTimsheet extends StatefulWidget {
 }
 
 class _addTimsheetState extends State<addTimsheet> {
-  // view
+  // view state
   bool _load = false;
+  bool _showEmployees = false;
+
 
   late TimeOfDay _timeOfDayStart;
   late TimeOfDay _timeOfDayEnd;
@@ -52,6 +56,11 @@ class _addTimsheetState extends State<addTimsheet> {
   List<ModeModel>? _mode;
   Future<dynamic>? _futureMode;
 
+    // list employees
+  EmployeesModel? selectedUser;
+  List<EmployeesModel> ? _employees;
+  Future<dynamic>? _futureEmployees;
+
 
   @override
   void initState(){
@@ -60,6 +69,8 @@ class _addTimsheetState extends State<addTimsheet> {
     dateinput.text = widget.date;
     getTimeExist();
     _futureMode = getMode();
+    _futureEmployees = getEmployees();
+
   }
 
 
@@ -396,11 +407,11 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
                             ),
-
                             // ---------- Office Ad -----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -413,6 +424,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -424,6 +436,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -441,6 +454,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -452,6 +466,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -466,6 +481,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -480,10 +496,42 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = true;
                                 });
                                 print(val);
                               }
                             ),
+                            FutureBuilder(
+                              future: _futureEmployees,
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState == ConnectionState.done) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: _showEmployees == true ? DropdownButton<EmployeesModel>(
+                                      hint: Text("-- Choose --"),
+                                      value: selectedUser,
+                                      onChanged: (EmployeesModel? newValue) {
+                                        setState(() {
+                                          selectedUser = newValue;
+                                        });
+                                      },
+                                      items: _employees?.map((EmployeesModel user) {
+                                        return new DropdownMenuItem<EmployeesModel>(
+                                          value: user,
+                                          child: Text(
+                                            user.fullname,
+                                            style: new TextStyle(color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ) : SizedBox(),
+                                  );
+                                }else{
+                                  return SizedBox();
+                                }
+                              }
+                            ),
+
 
                             //------------ Training -------------
                             RadioListTile(
@@ -494,6 +542,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -511,6 +560,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -522,6 +572,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -615,5 +666,13 @@ class _addTimsheetState extends State<addTimsheet> {
     _mode = await ModeApi.getDataMode(context);
     print('mode');
     print(_mode);
+  }
+
+  
+  getEmployees()async{
+    _employees = await EmployeesApi.getEmployees(context);
+    print("employees");
+    print(_employees);
+    // selectedUser=_employees![0];
   }
 }

@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
 
 class EditTimesheet extends StatefulWidget {
   const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id});
@@ -22,8 +24,9 @@ class EditTimesheet extends StatefulWidget {
 }
 
 class _EditTimesheetState extends State<EditTimesheet> {
-  // view
+  // view state
   bool _load = false;
+  bool _showEmployees = false;
 
   List options = [
     {'title': 'Prospecting', 'isActive': false},
@@ -53,6 +56,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
   List<ModeModel>? _mode;
   Future<dynamic>? _futureMode;
   int _mode_id = 0;
+  
+  // list employees
+  EmployeesModel? selectedUser;
+  List<EmployeesModel> ? _employees;
+  Future<dynamic>? _futureEmployees;
 
 
 
@@ -78,6 +86,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // mode
     _futureMode = getMode();
     _mode_id = widget.tmode_id;
+    _futureEmployees = getEmployees();
 
   }
 
@@ -263,6 +272,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -280,6 +290,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -291,6 +302,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -319,6 +331,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -333,6 +346,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -347,8 +361,39 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = true;
                                 });
                                 print(val);
+                              }
+                            ),
+                            FutureBuilder(
+                              future: _futureEmployees,
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState == ConnectionState.done) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: _showEmployees == true ? DropdownButton<EmployeesModel>(
+                                      hint: Text("-- Choose --"),
+                                      value: selectedUser,
+                                      onChanged: (EmployeesModel? newValue) {
+                                        setState(() {
+                                          selectedUser = newValue;
+                                        });
+                                      },
+                                      items: _employees?.map((EmployeesModel user) {
+                                        return new DropdownMenuItem<EmployeesModel>(
+                                          value: user,
+                                          child: new Text(
+                                            user.fullname,
+                                            style: new TextStyle(color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ) : SizedBox(),
+                                  );
+                                }else{
+                                  return SizedBox();
+                                }
                               }
                             ),
 
@@ -361,6 +406,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -378,6 +424,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -389,6 +436,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showEmployees = false;
                                 });
                                 print(val);
                               }
@@ -505,7 +553,12 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
   getMode()async{
     _mode = await ModeApi.getDataMode(context);
-    print('mode');
-    print(_mode);
+  }
+
+  getEmployees()async{
+    _employees = await EmployeesApi.getEmployees(context);
+    print("employees");
+    print(_employees);
+    // selectedUser=_employees![0];
   }
 }

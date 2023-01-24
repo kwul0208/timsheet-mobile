@@ -85,7 +85,7 @@ class _TimesheetState extends State<Timesheet> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Config().primary,
-        title: Text("Timsheet"),
+        title: Text("Timesheet"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

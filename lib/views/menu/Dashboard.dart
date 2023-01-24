@@ -104,9 +104,8 @@ class Dashboard extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        CardWidget(title: "Timesheet Now", total: 3, icon: Icons.calendar_month,),
+                        CardWidget(title: "Empty Timsheet", total: 3, icon: Icons.calendar_month,),
                         CardWidget(title: "Meeting", total: 1, icon: Icons.meeting_room_outlined,),
-                        CardWidget(title: "CPD Point", total: 29, icon: Icons.model_training,),
                         CardWidget(title: "Cuti", total: 5, icon: Icons.insert_emoticon_outlined ,),
                       ],
                     ),

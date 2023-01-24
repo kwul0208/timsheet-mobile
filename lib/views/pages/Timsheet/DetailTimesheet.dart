@@ -83,7 +83,7 @@ class DetailTimesheet extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                            Text(
-                            'Update',
+                            'Edit',
                             style: TextStyle(fontSize: 24),
                           ),
                           Icon(Icons.navigate_next_outlined, size: 30,)

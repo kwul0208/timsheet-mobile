@@ -33,7 +33,7 @@ class CardWidget extends StatelessWidget {
           children: [
             Icon(icon, color: Config().primary, size: 30,),
             Text("$total", style: TextStyle(color: Config().primary, fontSize: 44, fontWeight: FontWeight.w500),),
-            Text(title, style: TextStyle(color: Config().primary, fontSize: 16, fontWeight: FontWeight.w600))
+            Text(title, style: TextStyle(color: Config().primary, fontSize: 14, fontWeight: FontWeight.w600))
           ],
         ),
       ),
