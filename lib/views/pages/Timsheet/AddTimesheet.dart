@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Helper/Helper.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimeExistApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/ModeApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/ModeModel.dart';
 
 class addTimsheet extends StatefulWidget {
   const addTimsheet({super.key, required this.date});
@@ -46,6 +48,10 @@ class _addTimsheetState extends State<addTimsheet> {
   // data api
   List _timeX = [];
 
+  // mode
+  List<ModeModel>? _mode;
+  Future<dynamic>? _futureMode;
+
 
   @override
   void initState(){
@@ -53,6 +59,7 @@ class _addTimsheetState extends State<addTimsheet> {
 
     dateinput.text = widget.date;
     getTimeExist();
+    _futureMode = getMode();
   }
 
 
@@ -84,6 +91,8 @@ class _addTimsheetState extends State<addTimsheet> {
       ),
     );
   }
+
+  int id = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -345,33 +354,186 @@ class _addTimsheetState extends State<addTimsheet> {
                   SizedBox(height: 20,),
                   Text("Mode", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
                   SizedBox(height: 10,),
-                  Wrap(
-                    spacing: 10.0,
-                    runSpacing: 20.0,
-                    children: options
-                    .map((option) =>  Container(
-                    // margin: EdgeInsets.all(5),
-                      decoration: customBoxDecoration(option['isActive']),
-                      child: InkWell(
-                        onTap: () {
-                          changeState(option);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Text('${option['title']}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: option['isActive']
-                            ? Colors.white
-                            : Colors.black87)
-                          )
-                        )
-                      )
-                    )
-                    ).toList()
-                  )
+                  // Wrap(
+                  //   spacing: 10.0,
+                  //   runSpacing: 20.0,
+                  //   children: options
+                  //   .map((option) =>  Container(
+                  //   // margin: EdgeInsets.all(5),
+                  //     decoration: customBoxDecoration(option['isActive']),
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         changeState(option);
+                  //       },
+                  //       child: Container(
+                  //         padding: const EdgeInsets.all(10),
+                  //         child: Text('${option['title']}',
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(
+                  //           fontWeight: FontWeight.normal,
+                  //           color: option['isActive']
+                  //           ? Colors.white
+                  //           : Colors.black87)
+                  //         )
+                  //       )
+                  //     )
+                  //   )
+                  //   ).toList()
+                  // ),
+                  FutureBuilder(
+                    future: _futureMode,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //----------- Prospecting -----------
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              title: Text("${_mode![0].prospecting["name"]}"),
+                              value: _mode![0].prospecting["id"], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
 
+                            // ---------- Office Ad -----------
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("${_mode![0].office_admisitration["name"]}"),
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].office_admisitration["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13),),
+                              value: _mode![0].office_admisitration["sub"]['1']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].office_admisitration["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
+                              value: _mode![0].office_admisitration["sub"]['2']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+
+                            //------------- BS Travel ----------
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("${_mode![0].business_travel["name"]}"),
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].business_travel["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
+                              value: _mode![0].business_travel["sub"]['1']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].business_travel["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
+                              value: _mode![0].business_travel["sub"]['2']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+                            
+                            //------------ Ishoma -------------
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              title: Text("${_mode![0].ishoma["name"]}"),
+                              value: _mode![0].ishoma["id"], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+
+                            //------------ Suport service -------------
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              title: Text("${_mode![0].suport_service["name"]}"),
+                              value: _mode![0].suport_service["id"], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+
+                            //------------ Training -------------
+                            RadioListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              title: Text("${_mode![0].training["name"]}"),
+                              value: _mode![0].training["id"], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+                            
+                            // ---------- Development -----------
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("${_mode![0].development["name"]}"),
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].development["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
+                              value: _mode![0].development["sub"]['1']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+                            RadioListTile(
+                              title: Text("${_mode![0].development["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
+                              value: _mode![0].development["sub"]['2']['id'], 
+                              groupValue: id, 
+                              onChanged: (val){
+                                setState(() {
+                                  id = val;
+                                });
+                                print(val);
+                              }
+                            ),
+
+                          ],
+                        );
+                      }else{
+                        return CircularProgressIndicator();
+                      }
+                    }
+                  )
                 ],
               ),
             ),
@@ -393,16 +555,19 @@ class _addTimsheetState extends State<addTimsheet> {
   String baseUrl = Config().url;
 
   Future postTimesheet()async{
-    print({
-      "timestart": "${timeStart.text}",
-      "timefinish": "${timeEnd.text}",
-      "date": "${dateinput.text}",
-      "is_overtime": "0",
-      "input_from": "pms",
-      "description": "${description.text}",
-      "employees_id": "575",
-      "tmode_id": "13"
-    });
+    if(timeStart.text.isEmpty|| timeEnd.text.isEmpty || dateinput.text.isEmpty || description.text.isEmpty || id == 0){
+      return {"status": false, "message": "Your form is not complete!"};
+    }
+    // print({
+    //   "timestart": "${timeStart.text}",
+    //   "timefinish": "${timeEnd.text}",
+    //   "date": "${dateinput.text}",
+    //   "is_overtime": "0",
+    //   "input_from": "pms",
+    //   "description": "${description.text}",
+    //   "employees_id": "575",
+    //   "tmode_id": id
+    // });
     // return {"status": true, "message": "success"};
     var headers = {
       'Content-Type': 'application/json'
@@ -416,7 +581,7 @@ class _addTimsheetState extends State<addTimsheet> {
       "input_from": "pms",
       "description": "${description.text}",
       "employees_id": "575",
-      "tmode_id": "13"
+      "tmode_id": id
     });
     request.headers.addAll(headers);
 
@@ -425,6 +590,7 @@ class _addTimsheetState extends State<addTimsheet> {
 
     if (response.statusCode == 200) {
       var x = await response.stream.bytesToString();
+      print(x);
       Map data = jsonDecode(x);
       print(data);
 
@@ -435,13 +601,19 @@ class _addTimsheetState extends State<addTimsheet> {
       }
     }
     else {
+            var x = await response.stream.bytesToString();
+      print(x);
       return {"status": false, "message": "${response.reasonPhrase}"};
     }
   }
 
   getTimeExist() async{
-    print('timex');
     _timeX = await TimeExistapi.getTime(context, widget.date);
-    print(_timeX);
+  }
+
+  getMode()async{
+    _mode = await ModeApi.getDataMode(context);
+    print('mode');
+    print(_mode);
   }
 }

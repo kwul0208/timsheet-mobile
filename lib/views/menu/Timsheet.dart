@@ -197,7 +197,7 @@ class _TimesheetState extends State<Timesheet> {
                               setState(() {
                                 _scrollDate = dateForAdd;
                               });
-                              _displaySecondView(DetailTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'],  date_input: _timesheet![0].timesheet[i]['date_input'] ,timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], time_duration: _timesheet![0].timesheet[i]['timeduration'],desc: _timesheet![0].timesheet[i]['description'], date_modified: _timesheet![0].timesheet[i]['date_modified'], tmode_name: _timesheet![0].timesheet[i]['tmode_name'],));
+                              _displaySecondView(DetailTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'],  date_input: _timesheet![0].timesheet[i]['date_input'] ,timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], time_duration: _timesheet![0].timesheet[i]['timeduration'],desc: _timesheet![0].timesheet[i]['description'], date_modified: _timesheet![0].timesheet[i]['date_modified'], tmode_name: _timesheet![0].timesheet[i]['tmode_name'], tmode_id: _timesheet![0].timesheet[i]['tmode_id'],));
                               // _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]['id'], date: _timesheet![0].timesheet[i]['date'], timeStart: _timesheet![0].timesheet[i]['timestart'], timeEnd: _timesheet![0].timesheet[i]['timefinish'], desc: _timesheet![0].timesheet[i]['description'],));
                             },
                             child: ListTile(

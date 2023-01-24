@@ -11,7 +11,7 @@ import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 // Revision Date	:	-
 
 class DetailTimesheet extends StatelessWidget {
-  const DetailTimesheet({super.key, required this.id, required this.date, required this.date_input,required this.timeStart, required this.timeEnd, required this.time_duration, required this.desc, required this.date_modified, required this.tmode_name});
+  const DetailTimesheet({super.key, required this.id, required this.date, required this.date_input,required this.timeStart, required this.timeEnd, required this.time_duration, required this.desc, required this.date_modified, required this.tmode_name, required this.tmode_id});
 
   final int id;
   final String date;
@@ -22,10 +22,14 @@ class DetailTimesheet extends StatelessWidget {
   final String desc;
   final String date_modified;
   final String tmode_name;
+  final int tmode_id;
+
   
 
   @override
   Widget build(BuildContext context) {
+  print(tmode_id);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -72,7 +76,7 @@ class DetailTimesheet extends StatelessWidget {
                         minimumSize: const Size.fromHeight(50), // NEW
                       ),
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: id, date: date, desc: desc, timeStart: timeStart, timeEnd: timeEnd,)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: id, date: date, desc: desc, timeStart: timeStart, timeEnd: timeEnd, tmode_id: tmode_id,)));
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
