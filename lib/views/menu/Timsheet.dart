@@ -212,7 +212,7 @@ class _TimesheetState extends State<Timesheet> {
                                     maxLines: 2, // max lines after that dots comes
                                     // strutStyle: StrutStyle(fontSize: 12.0),
                                     text: TextSpan(
-                                            style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                                             text: "${_timesheet![0].timesheet[i]['description']}"
                                           ),
                                       ),
@@ -225,7 +225,13 @@ class _TimesheetState extends State<Timesheet> {
                                   )
                                 ],
                               ),
-                              subtitle: Text("${_timesheet![0].timesheet[i]['timestart']} - ${_timesheet![0].timesheet[i]['timefinish']}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: Config().primary),),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${_timesheet![0].timesheet[i]['tmode_name']}", style: TextStyle(fontSize: 12),),
+                                  Text("${_timesheet![0].timesheet[i]['timestart']} - ${_timesheet![0].timesheet[i]['timefinish']}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: Config().primary),),
+                                ],
+                              ),
                               // trailing: Text("01:00h", sty),
                             ),
                           );

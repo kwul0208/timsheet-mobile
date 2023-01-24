@@ -85,25 +85,6 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
                           ));
                         }
                       });
-                      // deleteProduct(widget.id.toString()).then((value) {
-                      //   if (value['status'] == 200) {
-                          // setState(() {
-                          //   _isStatus = 'success';
-                          // });
-                          // Timer(Duration(seconds: 1), (){
-                          //   Navigator.pop(context);
-                          //   Navigator.pop(context, 'back');
-                          // });
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(page: 3,)),);
-                      //   } else {
-                          // setState(() {
-                          //   _isLoading = false;
-                          // });
-                          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //   content: Text("Gagal! Silahkan coba beberapa saat lagi"),
-                          // ));
-                      //   }
-                      // });
                     },
                   ) : SizedBox(),
                 _isStatus == 'false' ?
