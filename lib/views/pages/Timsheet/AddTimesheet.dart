@@ -398,10 +398,146 @@ class _addTimsheetState extends State<addTimsheet> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // ---------- chargeable time ---------
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("${_mode![0].chargeable_time["name"]}", style: TextStyle(fontWeight: FontWeight.w500),),
+                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 10),
+                                child: Text("${_mode![0].chargeable_time["sub"]['2']['name']}"),
+                              ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['2']['sub']['1']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['2']['sub']['2']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['2']['sub']['3']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Text("${_mode![0].chargeable_time["sub"]['3']['name']}"),
+                              ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['3']['sub']['1']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['3']['sub']['2']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['3']['sub']['3']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Text("${_mode![0].chargeable_time["sub"]['1']['name']}"),
+                              ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['1']['sub']['1']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['1']['sub']['2']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  value: _mode![0].chargeable_time["sub"]['1']['sub']['3']['id'], 
+                                  groupValue: id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      id = val;
+                                      _showEmployees = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+
                             //----------- Prospecting -----------
+                            SizedBox(height: 10),
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].prospecting["name"]}"),
+                              title: Text("${_mode![0].prospecting["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                               value: _mode![0].prospecting["id"], 
                               groupValue: id, 
                               onChanged: (val){
@@ -415,7 +551,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             // ---------- Office Ad -----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].office_admisitration["name"]}"),
+                              child: Text("${_mode![0].office_admisitration["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
                             ),
                             RadioListTile(
                               title: Text("${_mode![0].office_admisitration["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13),),
@@ -445,7 +581,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             //------------- BS Travel ----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].business_travel["name"]}"),
+                              child: Text("${_mode![0].business_travel["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
                             ),
                             RadioListTile(
                               title: Text("${_mode![0].business_travel["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
@@ -475,7 +611,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             //------------ Ishoma -------------
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].ishoma["name"]}"),
+                              title: Text("${_mode![0].ishoma["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                               value: _mode![0].ishoma["id"], 
                               groupValue: id, 
                               onChanged: (val){
@@ -490,7 +626,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             //------------ Suport service -------------
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].suport_service["name"]}"),
+                              title: Text("${_mode![0].suport_service["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                               value: _mode![0].suport_service["id"], 
                               groupValue: id, 
                               onChanged: (val){
@@ -536,7 +672,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             //------------ Training -------------
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].training["name"]}"),
+                              title: Text("${_mode![0].training["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                               value: _mode![0].training["id"], 
                               groupValue: id, 
                               onChanged: (val){
@@ -551,7 +687,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             // ---------- Development -----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].development["name"]}"),
+                              child: Text("${_mode![0].development["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
                             ),
                             RadioListTile(
                               title: Text("${_mode![0].development["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
