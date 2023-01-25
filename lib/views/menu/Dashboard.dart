@@ -4,6 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
 import 'package:timsheet_mobile/Widget/CardWidget.dart';
+// import 'package:flutter_linkify/flutter_linkify.dart';
+// import 'package:url_launcher/url_launcher.dart';
+
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -16,6 +19,16 @@ class Dashboard extends StatelessWidget {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
+    final Uri _url = Uri.parse('https://tasks.office.com/muc.co.id/en-US/Home/Planner/#/mytasks');
+
+
+    // Future<void> _launchUrl() async {
+    //   if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+    //     throw Exception('Could not launch $_url');
+    //   }
+    // }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -64,6 +77,23 @@ class Dashboard extends StatelessWidget {
                   height: 10,
                   color: Config().line,
                 ),
+                
+                // Linkify(
+                //   onOpen: (link) async {
+                //     if (await canLaunch('https://cretezy.com')) {
+                //         await launch('https://cretezy.com');
+                //       } else {
+                //         throw 'Could not launch $link';
+                //       }
+                //   },
+                //   text: "Made by https://cretezy.com",
+                //   style: TextStyle(color: Colors.yellow),
+                //   linkStyle: TextStyle(color: Colors.red),
+                // ),
+                // ElevatedButton(
+                //   onPressed: _launchUrl,
+                //   child: Text('external'),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, top: 10),
                   child: Text("Announcement", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromARGB(221, 32, 32, 32)),),
