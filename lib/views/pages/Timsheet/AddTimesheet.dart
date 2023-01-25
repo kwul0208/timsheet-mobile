@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,8 @@ import 'package:timsheet_mobile/Helper/Helper.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimeExistApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
 
@@ -24,6 +27,7 @@ class _addTimsheetState extends State<addTimsheet> {
   // view state
   bool _load = false;
   bool _showEmployees = false;
+  bool _showClient = false;
 
 
   late TimeOfDay _timeOfDayStart;
@@ -61,6 +65,13 @@ class _addTimsheetState extends State<addTimsheet> {
   List<EmployeesModel> ? _employees;
   Future<dynamic>? _futureEmployees;
 
+  // assignment
+  AssignmentModel? selectedModel;
+  List<AssignmentModel>? _assignment;
+  Future<dynamic>? _futureAssignment;
+  List _get = [];
+
+
 
   @override
   void initState(){
@@ -71,6 +82,7 @@ class _addTimsheetState extends State<addTimsheet> {
     _futureMode = getMode();
     _futureEmployees = getEmployees();
 
+    _futureAssignment = getAssignment();
   }
 
 
@@ -416,6 +428,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -429,6 +442,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -442,6 +456,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -459,6 +474,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -472,6 +488,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -485,6 +502,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -502,6 +520,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -515,6 +534,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -528,6 +548,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                     setState(() {
                                       id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -544,6 +565,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -561,6 +583,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -573,6 +596,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -591,6 +615,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = true;
                                 });
                                 print(val);
                               }
@@ -603,6 +628,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = true;
                                 });
                                 print(val);
                               }
@@ -618,6 +644,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -633,6 +660,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = true;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -679,6 +707,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -697,6 +726,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -709,10 +739,79 @@ class _addTimsheetState extends State<addTimsheet> {
                                 setState(() {
                                   id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
                             ),
+                            
+
+                            // Client
+                             _showClient == true ? Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
+                            ) : SizedBox(),
+
+                            _showClient == true ? Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: DropdownSearch<dynamic>(
+                                showSelectedItems: false,
+                                showClearButton: true,
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "Search",
+                                  hintText: "Search Name",
+                                ),
+                                //have two mode: menu mode and dialog mode
+                                mode: Mode.DIALOG,
+                                //if you want show search box
+                                showSearchBox: true,
+                                //get data from the internet
+                                onFind: (text) async {
+                                  var headers = {
+                                    'Content-Type': 'application/json',
+                                  };
+                                  var request = http.Request(
+                                      'GET',
+                                      Uri.parse(
+                                          '$baseUrl/mucnet_api/api/assignment-consultant'));
+
+                                    request.body = json.encode({
+                                      "date": "2023-01-22",
+                                      "employees_id": 443
+                                    });
+
+                                  request.headers.addAll(headers);
+
+                                  http.StreamedResponse response = await request.send();
+
+                                  if (response.statusCode == 200) {
+                                    var x = await response.stream.bytesToString();
+                                    List data = jsonDecode(x);
+
+                                    setState(() {
+                                      _get = data;
+                                    });
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text("failed!, ${response.reasonPhrase}"),
+                                    ));
+                                  }
+
+                                  return _get as List<dynamic>;
+                                },
+
+                                //what do you want anfter item clicked
+                                onChanged: (value) {
+
+                                 print(value);
+
+                                  
+                                },
+
+                                //this data appear in dropdown after clicked
+                                itemAsString: (item) => item['companies_name'],
+                              ),
+                            ) : SizedBox()
 
                           ],
                         );
@@ -800,15 +899,18 @@ class _addTimsheetState extends State<addTimsheet> {
 
   getMode()async{
     _mode = await ModeApi.getDataMode(context);
-    print('mode');
-    print(_mode);
+
   }
 
   
   getEmployees()async{
     _employees = await EmployeesApi.getEmployees(context);
-    print("employees");
-    print(_employees);
     // selectedUser=_employees![0];
+  }
+
+  getAssignment()async{
+    _assignment = await AssignmentApi.getDataMode(context);
+    print('asdd');
+    print(_assignment);
   }
 }

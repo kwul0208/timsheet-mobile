@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
   // view state
   bool _load = false;
   bool _showEmployees = false;
+    bool _showClient = false;
+
 
   List options = [
     {'title': 'Prospecting', 'isActive': false},
@@ -62,6 +65,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
   List<EmployeesModel> ? _employees;
   Future<dynamic>? _futureEmployees;
 
+  // assignment
+  List _get = [];
+
 
 
   @override
@@ -87,6 +93,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
     _futureMode = getMode();
     _mode_id = widget.tmode_id;
     _futureEmployees = getEmployees();
+    
 
   }
 
@@ -281,6 +288,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -294,6 +302,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -307,6 +316,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -324,6 +334,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -337,6 +348,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -350,6 +362,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -367,6 +380,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -380,6 +394,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -393,6 +408,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     setState(() {
                                       _mode_id = val;
                                       _showEmployees = false;
+                                      _showClient = true;
                                     });
                                     print(val);
                                   }
@@ -409,6 +425,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -426,6 +443,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -438,6 +456,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -456,6 +475,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = true;
                                 });
                                 print(val);
                               }
@@ -468,6 +488,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = true;
                                 });
                                 print(val);
                               }
@@ -483,6 +504,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -498,6 +520,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = true;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -544,6 +567,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -562,6 +586,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
@@ -574,10 +599,79 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 setState(() {
                                   _mode_id = val;
                                   _showEmployees = false;
+                                  _showClient = false;
                                 });
                                 print(val);
                               }
                             ),
+                            
+
+                            // Client
+                             _showClient == true ? Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
+                            ) : SizedBox(),
+
+                            _showClient == true ? Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: DropdownSearch<dynamic>(
+                                showSelectedItems: false,
+                                showClearButton: true,
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "Search",
+                                  hintText: "Search Name",
+                                ),
+                                //have two mode: menu mode and dialog mode
+                                mode: Mode.DIALOG,
+                                //if you want show search box
+                                showSearchBox: true,
+                                //get data from the internet
+                                onFind: (text) async {
+                                  var headers = {
+                                    'Content-Type': 'application/json',
+                                  };
+                                  var request = http.Request(
+                                      'GET',
+                                      Uri.parse(
+                                          '$baseUrl/mucnet_api/api/assignment-consultant'));
+
+                                    request.body = json.encode({
+                                      "date": "2023-01-22",
+                                      "employees_id": 443
+                                    });
+
+                                  request.headers.addAll(headers);
+
+                                  http.StreamedResponse response = await request.send();
+
+                                  if (response.statusCode == 200) {
+                                    var x = await response.stream.bytesToString();
+                                    List data = jsonDecode(x);
+
+                                    setState(() {
+                                      _get = data;
+                                    });
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text("failed!, ${response.reasonPhrase}"),
+                                    ));
+                                  }
+
+                                  return _get as List<dynamic>;
+                                },
+
+                                //what do you want anfter item clicked
+                                onChanged: (value) {
+
+                                 print(value);
+
+                                  
+                                },
+
+                                //this data appear in dropdown after clicked
+                                itemAsString: (item) => item['companies_name'],
+                              ),
+                            ) : SizedBox()
 
                           ],
                         );
