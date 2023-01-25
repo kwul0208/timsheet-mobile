@@ -54,8 +54,19 @@ class Dashboard extends StatelessWidget {
                             SizedBox(height: 20),
                             Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
                             SizedBox(height: 10,),
-                            Text("Ahmad Wahyu Awaludin", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
-                            Text("IT Programmer", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
+                            Row(
+                              children: [
+                                CircleAvatar(backgroundImage: AssetImage('assets/ahmad.png',),),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Ahmad Wahyu Awaludin", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
+                                    Text("IT Programmer", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
+                                  ],
+                                ),
+                              ],
+                            ),
                             
                           ],
                         ),
