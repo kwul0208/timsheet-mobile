@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
 import 'package:timsheet_mobile/Widget/CardWidget.dart';
 // import 'package:flutter_linkify/flutter_linkify.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  String? _fullname;
+  Future<dynamic>? _futureFullname;
+  
+  Future getDataEmployee()async{
+    final storage = new FlutterSecureStorage();
+    _fullname = await storage.read(key: 'fullname');
+    print(_fullname);
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _futureFullname = getDataEmployee();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +52,6 @@ class Dashboard extends StatelessWidget {
     //     throw Exception('Could not launch $_url');
     //   }
     // }
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -52,7 +75,20 @@ class Dashboard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 20),
-                            Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
+                            Row(
+                              children: [
+                                Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
+                                SizedBox(width: 10),
+                                GestureDetector(
+                                  onTap: ()async{
+                                    final storage = new FlutterSecureStorage();
+                                    await storage.deleteAll();
+                                    Provider.of<MainState>(context, listen: false).changeLogin(false);
+                                  },
+                                  child: Icon(Icons.logout, color: Colors.red,)
+                                )
+                              ],
+                            ),
                             SizedBox(height: 10,),
                             Row(
                               children: [
@@ -61,8 +97,13 @@ class Dashboard extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Ahmad Wahyu Awaludin", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
-                                    Text("IT Programmer", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
+                                    FutureBuilder(
+                                      future: _futureFullname,
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                        return Text("${_fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),);
+                                      }
+                                    ),
+                                    Text("Job Position", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
                                   ],
                                 ),
                               ],

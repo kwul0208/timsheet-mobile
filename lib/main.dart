@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/views/menu/Dashboard.dart';
 import 'package:timsheet_mobile/views/menu/Overtime.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
 import 'package:timsheet_mobile/views/menu/WFH.dart';
-import 'package:timsheet_mobile/views/pages/Auth/login.dart';
+import 'package:timsheet_mobile/views/pages/Auth/Login.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -23,7 +25,8 @@ void main() {
   HttpOverrides.global = new MyHttpOverrides();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: ((context) => TimesheetState()))
+      ChangeNotifierProvider(create: ((context) => TimesheetState())),
+      ChangeNotifierProvider(create: ((context) => MainState())),
     ],
     child: MyApp(),
   ));
@@ -49,8 +52,16 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      // home: Timesheet(),
-      home: MyHomePage()
+      home: Consumer<MainState>(
+        builder: (context, data, _) {
+          if (data.isLogin == false) {
+            return LoginPage();
+          }else{
+            return MyHomePage();
+          }
+        }
+      )
+      // home: MyHomePage()
     );
   }
 }
@@ -72,6 +83,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _children = [Dashboard(), Timesheet(), Overtime(), WFH()];
+
+  @override
+  void initState(){
+    super.initState();
+
+    checkId();
+  }
+
+  Future checkId()async{
+    final storage = new FlutterSecureStorage();
+    var token = await storage.read(key: 'employees_id');
+  }
 
   @override
   Widget build(BuildContext context) {
