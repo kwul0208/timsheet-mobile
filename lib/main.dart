@@ -32,9 +32,30 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  Future checkId()async{
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
+    print(employees_id);
+    if(employees_id != null){
+      Provider.of<MainState>(context, listen: false).changeLogin(true);
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+        checkId();
+
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -88,13 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState(){
     super.initState();
 
-    checkId();
   }
 
-  Future checkId()async{
-    final storage = new FlutterSecureStorage();
-    var token = await storage.read(key: 'employees_id');
-  }
+
 
   @override
   Widget build(BuildContext context) {
