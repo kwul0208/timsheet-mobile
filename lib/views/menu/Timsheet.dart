@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
@@ -267,8 +268,10 @@ class _TimesheetState extends State<Timesheet> {
   // API
   Future<void> getTimesheet(date)async{
     // _timesheet!.clear();
-
-    _timesheet = await TimesheetApi.getDataCategory(context, date);
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
+    
+    _timesheet = await TimesheetApi.getDataApi(context, date, employees_id!);
     Provider.of<TimesheetState>(context, listen: false).changeRefresh();
 
 

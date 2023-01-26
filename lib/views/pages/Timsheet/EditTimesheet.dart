@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -587,7 +588,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _mode_id = val;
                                   _showEmployees = false;
                                   _showClient = false;
-                                });
+                                }); 
                                 print(val);
                               }
                             ),
@@ -627,6 +628,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 showSearchBox: true,
                                 //get data from the internet
                                 onFind: (text) async {
+                                  final storage = new FlutterSecureStorage();
+                                  var employees_id = await storage.read(key: 'employees_id');
+                                  
                                   var headers = {
                                     'Content-Type': 'application/json',
                                   };
@@ -636,8 +640,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                           '$baseUrl/mucnet_api/api/assignment-consultant'));
 
                                     request.body = json.encode({
-                                      "date": "2023-01-22",
-                                      "employees_id": 443
+                                      "date": "${dateinput.text}",
+                                      "employees_id": employees_id
                                     });
 
                                   request.headers.addAll(headers);
@@ -733,6 +737,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
     if(timeStart.text.isEmpty|| timeEnd.text.isEmpty || dateinput.text.isEmpty || description.text.isEmpty ||  _mode_id == 0){
       return {"status": false, "message": "Your form is not complete!"};
     }
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
     // print({
     //   "timestart": "${timeStart.text}",
     //   "timefinish": "${timeEnd.text}",
@@ -757,7 +763,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
       "is_overtime": "0",
       "input_from": "pms",
       "description": "${description.text}",
-      "employees_id": "575",
+      "employees_id": "$employees_id",
       "tmode_id": _mode_id,
       "timesheet_id": widget.id
     });

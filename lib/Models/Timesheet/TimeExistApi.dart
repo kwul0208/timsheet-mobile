@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Config/Config.dart';
 
 class TimeExistapi {
-  static Future<List> getTime(BuildContext context, String date) async {
+  static Future<List> getTime(BuildContext context, String date, String employees_id) async {
     String baseUrl = Config().url;
     var headers = {
       'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ class TimeExistapi {
         'POST',
         Uri.parse(
             '$baseUrl/mucnet_api/api/timesheet/check-time-exist'));
-    request.body = json.encode({"date": "$date", "employees_id": "575"});
+    request.body = json.encode({"date": "$date", "employees_id": "$employees_id"});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

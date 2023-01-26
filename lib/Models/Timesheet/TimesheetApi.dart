@@ -7,7 +7,7 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 
 class TimesheetApi {
-  static Future<List<TimesheetModel>> getDataCategory(BuildContext context, String date) async {
+  static Future<List<TimesheetModel>> getDataApi(BuildContext context, String date, String employees_id) async {
     String baseUrl = Config().url;
     var headers = {
       'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ class TimesheetApi {
         'POST',
         Uri.parse(
             '$baseUrl/mucnet_api/api/timesheet/read'));
-    request.body = json.encode({"date": "$date", "employees_id": "575"});
+    request.body = json.encode({"date": "$date", "employees_id": "$employees_id"});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
