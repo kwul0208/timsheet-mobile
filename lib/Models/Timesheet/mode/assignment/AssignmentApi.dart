@@ -2,12 +2,16 @@ import 'dart:convert';
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentModel.dart';
 
 class AssignmentApi {
-  static Future<List<AssignmentModel>> getDataMode(BuildContext context) async {
+  static Future<List<AssignmentModel>> getDataAssignment(BuildContext context, String date) async {
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
+
     String baseUrl = Config().url;
     var headers = {
       'Content-Type': 'application/json',
@@ -18,8 +22,9 @@ class AssignmentApi {
             '$baseUrl/mucnet_api/api/assignment-consultant'));
 
       request.body = json.encode({
-        "date": "2023-01-22",
-        "employees_id": 443
+        "date": "${date}",
+        // "employees_id": 443
+        "employees_id": employees_id
       });
 
     request.headers.addAll(headers);

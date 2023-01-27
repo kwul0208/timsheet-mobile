@@ -9,4 +9,18 @@ class TimesheetState extends ChangeNotifier{
 
     notifyListeners();
   }
+
+
+  //------- Assignment -------
+  String _client = '';
+  String get client => _client;
+  String _service = '';
+  String get service => _service;
+
+  void changeAssignment(String clientVal, String serviceVal){
+    _client = clientVal;
+    _service = serviceVal;
+    notifyListeners();
+  }
+
 }

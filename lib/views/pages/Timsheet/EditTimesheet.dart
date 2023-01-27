@@ -3,13 +3,18 @@ import 'dart:convert';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/ModeModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
 class EditTimesheet extends StatefulWidget {
   const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id});
@@ -53,6 +58,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
   TextEditingController timeStart = TextEditingController(); 
   TextEditingController timeEnd = TextEditingController(); 
   TextEditingController description = TextEditingController();
+  TextEditingController client = TextEditingController();
+  TextEditingController service = TextEditingController();
   String mode = '';
 
 
@@ -67,6 +74,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
   Future<dynamic>? _futureEmployees;
 
   // assignment
+  AssignmentModel? selectedModel;
+  List<AssignmentModel>? _assignment;
+  Future<dynamic>? _futureAssignment;
   List _get = [];
 
 
@@ -95,6 +105,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
     _mode_id = widget.tmode_id;
     _futureEmployees = getEmployees();
     
+    // assignment
+    _futureAssignment = getAssignment();
+
 
   }
 
@@ -181,6 +194,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                         setState(() {
                            dateinput.text = formattedDate; //set output date to TextField value.
                         });
+                        getAssignment();
                       } else {
                         print("Date is not selected");
                       }
@@ -414,7 +428,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     print(val);
                                   }
                                 ),
-
+                            Divider(),
                             //----------- Prospecting -----------
                             SizedBox(height: 10),
                             RadioListTile(
@@ -431,6 +445,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
+                            Divider(),
                             // ---------- Office Ad -----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -462,7 +477,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
-
+                            Divider(),
                             //------------- BS Travel ----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -494,7 +509,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
-                            
+                            Divider(),
                             //------------ Ishoma -------------
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
@@ -510,7 +525,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
-
+                            Divider(),
                             //------------ Suport service -------------
                             RadioListTile(
                               contentPadding: EdgeInsets.all(0),
@@ -556,7 +571,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 }
                               }
                             ),
-
+                            Divider(),
 
                             //------------ Training -------------
                             RadioListTile(
@@ -573,7 +588,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
-                            
+                            Divider(),
                             // ---------- Development -----------
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -606,75 +621,153 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               }
                             ),
                             
-
+                            Divider(),
                             // Client
                              _showClient == true ? Padding(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
                             ) : SizedBox(),
 
-                            _showClient == true ? Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: DropdownSearch<dynamic>(
-                                showSelectedItems: false,
-                                showClearButton: true,
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "Search",
-                                  hintText: "Search Name",
+                            _showClient == true ? Column(
+                              children: [
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                //   child: DropdownSearch<dynamic>(
+                                //     showSelectedItems: false,
+                                //     showClearButton: true,
+                                //     dropdownSearchDecoration: InputDecoration(
+                                //       labelText: "Search",
+                                //       hintText: "Search Name",
+                                //     ),
+                                //     //have two mode: menu mode and dialog mode
+                                //     mode: Mode.DIALOG,
+                                //     //if you want show search box
+                                //     showSearchBox: true,
+                                //     //get data from the internet
+                                //     onFind: (text) async {
+                                //       final storage = new FlutterSecureStorage();
+                                //       var employees_id = await storage.read(key: 'employees_id');
+                                      
+                                //       var headers = {
+                                //         'Content-Type': 'application/json',
+                                //       };
+                                //       var request = http.Request(
+                                //           'GET',
+                                //           Uri.parse(
+                                //               '$baseUrl/mucnet_api/api/assignment-consultant'));
+
+                                //         request.body = json.encode({
+                                //           "date": "${dateinput.text}",
+                                //           "employees_id": employees_id
+                                //         });
+
+                                //       request.headers.addAll(headers);
+
+                                //       http.StreamedResponse response = await request.send();
+
+                                //       if (response.statusCode == 200) {
+                                //         var x = await response.stream.bytesToString();
+                                //         List data = jsonDecode(x);
+
+                                //         setState(() {
+                                //           _get = data;
+                                //         });
+                                //       }else{
+                                //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                //           content: Text("failed!, ${response.reasonPhrase}"),
+                                //         ));
+                                //       }
+
+                                //       return _get as List<dynamic>;
+                                //     },
+
+                                //     //what do you want anfter item clicked
+                                //     onChanged: (value) {
+
+                                //      print(value);
+
+                                      
+                                //     },
+
+                                //     //this data appear in dropdown after clicked
+                                //     itemAsString: (item) => item['companies_name'],
+                                //   ),
+                                // ),
+
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Consumer<TimesheetState>(
+                                        builder: (context, data, _) {
+                                          return TextField(
+                                            readOnly: true,
+                                            controller: client..text = data.client,
+                                            decoration: InputDecoration(
+                                              hintText: "Client"
+                                            ),
+                                            
+                                          );
+                                        }
+                                      )
+                                    ),
+                                    GestureDetector(
+                                      onTap: (){
+                                        showModalBottomSheet<void>(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                          ),
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context, StateSetter setState) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(top: 10),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(height: 10),
+                                                        Text("Your Assignment", style: TextStyle(fontSize: 24),),
+                                                        Divider(),
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(10.0),
+                                                          child: ListView.builder(
+                                                            physics: NeverScrollableScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            itemCount: _assignment?.length,
+                                                            itemBuilder: ((context, i){
+                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope,);
+                                                            }),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                //have two mode: menu mode and dialog mode
-                                mode: Mode.DIALOG,
-                                //if you want show search box
-                                showSearchBox: true,
-                                //get data from the internet
-                                onFind: (text) async {
-                                  final storage = new FlutterSecureStorage();
-                                  var employees_id = await storage.read(key: 'employees_id');
-                                  
-                                  var headers = {
-                                    'Content-Type': 'application/json',
-                                  };
-                                  var request = http.Request(
-                                      'GET',
-                                      Uri.parse(
-                                          '$baseUrl/mucnet_api/api/assignment-consultant'));
-
-                                    request.body = json.encode({
-                                      "date": "${dateinput.text}",
-                                      "employees_id": employees_id
-                                    });
-
-                                  request.headers.addAll(headers);
-
-                                  http.StreamedResponse response = await request.send();
-
-                                  if (response.statusCode == 200) {
-                                    var x = await response.stream.bytesToString();
-                                    List data = jsonDecode(x);
-
-                                    setState(() {
-                                      _get = data;
-                                    });
-                                  }else{
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text("failed!, ${response.reasonPhrase}"),
-                                    ));
+                                Consumer<TimesheetState>(
+                                  builder: (context, data, _) {
+                                    return TextField(
+                                      readOnly: true,
+                                      controller: service..text = data.service,
+                                      decoration: InputDecoration(
+                                        hintText: "Service"
+                                      ),
+                                    );
                                   }
+                                )
 
-                                  return _get as List<dynamic>;
-                                },
-
-                                //what do you want anfter item clicked
-                                onChanged: (value) {
-
-                                 print(value);
-
-                                  
-                                },
-
-                                //this data appear in dropdown after clicked
-                                itemAsString: (item) => item['companies_name'],
-                              ),
+                              ],
                             ) : SizedBox()
 
                           ],
@@ -797,5 +890,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
     print("employees");
     print(_employees);
     // selectedUser=_employees![0];
+  }
+
+  getAssignment()async{
+    _assignment = await AssignmentApi.getDataAssignment(context, dateinput.text);
+    print('asdd');
+    print(_assignment);
   }
 }
