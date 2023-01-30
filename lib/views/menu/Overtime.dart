@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/menu/Check.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/menu/Plan.dart';
 
 class Overtime extends StatelessWidget {
   const Overtime({super.key});
@@ -29,21 +31,27 @@ class Overtime extends StatelessWidget {
               ],
             ),
           ),
-        body: ListView.builder(
-          itemCount: 15,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(width: 1, color: Config().line))
-              ),
-              child: ListTile(
-                title: Text("Decription of your Overtime"),
-                subtitle: Text("Time: 20:00 - 22:00"),
-                trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
-              ),
-            );
-          },
-        ),
+          body: TabBarView(
+            children: [
+              Plan(),
+              Check()
+            ],
+          ),
+      //   body: ListView.builder(
+      //     itemCount: 15,
+      //     itemBuilder: (context, index) {
+      //       return Container(
+      //         decoration: BoxDecoration(
+      //           border: Border(bottom: BorderSide(width: 1, color: Config().line))
+      //         ),
+      //         child: ListTile(
+      //           title: Text("Decription of your Overtime"),
+      //           subtitle: Text("Time: 20:00 - 22:00"),
+      //           trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+      //         ),
+      //       );
+      //     },
+      //   ),
         floatingActionButton: FloatingActionButton(
         backgroundColor: Config().primary,
         child: Icon(Icons.add),
