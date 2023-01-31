@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Approved.dart';
+import 'package:timsheet_mobile/views/pages/WFH/CRUD/AddWFH.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Cancle.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Pending.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Reject.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Verification.dart';
+import 'package:timsheet_mobile/views/pages/WFH/Verified.dart';
 
 class WFH extends StatelessWidget {
   const WFH({super.key});
@@ -33,21 +40,23 @@ class WFH extends StatelessWidget {
             ],
           ),
         ),
-        body: ListView.builder(
-          itemCount: 15,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(width: 1, color: Config().line))
-              ),
-              child: ListTile(
-                title: Text("Decription of your work"),
-                subtitle: Text("Full Day"),
-                trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
-              ),
-            );
+        body: TabBarView(
+          children: [
+            Pending(),
+            Approved(),
+            Reject(),
+            Verification(),
+            Verified(),
+            Cancle()
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Config().primary,
+          child: Icon(Icons.add),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddWFH()));
           },
-        )
+        ),
       ),
     );
   }
