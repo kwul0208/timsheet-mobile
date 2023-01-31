@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AddWFH extends StatefulWidget {
   const AddWFH({super.key});
@@ -36,6 +38,14 @@ class _AddWFHState extends State<AddWFH> {
     }
     super.dispose();
   }
+
+    final Uri _url = Uri.parse('https://tasks.office.com/muc.co.id/en-US/Home/Planner/#/mytasks');
+
+  Future<void> _launchUrl() async {
+      if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_url');
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +203,7 @@ class _AddWFHState extends State<AddWFH> {
                         SizedBox(width: 10,),
                         TextButton(
                           onPressed: (){
-
+                            _launchUrl();
                           },
                           child: Text("Click here!"),
                         )
@@ -221,9 +231,7 @@ class _AddWFHState extends State<AddWFH> {
                             GestureDetector(
                               onTap: (){
                                 linksController.removeAt(i);
-                                setState(() {
-                                  
-                                });
+                                setState(() {});
                               },
                               child: Icon(Icons.highlight_remove_sharp, color: Config().redAccent,)
                             ) 
