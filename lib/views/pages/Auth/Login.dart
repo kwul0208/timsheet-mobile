@@ -48,129 +48,131 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(height: 10),
-          Image(
-            image: AssetImage('assets/logo-muc-tab.png'),
-            width: width / 2,
-          ),
-          SizedBox(height: 50),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _emailController,
-                    // enabled: false,
-                    decoration: InputDecoration(
-                      label: Text("Username"),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: .0, horizontal: 10.0),
-                      fillColor: Colors.transparent,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.grey[400]!,
-                          width: 1.0,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(height: height/4),
+            Image(
+              image: AssetImage('assets/logo-muc-tab.png'),
+              width: width / 2,
+            ),
+            SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      // enabled: false,
+                      decoration: InputDecoration(
+                        label: Text("Username"),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: .0, horizontal: 10.0),
+                        fillColor: Colors.transparent,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                            width: 1.0,
+                          ),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Username is requied!';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Username is requied!';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _isObscure,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      suffixIcon: IconButton(
-                          icon: Icon(_isObscure
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          }),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: .0, horizontal: 10.0),
-                      fillColor: Colors.transparent,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(
-                          color: Colors.grey[400]!,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required!';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 40),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Config().primary,
-                      minimumSize: const Size.fromHeight(50), // NEW
-                    ),
-                    onPressed: _loadBtn == false
-                        ? () async {
-                            if (_formKey.currentState!.validate()) {
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _isObscure,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        suffixIcon: IconButton(
+                            icon: Icon(_isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
                               setState(() {
-                                _loadBtn = !_loadBtn;
+                                _isObscure = !_isObscure;
                               });
-                              // await Future.delayed(
-                              //     const Duration(seconds: 2));
-                              await postLogin(_emailController.text, _passwordController.text).then((value){
+                            }),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: .0, horizontal: 10.0),
+                        fillColor: Colors.transparent,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Colors.grey[400]!,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 40),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Config().primary,
+                        minimumSize: const Size.fromHeight(50), // NEW
+                      ),
+                      onPressed: _loadBtn == false
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
                                 setState(() {
                                   _loadBtn = !_loadBtn;
                                 });
-                                if(value['status'] == true){
-                                  Provider.of<MainState>(context, listen: false).changeLogin(true);
-                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp()), (route) => false);
-                                } else{
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text("${value['message']}"),
-                                  ));
-                                }
-                              });                                
+                                // await Future.delayed(
+                                //     const Duration(seconds: 2));
+                                await postLogin(_emailController.text, _passwordController.text).then((value){
+                                  setState(() {
+                                    _loadBtn = !_loadBtn;
+                                  });
+                                  if(value['status'] == true){
+                                    Provider.of<MainState>(context, listen: false).changeLogin(true);
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp()), (route) => false);
+                                  } else{
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text("${value['message']}"),
+                                    ));
+                                  }
+                                });                                
+                              }
                             }
-                          }
-                        : null,
-                    child: _loadBtn == false
-                        ? Text(
-                            'Login',
-                            style: TextStyle(fontSize: 24),
-                          )
-                        : CircularProgressIndicator(),
-                  ),
-                ],
+                          : null,
+                      child: _loadBtn == false
+                          ? Text(
+                              'Login',
+                              style: TextStyle(fontSize: 24),
+                            )
+                          : CircularProgressIndicator(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 1,),
-          SizedBox(height: 1,)
-        ],
+            SizedBox(height: 1,),
+            SizedBox(height: 1,)
+          ],
+        ),
       ),
     );
   }
