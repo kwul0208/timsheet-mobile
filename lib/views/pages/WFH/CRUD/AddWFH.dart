@@ -15,6 +15,7 @@ class AddWFH extends StatefulWidget {
 class _AddWFHState extends State<AddWFH> {
   TextEditingController dateinput = TextEditingController();
 
+  List<TextEditingController> linksController = [ TextEditingController() ];
   int _stackIndex = 0;
 
   String _singleValue = "Text alignment right";
@@ -22,6 +23,19 @@ class _AddWFHState extends State<AddWFH> {
 
   final _status = ["Half Day", "Full Day"]; 
   final _condition = ["Normal", "Same Day", "Overtime"]; 
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    for (var lc in linksController) {
+      lc.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,18 +201,42 @@ class _AddWFHState extends State<AddWFH> {
                       ],
                     ),
                     SizedBox(height: 10,),
-                    TextField(
-                      controller:
-                        dateinput, //editing controller of this TextField
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.add_link), //icon of text field
-                        hintText: 'Copy your link here', //label text of field
-                        // border: InputBorder.none
-                      ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: linksController.length,
+                      itemBuilder: ( BuildContext context, i) {
+                        return Row(
+                          children: [
+                            Flexible(
+                              child: TextField(
+                                controller: linksController[i], //editing controller of this TextField
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.add_link), //icon of text field
+                                  hintText: 'Copy your link here', //label text of field
+                                  // border: InputBorder.none
+                                ),
+                              ),
+                            ),
+                            i != 0 ?
+                            GestureDetector(
+                              onTap: (){
+                                linksController.removeAt(i);
+                                setState(() {
+                                  
+                                });
+                              },
+                              child: Icon(Icons.highlight_remove_sharp, color: Config().redAccent,)
+                            ) 
+                            : SizedBox()
+                          ],
+                        );
+                      }
                     ),
                     TextButton(
                       onPressed: (){
-
+                        setState(() {
+                          linksController.add(TextEditingController());
+                        });
                       }, 
                       child: Text("+ Add Link")
                     )
@@ -287,7 +325,9 @@ class _AddWFHState extends State<AddWFH> {
                   minimumSize: const Size.fromHeight(50), // NEW
                 ),
                 onPressed: (){
-
+                  for (var e in linksController) {
+                    print(e.text);
+                  }
                 },
                 child: const Text(
                   'Save',
