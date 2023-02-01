@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Overtime/Dropdown/InputForModel.dart';
 import 'package:timsheet_mobile/Models/Overtime/Dropdown/StatusModel.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
 
 class Plan extends StatefulWidget {
   const Plan({super.key});
@@ -134,10 +135,15 @@ class _PlanState extends State<Plan> {
                 decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(width: 1, color: Config().line))
                 ),
-                child: ListTile(
-                  title: Text("Decription of your Overtime"),
-                  subtitle: Text("Time: 20:00 - 22:00"),
-                  trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+                child: Ink(
+                  child: ListTile(
+                    title: Text("Decription of your Overtime"),
+                    subtitle: Text("Time: 20:00 - 22:00"),
+                    trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOT()));
+                    },
+                  ),
                 ),
               );
             },

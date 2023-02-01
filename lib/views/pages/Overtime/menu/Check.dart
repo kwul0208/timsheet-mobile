@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
 
 class Check extends StatefulWidget {
   const Check({super.key});
@@ -137,10 +138,15 @@ class _CheckState extends State<Check> {
                 decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(width: 1, color: Config().line))
                 ),
-                child: ListTile(
-                  title: Text("Decription of your Overtime"),
-                  subtitle: Text("Time: 20:00 - 22:00"),
-                  trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+                child: Ink(
+                  child: ListTile(
+                    title: Text("Decription of your Overtime"),
+                    subtitle: Text("Time: 20:00 - 22:00"),
+                    trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOT()));
+                    },
+                  ),
                 ),
               );
             },
