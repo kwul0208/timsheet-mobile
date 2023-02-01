@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 
 class DetailWFH extends StatefulWidget {
@@ -12,6 +13,12 @@ class DetailWFH extends StatefulWidget {
 class _DetailWFHState extends State<DetailWFH> {
   @override
   Widget build(BuildContext context) {
+    var size, height, width;
+
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -125,7 +132,7 @@ class _DetailWFHState extends State<DetailWFH> {
               ),
               SizedBox(height: 10),
               Divider(),
-              SizedBox(height: 20),
+              SizedBox(height: height/4),
 
               // --- Button ---
               ElevatedButton(
@@ -154,7 +161,8 @@ class _DetailWFHState extends State<DetailWFH> {
                   minimumSize: const Size.fromHeight(50), // NEW
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
+                  Navigator.push(context, SlideRightRoute(page: EditWFH()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

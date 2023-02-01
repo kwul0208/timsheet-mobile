@@ -773,7 +773,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                           ],
                         );
                       }else{
-                        return CircularProgressIndicator();
+                        return Center(child: CircularProgressIndicator());
                       }
                     }
                   ),

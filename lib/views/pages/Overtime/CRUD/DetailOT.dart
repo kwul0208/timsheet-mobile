@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EditOT.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 
 class DetailOT extends StatefulWidget {
@@ -129,6 +131,7 @@ class _DetailOTState extends State<DetailOT> {
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
                   onPressed: (){
+                    Navigator.push(context, SlideRightRoute(page: EditOT()));
                     // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
                   },
                   child: Row(

@@ -4,6 +4,7 @@ import 'dart:convert';
 import "package:flutter/material.dart";
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Helper/Helper.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 import 'package:http/http.dart' as http;
 
@@ -106,7 +107,12 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
   @override
   Widget build(BuildContext context) {
   print(widget.tmode_id);
+    var size, height, width;
 
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -132,48 +138,45 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
         ],
       ),
       body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height / 1.5,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    CardDetailTimesheet(title: "Date Input : ", value: "${widget.date_input}",),
-                    CardDetailTimesheet(title: "Date : ", value: "${widget.date}",),
-                    CardDetailTimesheet(title: "Duration :", value: "${Helper().formatedTime(time: widget.time_duration)} - Daily Routine",),
-                    CardDetailTimesheet(title: "Description	:", value: "${widget.desc}",),
-                    CardDetailTimesheet(title: "Revision Date	:", value: "${widget.date_modified}",),
-                  ]
-                ),
-                ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Config().primary,
-                        minimumSize: const Size.fromHeight(50), // NEW
-                      ),
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: widget.id, date: widget.date, desc: widget.desc, timeStart: widget.timeStart, timeEnd: widget.timeEnd, tmode_id: widget.tmode_id,)));
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                           Text(
-                            'Edit',
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Icon(Icons.navigate_next_outlined, size: 30,)
-                        ],
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  CardDetailTimesheet(title: "Date Input : ", value: "${widget.date_input}",),
+                  CardDetailTimesheet(title: "Date : ", value: "${widget.date}",),
+                  CardDetailTimesheet(title: "Duration :", value: "${Helper().formatedTime(time: widget.time_duration)} - Daily Routine",),
+                  CardDetailTimesheet(title: "Description	:", value: "${widget.desc}",),
+                  CardDetailTimesheet(title: "Revision Date	:", value: "${widget.date_modified}",),
+                ]
+              ),
+              SizedBox(height: height/2.5,),
+              ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Config().primary,
+                      minimumSize: const Size.fromHeight(50), // NEW
                     ),
-              ],
-            ),
+                    onPressed: (){
+                      Navigator.push(context, SlideRightRoute(page: EditTimesheet(id: widget.id, date: widget.date, desc: widget.desc, timeStart: widget.timeStart, timeEnd: widget.timeEnd, tmode_id: widget.tmode_id,)));
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: widget.id, date: widget.date, desc: widget.desc, timeStart: widget.timeStart, timeEnd: widget.timeEnd, tmode_id: widget.tmode_id,)));
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                         Text(
+                          'Edit',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Icon(Icons.navigate_next_outlined, size: 30,)
+                      ],
+                    ),
+                  ),
+            ],
           ),
         ),
       )
