@@ -146,7 +146,7 @@ class _AddWFHState extends State<AddWFH> {
                 ],
               ),
             ),
-            // ----
+            // ---- Timmer ---
             Container(
               height: 10,
               width: width,
@@ -184,7 +184,7 @@ class _AddWFHState extends State<AddWFH> {
                 ],
               ),
             ),
-            // ----
+            // ---- Planner Link
             Container(
               height: 10,
               width: width,
@@ -285,7 +285,7 @@ class _AddWFHState extends State<AddWFH> {
                 ],
               ),
             ),
-            // ----
+            // ---- Reason ----
             Container(
               height: 10,
               width: width,
