@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/views/pages/WFH/CRUD/DetailWFH.dart';
 
 class Cancle extends StatefulWidget {
   const Cancle({super.key});
@@ -20,10 +21,15 @@ class _CancleState extends State<Cancle> {
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(width: 1, color: Config().line))
           ),
-          child: ListTile(
-            title: Text("Decription of your work"),
-            subtitle: Text("Full Day"),
-            trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+          child: Ink(
+            child: ListTile(
+              title: Text("Decription of your work"),
+              subtitle: Text("Full Day"),
+              trailing: Text("20-01-2023", style: TextStyle(fontSize: 11, color: Colors.grey),),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailWFH()));
+              },
+            ),
           ),
         );
       },
