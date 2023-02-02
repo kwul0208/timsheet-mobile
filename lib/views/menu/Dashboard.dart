@@ -7,6 +7,7 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
 import 'package:timsheet_mobile/Widget/CardWidget.dart';
+import 'package:timsheet_mobile/views/menu/AppCheckExample.dart';
 // import 'package:flutter_linkify/flutter_linkify.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
@@ -116,7 +117,11 @@ class _DashboardState extends State<Dashboard> {
                     Positioned(
                       right: 10,
                       top: height/15,
-                      child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,)
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
+                        },
+                        child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
                     ),
                   ],
                 ),

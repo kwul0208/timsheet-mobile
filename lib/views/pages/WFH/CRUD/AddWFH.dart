@@ -6,6 +6,11 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:appcheck/appcheck.dart';
 
 class AddWFH extends StatefulWidget {
   const AddWFH({super.key});
@@ -26,9 +31,17 @@ class _AddWFHState extends State<AddWFH> {
   final _status = ["Half Day", "Full Day"]; 
   final _condition = ["Normal", "Same Day", "Overtime"]; 
 
+  List<AppInfo>? installedApps;
+  List<AppInfo> iOSApps = [
+    AppInfo(appName: "Calendar", packageName: "calshow://"),
+    AppInfo(appName: "Facebook", packageName: "fb://"),
+    AppInfo(appName: "Whatsapp", packageName: "whatsapp://"),
+  ];
+
   @override
   void initState(){
     super.initState();
+    getApps();
   }
 
   @override
@@ -39,13 +52,53 @@ class _AddWFHState extends State<AddWFH> {
     super.dispose();
   }
 
-    final Uri _url = Uri.parse('https://tasks.office.com/muc.co.id/en-US/Home/Planner/#/mytasks');
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future getApps() async {
+    if (Platform.isAndroid) {
+      const package = "com.microsoft.planner";
+      try {
+        await AppCheck.checkAvailability(package).then(
+          (app) {
+            print('gada');
+            debugPrint(app.toString());
+          } 
+        );
+        print('ada');
+        return true;
+      } catch (e) {
+        print('gada');
+        return false;
+      }
 
+    } else if (Platform.isIOS) {
+      // iOS doesn't allow to get installed apps.
+      installedApps = iOSApps;
+
+      await AppCheck.checkAvailability("calshow://").then(
+        (app) => debugPrint(app.toString()),
+      );
+    }
+
+    setState(() {
+      installedApps = installedApps;
+    });
+  }
+
+  // -- launch planner ---
+  final Uri _url = Uri.parse('https://tasks.office.com/muc.co.id/en-US/Home/Planner/#/mytasks');
   Future<void> _launchUrl() async {
       if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
         throw Exception('Could not launch $_url');
       }
     }
+
+  // --- launch playstore(download planner)
+  final Uri _urlPlaystore = Uri.parse('https://play.google.com/store/apps/details?id=com.microsoft.planner');
+  Future<void> _launchUrlPlaystore() async {
+      if (!await launchUrl(_urlPlaystore, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_url');
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +256,18 @@ class _AddWFHState extends State<AddWFH> {
                         SizedBox(width: 10,),
                         TextButton(
                           onPressed: (){
-                            _launchUrl();
+                            getApps().then((value)async{
+                              if (value == true) {
+                                _launchUrl();
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text("planner Apps is not installed in your device. Download please!."),
+                                ));
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                _launchUrlPlaystore();
+                              }
+                            });
                           },
                           child: Text("Click here!"),
                         )
