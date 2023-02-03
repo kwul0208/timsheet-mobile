@@ -42,8 +42,10 @@ class CardAssignment extends StatelessWidget {
             children: [
               Text("${companies_name}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
               Divider(),
-              Text("name_service", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
-              Text("${name_service}"),
+              // Text("name_service", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              name_service == '' ? 
+              Text(" -") :
+              Text("${name_service}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

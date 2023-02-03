@@ -36,7 +36,7 @@ class WFH extends StatelessWidget {
               Tab(text: "Reject", icon: Icon(Icons.cancel_outlined)),
               Tab(text: "Verification", icon: Icon(Icons.assignment_ind_outlined )),
               Tab(text: "Verified", icon: Icon(Icons.assignment_turned_in_outlined  )),
-              Tab(text: "Cancle", icon: Icon(Icons.block_flipped)),
+              Tab(text: "Cancel", icon: Icon(Icons.block_flipped)),
             ],
           ),
         ),
