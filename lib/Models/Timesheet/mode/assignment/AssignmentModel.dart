@@ -1,5 +1,7 @@
 class AssignmentModel{
-  final int id;
+  final int? proposal_id;
+  final int? services_id;
+  final num? serviceused_id;
   final String? assignment_number;
   final String? companies_name;
   final String? service_name;
@@ -8,11 +10,13 @@ class AssignmentModel{
   final String? ope;
 
 
-  AssignmentModel({required this.id, this.assignment_number, this.companies_name,  this.service_name, this.service_period,  this.service_scope, this.ope});
+  AssignmentModel({this.proposal_id, this.services_id, this.serviceused_id, this.assignment_number, this.companies_name,  this.service_name, this.service_period,  this.service_scope, this.ope});
 
   factory AssignmentModel.fromJson(dynamic json){
     return AssignmentModel(
-      id: json['id'],
+      proposal_id: json['proposal_id'],
+      services_id: json['services_id'],
+      serviceused_id: json['serviceused_id'],
       assignment_number: json['assignment_number'],
       companies_name: json['companies_name'],
       service_name: json['service_name'],
@@ -31,7 +35,7 @@ class AssignmentModel{
 
   @override
   String toString(){
-    return '{id: $id, assignment_number: $assignment_number, companies_name: $companies_name, service_name: $service_name, service_period: $service_period, service_scope: $service_scope, ope: $ope}';
+    return '{proposal_id: $proposal_id, service_id: $services_id, serviceused_id: $serviceused_id, assignment_number: $assignment_number, companies_name: $companies_name, service_name: $service_name, service_period: $service_period, service_scope: $service_scope, ope: $ope}';
   }
   
 }
