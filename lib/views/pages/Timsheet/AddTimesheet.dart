@@ -61,6 +61,13 @@ class _addTimsheetState extends State<addTimsheet> {
   TextEditingController client = TextEditingController();
   TextEditingController service = TextEditingController();
   TextEditingController projectNameC = TextEditingController();
+  int id = 0; // mode
+  // child mode
+  int? projectIdMode;
+  int? proposalIdMode;
+  int? serviceIdMode;
+  int? serviceUserIdMode;
+
 
   String mode = '';
 
@@ -81,6 +88,7 @@ class _addTimsheetState extends State<addTimsheet> {
   List<AssignmentModel>? _assignment;
   Future<dynamic>? _futureAssignment;
   List _get = [];
+
 
   // projects
   List<ProjectModel>? _project;  
@@ -131,7 +139,6 @@ class _addTimsheetState extends State<addTimsheet> {
     );
   }
 
-  int id = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -733,6 +740,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                                             child: ListTile(
                                                               title: Text("${_project![i].project_name}"),
                                                               onTap: (){
+                                                                projectIdMode = _project![i].id;
                                                                 Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
                                                                 Navigator.pop(context);
                                                               },
@@ -849,6 +857,14 @@ class _addTimsheetState extends State<addTimsheet> {
                                     Flexible(
                                       child: Consumer<TimesheetState>(
                                         builder: (context, data, _) {
+                                          // -- initial after state change --
+                                         
+                                          if(data.assignmentIds.length != 0){
+                                            proposalIdMode = data.assignmentIds[0];
+                                            serviceIdMode = data.assignmentIds[1];
+                                            serviceUserIdMode = data.assignmentIds[2];
+                                          }
+
                                           return TextField(
                                             readOnly: true,
                                             controller: client..text = data.client,
@@ -886,7 +902,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                                             shrinkWrap: true,
                                                             itemCount: _assignment?.length,
                                                             itemBuilder: ((context, i){
-                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope,);
+                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope, proposal_id: _assignment![i].proposal_id, service_id: _assignment![i].services_id, serviceused_id: _assignment![i].serviceused_id,);
                                                             }),
                                                           ),
                                                         ),
@@ -1042,16 +1058,70 @@ class _addTimsheetState extends State<addTimsheet> {
       'Content-Type': 'application/json'
     };
     var request = http.Request('POST', Uri.parse('${baseUrl}/mucnet_api/api/timesheet/update'));
-    request.body = json.encode({
-      "timestart": "${timeStart.text}",
-      "timefinish": "${timeEnd.text}",
-      "date": "${dateinput.text}",
-      "is_overtime": "0",
-      "input_from": "pms",
-      "description": "${description.text}",
-      "employees_id": "$employees_id",
-      "tmode_id": id
-    });
+    // -- suport service --
+    if(id == 8){
+      print('suport_service');
+      print({"support_employees_id": selectedUser?.id});
+      request.body = json.encode({
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": id,
+        "support_employees_id": selectedUser?.id
+      });
+    
+    // -- project --
+    }else if(id == 14){
+      print({"project_id": projectIdMode});
+      request.body = json.encode({
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": id,
+        "project_id": projectIdMode
+      });
+
+    // -- chargeable time --
+    }else if(id == 23 || id == 22 || id == 19 || id == 15 || id == 17 ||id == 16 || id == 21 || id == 20 || id == 18){
+      request.body = json.encode({
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": id,
+        "proposal_id": proposalIdMode,
+        "services_id": serviceIdMode,
+        "serviceused_id": serviceUserIdMode
+      });
+
+    // -- umum --
+    }else{
+      print('umum');
+      request.body = json.encode({
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": id
+      });
+    }
+
+    // return {"status": false, "message": "test"};
+    
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

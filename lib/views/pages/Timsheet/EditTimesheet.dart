@@ -72,6 +72,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
   List<ModeModel>? _mode;
   Future<dynamic>? _futureMode;
   int _mode_id = 0;
+  // child mode
+  int? projectIdMode;
+  int? proposalIdMode;
+  int? serviceIdMode;
+  int? serviceUserIdMode;
   
   // list employees
   EmployeesModel? selectedUser;
@@ -684,6 +689,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                             child: ListTile(
                                                               title: Text("${_project![i].project_name}"),
                                                               onTap: (){
+                                                                projectIdMode = _project![i].id;
                                                                 Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
                                                                 Navigator.pop(context);
                                                               },
@@ -801,6 +807,13 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     Flexible(
                                       child: Consumer<TimesheetState>(
                                         builder: (context, data, _) {
+                                          // -- initial after state change --
+                                          if(data.assignmentIds.length != 0){
+                                            proposalIdMode = data.assignmentIds[0];
+                                            serviceIdMode = data.assignmentIds[1];
+                                            serviceUserIdMode = data.assignmentIds[2];
+                                          }
+
                                           return TextField(
                                             readOnly: true,
                                             controller: client..text = data.client,
@@ -837,7 +850,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                             shrinkWrap: true,
                                                             itemCount: _assignment?.length,
                                                             itemBuilder: ((context, i){
-                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope,);
+                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope, proposal_id: _assignment![i].proposal_id, service_id: _assignment![i].services_id, serviceused_id: _assignment![i].serviceused_id,);
                                                             }),
                                                           ),
                                                         ),
@@ -934,34 +947,98 @@ class _EditTimesheetState extends State<EditTimesheet> {
     }
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
-    // print({
-    //   "timestart": "${timeStart.text}",
-    //   "timefinish": "${timeEnd.text}",
-    //   "date": "${dateinput.text}",
-    //   "is_overtime": "0",
-    //   "input_from": "pms",
-    //   "description": "${description.text}",
-    //   "employees_id": "575",
-    //   "tmode_id": widget.tmode_id,
-    //   "timesheet_id": widget.id
-    // });
-    // print(DateTime.now());
+
     // return {"status": true, "message": "success"};
     var headers = {
       'Content-Type': 'application/json'
     };
     var request = http.Request('POST', Uri.parse('${baseUrl}/mucnet_api/api/timesheet/update'));
-    request.body = json.encode({
-      "timestart": "${timeStart.text}",
-      "timefinish": "${timeEnd.text}",
-      "date": "${dateinput.text}",
-      "is_overtime": "0",
-      "input_from": "pms",
-      "description": "${description.text}",
-      "employees_id": "$employees_id",
-      "tmode_id": _mode_id,
-      "timesheet_id": widget.id
-    });
+
+     // -- suport service --
+    if(_mode_id == 8){
+      print('suport_service');
+      print({"support_employees_id": selectedUser?.id});
+      request.body = json.encode({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id,
+        "support_employees_id": selectedUser?.id
+      });
+    
+    // -- project --
+    }else if(_mode_id == 14){
+      print({"project_id": projectIdMode});
+      request.body = json.encode({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id,
+        "project_id": projectIdMode
+      });
+
+    // -- chargeable time --
+    }else if(_mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18){
+      print('cargibel');
+      print({"proposal_id": proposalIdMode,
+        "services_id": serviceIdMode,
+        "serviceused_id": serviceUserIdMode
+      });
+      request.body = json.encode({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id,
+        "proposal_id": proposalIdMode,
+        "services_id": serviceIdMode,
+        "serviceused_id": serviceUserIdMode
+      });
+
+    // -- umum --
+    }else{
+      print('umum');
+      print({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id
+      });
+      request.body = json.encode({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id
+      });
+    }
+
+        // return {"status": false, "message": "test"};
+
+
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

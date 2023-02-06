@@ -7,7 +7,7 @@ import 'package:timsheet_mobile/views/pages/Timsheet/ScopeAsignment.dart';
 class CardAssignment extends StatelessWidget {
   const CardAssignment({
     Key? key,
-    required this.width, this.companies_name, this.name_service, this.year, this.ope, this.assign_numbber, this.scope
+    required this.width, this.companies_name, this.name_service, this.year, this.ope, this.assign_numbber, this.scope, this.proposal_id, this.service_id, this.serviceused_id
   }) : super(key: key);
 
   final width;
@@ -17,6 +17,9 @@ class CardAssignment extends StatelessWidget {
   final String? ope;
   final String? assign_numbber;
   final String? scope;
+  final int? proposal_id;
+  final int? service_id;
+  final num? serviceused_id;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +82,7 @@ class CardAssignment extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: (){
+                      Provider.of<TimesheetState>(context, listen: false).changeAssignmentIds([proposal_id, service_id, serviceused_id]);
                       Provider.of<TimesheetState>(context, listen: false).changeAssignment(companies_name!, name_service!);
                       Navigator.pop(context);
                     }, 

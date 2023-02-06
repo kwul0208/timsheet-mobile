@@ -23,6 +23,13 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  List _assignmentIds= [];
+  List get assignmentIds => _assignmentIds;
+  void changeAssignmentIds(val){
+    _assignmentIds.addAll(val);
+    notifyListeners();
+  }
+
   // ------- Project ----------
   String _projetName = '';
   String get projectName => _projetName;
