@@ -23,4 +23,12 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  // ------- Project ----------
+  String _projetName = '';
+  String get projectName => _projetName;
+  void changeProjectName(String val){
+    _projetName = val;
+    notifyListeners();
+  }
+
 }

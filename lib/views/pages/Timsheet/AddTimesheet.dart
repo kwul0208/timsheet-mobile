@@ -15,6 +15,8 @@ import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentApi.d
 import 'package:timsheet_mobile/Models/Timesheet/mode/assignment/AssignmentModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
@@ -32,6 +34,7 @@ class _addTimsheetState extends State<addTimsheet> {
   bool _load = false;
   bool _showEmployees = false;
   bool _showClient = false;
+  bool _showProject = false;
 
 
   late TimeOfDay _timeOfDayStart;
@@ -57,6 +60,8 @@ class _addTimsheetState extends State<addTimsheet> {
   TextEditingController description = TextEditingController();
   TextEditingController client = TextEditingController();
   TextEditingController service = TextEditingController();
+  TextEditingController projectNameC = TextEditingController();
+
   String mode = '';
 
   // data api
@@ -77,6 +82,10 @@ class _addTimsheetState extends State<addTimsheet> {
   Future<dynamic>? _futureAssignment;
   List _get = [];
 
+  // projects
+  List<ProjectModel>? _project;  
+  Future<dynamic> ? _futureProject;
+
 
 
   @override
@@ -89,6 +98,7 @@ class _addTimsheetState extends State<addTimsheet> {
     _futureEmployees = getEmployees();
 
     _futureAssignment = getAssignment();
+    _futureProject = getProject();
   }
 
 
@@ -500,6 +510,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -519,6 +530,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -532,6 +544,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -582,6 +595,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -598,6 +612,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = true;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -645,6 +660,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -664,10 +680,83 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = true;
                                 });
+                                Provider.of<TimesheetState>(context, listen: false).changeProjectName('');
                                 print(val);
                               }
                             ),
+                            _showProject == true ?
+                            Row(
+                              children: [
+                                Flexible(
+                                  child:  Consumer<TimesheetState>(
+                                    builder: (context, data, _) {
+                                      return TextField(
+                                        readOnly: true,
+                                        controller: projectNameC..text = data.projectName,
+                                        decoration: InputDecoration(
+                                          hintText: "project"
+                                        ),
+
+                                      );
+                                    }
+                                  )
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    print('woy');
+                                    showModalBottomSheet<void>(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                      ),
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context, StateSetter setState) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 10),
+                                                    Text("Your Assignment", style: TextStyle(fontSize: 24),),
+                                                    Divider(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: ListView.builder(
+                                                        physics: NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: _project?.length,
+                                                        itemBuilder: ((context, i){
+                                                          return Ink(
+                                                            child: ListTile(
+                                                              title: Text("${_project![i].project_name}"),
+                                                              onTap: (){
+                                                                Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
+                                                                Navigator.pop(context);
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                  ),
+                                )
+                              ],
+                            ) : SizedBox(),
                             RadioListTile(
                               title: Text("${_mode![0].development["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
                               value: _mode![0].development["sub"]['2']['id'], 
@@ -677,6 +766,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   id = val;
                                   _showEmployees = false;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
                                 print(val);
                               }
@@ -1005,8 +1095,10 @@ class _addTimsheetState extends State<addTimsheet> {
 
   getAssignment()async{
     _assignment = await AssignmentApi.getDataAssignment(context, dateinput.text);
-    print('asdd');
-    print(_assignment);
+  }
+
+  getProject()async{
+    _project = await ProjectApi.getDataProject(context);
   }
 }
 
