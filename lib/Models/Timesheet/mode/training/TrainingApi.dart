@@ -20,7 +20,7 @@ class TrainingApi {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '$baseUrl/mucnet_api/api/training/read?employees_id=575&date=$date'));
+            '$baseUrl/mucnet_api/api/training/read?employees_id=116&date=$date'));
 
     request.headers.addAll(headers);
 
@@ -28,9 +28,10 @@ class TrainingApi {
 
     if (response.statusCode == 200) {
       var x = await response.stream.bytesToString();
-      Map data = jsonDecode(x);
+      List data = jsonDecode(x);
+      print(data);
       // return [];
-      return TrainingModel.TrainingModelFromSnapshot([data]);
+      return TrainingModel.TrainingModelFromSnapshot(data);
 
     } else {
       print('false');

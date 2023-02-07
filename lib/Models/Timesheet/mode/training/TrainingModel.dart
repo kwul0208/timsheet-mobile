@@ -8,7 +8,7 @@ class TrainingModel{
 
   factory TrainingModel.fromJson(dynamic json){
     return TrainingModel(
-      id: json['id'],
+      id: json['id'].toString(),
       training_name: json['training_name'],
     );
   }

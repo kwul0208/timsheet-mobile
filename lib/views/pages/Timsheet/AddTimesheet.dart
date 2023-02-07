@@ -205,6 +205,7 @@ class _addTimsheetState extends State<addTimsheet> {
                            dateinput.text = formattedDate; //set output date to TextField value.
                         });
                         getAssignment();
+                        getTraining();
                       } else {
                         print("Date is not selected");
                       }
@@ -745,7 +746,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                                             child: ListTile(
                                                               title: Text("${_training![i].training_name}"),
                                                               onTap: (){
-                                                                trainingIdMode = _training![i].id;
+                                                                trainingIdMode = _training![i].id.toString();
                                                                 Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
                                                                 Navigator.pop(context);
                                                               },
