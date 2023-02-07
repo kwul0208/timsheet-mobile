@@ -1199,6 +1199,6 @@ class _EditTimesheetState extends State<EditTimesheet> {
   }
 
   getTraining()async{
-    _training = await TrainingApi.getDataProject(context);
+    _training = await TrainingApi.getDataProject(context, dateinput.text);
   }
 }

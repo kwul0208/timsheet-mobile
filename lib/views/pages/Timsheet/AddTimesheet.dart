@@ -1207,7 +1207,7 @@ class _addTimsheetState extends State<addTimsheet> {
 
     // -- training --
     }else if(id == 9){
-      print({"training_id": trainingIdMode});
+     print({"training_id": trainingIdMode});
       request.body = json.encode({
         "timestart": "${timeStart.text}",
         "timefinish": "${timeEnd.text}",
@@ -1218,7 +1218,7 @@ class _addTimsheetState extends State<addTimsheet> {
         "employees_id": "$employees_id",
         "tmode_id": id,
         "training_id": trainingIdMode
-      });
+      }); 
     // -- umum --
     }else{
       print('umum');
@@ -1286,7 +1286,7 @@ class _addTimsheetState extends State<addTimsheet> {
   }
 
   getTraining()async{
-    _training = await TrainingApi.getDataProject(context);
+    _training = await TrainingApi.getDataProject(context, dateinput.text);
   }
 }
 

@@ -9,7 +9,7 @@ import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectModel.dart'
 import 'package:timsheet_mobile/Models/Timesheet/mode/training/TrainingModel.dart';
 
 class TrainingApi {
-  static Future<List<TrainingModel>> getDataProject(BuildContext context) async {
+  static Future<List<TrainingModel>> getDataProject(BuildContext context, String date) async {
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
 
@@ -20,7 +20,7 @@ class TrainingApi {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '$baseUrl/mucnet_api/api/training/read?employees_id=575&date=2023-01-01'));
+            '$baseUrl/mucnet_api/api/training/read?employees_id=575&date=$date'));
 
     request.headers.addAll(headers);
 
