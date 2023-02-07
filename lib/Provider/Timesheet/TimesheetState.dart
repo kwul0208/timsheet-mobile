@@ -46,4 +46,13 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  void reset(){
+    _client = "";
+    _service = '';
+    _assignmentIds= [];
+    _projetName = '';
+    _trainingName = "";
+    notifyListeners();
+  }
+
 }

@@ -21,14 +21,31 @@ import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
 class EditTimesheet extends StatefulWidget {
-  const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id});
+  const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id, this.proposal_id, this.services_id, this.serviceused_id, this.companies_name, this.service_name, this.support_to_employees_id, this.support_to_employees_name, this.project_id, this.project_name, this.training_id, this.training_name});
 
-  final int id;
-  final String date;
-  final String timeStart;
-  final String timeEnd;
-  final String desc;
-  final int tmode_id;
+  final int? id;
+  final String? date;
+  final String? timeStart;
+  final String? timeEnd;
+  final String? desc;
+  final int? tmode_id;
+  // -- child mode --
+    // chargeable time
+    final int? proposal_id;
+    final int? services_id;
+    final int? serviceused_id;
+    final String? companies_name;
+    final String? service_name;
+    // suport
+    final int? support_to_employees_id;
+    final String? support_to_employees_name;
+    // project
+    final int? project_id;
+    final String? project_name;
+    // training
+    final int? training_id;
+    final String? training_name;
+  // -- end --
 
   @override
   State<EditTimesheet> createState() => _EditTimesheetState();
@@ -82,7 +99,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
   int? serviceIdMode;
   int? serviceUserIdMode;
   String? trainingIdMode;
-  
+  int? suportEmployeeIdMode;
+
   // list employees
   EmployeesModel? selectedUser;
   List<EmployeesModel> ? _employees;
@@ -109,10 +127,10 @@ class _EditTimesheetState extends State<EditTimesheet> {
     super.initState();
 
     // initial value
-    dateinput.text = widget.date;
-    timeStart.text = widget.timeStart;
-    timeEnd.text = widget.timeEnd;
-    description.text = widget.desc;
+    dateinput.text = widget.date!;
+    timeStart.text = widget.timeStart!;
+    timeEnd.text = widget.timeEnd!;
+    description.text = widget.desc!;
     
     // Default time
     var str = timeStart.text;
@@ -125,7 +143,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
     // mode
     _futureMode = getMode();
-    _mode_id = widget.tmode_id;
+    _mode_id = widget.tmode_id!;
     _futureEmployees = getEmployees();
     
     // assignment
@@ -137,6 +155,10 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // training
     _futureTraining = getTraining();
 
+    // check chlild mode for initial default value
+    Future.delayed(Duration.zero, () async {
+      checkChildMode(widget.tmode_id);
+    });
   }
 
 
@@ -167,6 +189,30 @@ class _EditTimesheetState extends State<EditTimesheet> {
         Radius.circular(5.0),
       ),
     );
+  }
+
+  checkChildMode(mode_id){
+    // -- suport service --
+    if(mode_id == 8){
+      setState(() {
+        _showEmployees = true;
+        suportEmployeeIdMode = widget.support_to_employees_id!;
+        
+      });
+    // -- project --
+    }else if(mode_id == 14){
+      Provider.of<TimesheetState>(context, listen: false).changeProjectName(widget.project_name!);
+      setState(() {
+        _showProject = true;
+        projectIdMode = widget.project_id;
+      });
+    // -- chargeable time --
+    }else if(mode_id == 23 || mode_id == 22 || mode_id == 19 || mode_id == 15 || mode_id == 17 ||mode_id == 16 || mode_id == 21 || mode_id == 20 || mode_id == 18){
+      Provider.of<TimesheetState>(context, listen: false).changeAssignment(widget.companies_name!, widget.service_name!);
+    // -- training --
+    }else if(mode_id == 9){
+      Provider.of<TimesheetState>(context, listen: false).changeProjectName(widget.project_name!);
+    }
   }
 
   @override
@@ -608,10 +654,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   return Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: _showEmployees == true ? DropdownButton<EmployeesModel>(
-                                      hint: Text("-- Choose --"),
+                                      hint: widget.tmode_id == 8 ? Text("${widget.support_to_employees_name}") : Text("-- Choose --"),
                                       value: selectedUser,
                                       onChanged: (EmployeesModel? newValue) {
                                         setState(() {
+                                          suportEmployeeIdMode = newValue?.id;
                                           selectedUser = newValue;
                                         });
                                       },
@@ -1058,7 +1105,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
      // -- suport service --
     if(_mode_id == 8){
       print('suport_service');
-      print({"support_employees_id": selectedUser?.id});
+      print({"support_employees_id": suportEmployeeIdMode});
       request.body = json.encode({
         "timesheet_id": widget.id,
         "timestart": "${timeStart.text}",
@@ -1069,7 +1116,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
         "description": "${description.text}",
         "employees_id": "$employees_id",
         "tmode_id": _mode_id,
-        "support_employees_id": selectedUser?.id
+        "support_employees_id": suportEmployeeIdMode
       });
     
     // -- project --
@@ -1152,7 +1199,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
       });
     }
 
-        // return {"status": false, "message": "test"};
+        return {"status": false, "message": "test"};
 
 
     request.headers.addAll(headers);

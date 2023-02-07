@@ -2,25 +2,47 @@ import 'dart:async';
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Helper/Helper.dart';
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
 import 'package:http/http.dart' as http;
 
 class DetailTimesheet extends StatefulWidget {
-  const DetailTimesheet({super.key, required this.id, required this.date, required this.date_input,required this.timeStart, required this.timeEnd, required this.time_duration, required this.desc, required this.date_modified, required this.tmode_name, required this.tmode_id});
+  const DetailTimesheet({super.key, this.id, required this.date, required this.date_input,required this.timeStart, required this.timeEnd, required this.time_duration, required this.desc, required this.date_modified, required this.tmode_name, required this.tmode_id, this.proposal_id, this.services_id, this.serviceused_id, this.companies_name, this.service_name, this.support_to_employees_id, this.support_to_employees_name, this.project_id, this.project_name, this.training_id, this.training_name});
 
-  final int id;
-  final String date;
-  final String date_input;
-  final String timeStart;
-  final String timeEnd;
-  final int time_duration;
-  final String desc;
-  final String date_modified;
-  final String tmode_name;
-  final int tmode_id;
+  final int? id;
+  final String? date;
+  final String? date_input;
+  final String? timeStart;
+  final String? timeEnd;
+  final int? time_duration;
+  final String? desc;
+  final String? date_modified;
+  final String? tmode_name;
+  final int? tmode_id;
+  // -- child mode --
+    // chargeable time
+    final int? proposal_id;
+    final int? services_id;
+    final int? serviceused_id;
+    final String? companies_name;
+    final String? service_name;
+    // suport
+    final int? support_to_employees_id;
+    final String? support_to_employees_name;
+    // project
+    final int? project_id;
+    final String? project_name;
+    // training
+    final int? training_id;
+    final String? training_name;
+  // -- end --
+
+
+  
 
   @override
   State<DetailTimesheet> createState() => _DetailTimesheetState();
@@ -68,7 +90,7 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
                       setState(() {
                         _isStatus = 'load';
                       });
-                      deleteTimesheet(widget.id).then((value){
+                      deleteTimesheet(widget.id!).then((value){
                         if (value['status'] == true) {
                           setState(() {
                             _isStatus = 'success';
@@ -149,7 +171,7 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
                 children: [
                   CardDetailTimesheet(title: "Date Input : ", value: "${widget.date_input}",),
                   CardDetailTimesheet(title: "Date : ", value: "${widget.date}",),
-                  CardDetailTimesheet(title: "Duration :", value: "${Helper().formatedTime(time: widget.time_duration)} - Daily Routine",),
+                  CardDetailTimesheet(title: "Duration :", value: "${Helper().formatedTime(time: widget.time_duration!)} - Daily Routine",),
                   CardDetailTimesheet(title: "Description	:", value: "${widget.desc}",),
                   CardDetailTimesheet(title: "Revision Date	:", value: "${widget.date_modified}",),
                 ]
@@ -161,7 +183,8 @@ class _DetailTimesheetState extends State<DetailTimesheet> {
                       minimumSize: const Size.fromHeight(50), // NEW
                     ),
                     onPressed: (){
-                      Navigator.push(context, SlideRightRoute(page: EditTimesheet(id: widget.id, date: widget.date, desc: widget.desc, timeStart: widget.timeStart, timeEnd: widget.timeEnd, tmode_id: widget.tmode_id,)));
+                      Provider.of<TimesheetState>(context, listen: false).reset();
+                      Navigator.push(context, SlideRightRoute(page: EditTimesheet(id: widget.id!, date: widget.date!, desc: widget.desc!, timeStart: widget.timeStart!, timeEnd: widget.timeEnd!, tmode_id: widget.tmode_id!, proposal_id: widget.proposal_id, services_id : widget.services_id, serviceused_id: widget.serviceused_id, companies_name: widget.companies_name, service_name: widget.service_name, support_to_employees_id: widget.support_to_employees_id, support_to_employees_name: widget.support_to_employees_name, project_id: widget.project_id, project_name: widget.project_name, training_id: widget.training_id, training_name: widget.training_name)));
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => EditTimesheet(id: widget.id, date: widget.date, desc: widget.desc, timeStart: widget.timeStart, timeEnd: widget.timeEnd, tmode_id: widget.tmode_id,)));
                     },
                     child: Row(
