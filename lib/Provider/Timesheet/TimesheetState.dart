@@ -38,4 +38,12 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  // ------ Training -------
+  String _trainingName = "";
+  String get trainingName => _trainingName;
+  void changeTrainingName(val){
+    _trainingName = val.toString();
+    notifyListeners();
+  }
+
 }

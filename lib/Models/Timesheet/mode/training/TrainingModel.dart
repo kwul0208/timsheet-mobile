@@ -1,15 +1,15 @@
 class TrainingModel{
-  final int? id;
-  final String? project_name;
+  final String? id;
+  final String? training_name;
 
 
 
-  TrainingModel({this.id, this.project_name});
+  TrainingModel({this.id, this.training_name});
 
   factory TrainingModel.fromJson(dynamic json){
     return TrainingModel(
       id: json['id'],
-      project_name: json['project_name'],
+      training_name: json['training_name'],
     );
   }
 
@@ -21,7 +21,7 @@ class TrainingModel{
 
   @override
   String toString(){
-    return '{id: $id, project_name, $project_name}';
+    return '{id: $id, training_name, $training_name}';
   }
   
 }

@@ -17,6 +17,8 @@ import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dar
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/training/TrainingApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/training/TrainingModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
@@ -35,6 +37,7 @@ class _addTimsheetState extends State<addTimsheet> {
   bool _showEmployees = false;
   bool _showClient = false;
   bool _showProject = false;
+  bool _showTraining = false;
 
 
   late TimeOfDay _timeOfDayStart;
@@ -61,12 +64,14 @@ class _addTimsheetState extends State<addTimsheet> {
   TextEditingController client = TextEditingController();
   TextEditingController service = TextEditingController();
   TextEditingController projectNameC = TextEditingController();
+  TextEditingController trainingNameC = TextEditingController();
   int id = 0; // mode
   // child mode
   int? projectIdMode;
   int? proposalIdMode;
   int? serviceIdMode;
   int? serviceUserIdMode;
+  String? trainingIdMode;
 
 
   String mode = '';
@@ -94,6 +99,10 @@ class _addTimsheetState extends State<addTimsheet> {
   List<ProjectModel>? _project;  
   Future<dynamic> ? _futureProject;
 
+  // training
+  List<TrainingModel>? _training;
+  Future<dynamic>? _futureTraining;
+
 
 
   @override
@@ -107,6 +116,7 @@ class _addTimsheetState extends State<addTimsheet> {
 
     _futureAssignment = getAssignment();
     _futureProject = getProject();
+    _futureTraining = getTraining();
   }
 
 
@@ -378,6 +388,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -392,6 +403,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -406,6 +418,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -424,6 +437,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -438,6 +452,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -452,6 +467,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -470,6 +486,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -484,6 +501,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -498,6 +516,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                   onChanged: (val){
                                     setState(() {
                                       id = val;
+                                      _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -515,6 +534,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -535,6 +555,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -549,6 +570,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -570,6 +592,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = true;
                                 });
@@ -583,6 +606,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = true;
                                 });
@@ -600,6 +624,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -617,6 +642,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = true;
                                   _showClient = false;
                                   _showProject = false;
@@ -665,6 +691,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = true;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -672,6 +699,77 @@ class _addTimsheetState extends State<addTimsheet> {
                                 print(val);
                               }
                             ),
+                            _showTraining == true ?
+                            Row(
+                              children: [
+                                Flexible(
+                                  child:  Consumer<TimesheetState>(
+                                    builder: (context, data, _) {
+                                      return TextField(
+                                        readOnly: true,
+                                        controller: trainingNameC..text = data.trainingName,
+                                        decoration: InputDecoration(
+                                          hintText: "Training"
+                                        ),
+
+                                      );
+                                    }
+                                  )
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    showModalBottomSheet<void>(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                      ),
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context, StateSetter setState) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 10),
+                                                    Text("Your Training", style: TextStyle(fontSize: 24),),
+                                                    Divider(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: ListView.builder(
+                                                        physics: NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: _training?.length,
+                                                        itemBuilder: ((context, i){
+                                                          return Ink(
+                                                            child: ListTile(
+                                                              title: Text("${_training![i].training_name}"),
+                                                              onTap: (){
+                                                                trainingIdMode = _training![i].id;
+                                                                Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
+                                                                Navigator.pop(context);
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                  ),
+                                )
+                              ],
+                            ) : SizedBox(),
                             Divider(),
                             // ---------- Development -----------
                             Padding(
@@ -685,6 +783,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = true;
@@ -772,6 +871,7 @@ class _addTimsheetState extends State<addTimsheet> {
                               onChanged: (val){
                                 setState(() {
                                   id = val;
+                                  _showTraining = false;
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
@@ -1105,6 +1205,20 @@ class _addTimsheetState extends State<addTimsheet> {
         "serviceused_id": serviceUserIdMode
       });
 
+    // -- training --
+    }else if(id == 9){
+      print({"training_id": trainingIdMode});
+      request.body = json.encode({
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": id,
+        "training_id": trainingIdMode
+      });
     // -- umum --
     }else{
       print('umum');
@@ -1169,6 +1283,10 @@ class _addTimsheetState extends State<addTimsheet> {
 
   getProject()async{
     _project = await ProjectApi.getDataProject(context);
+  }
+
+  getTraining()async{
+    _training = await TrainingApi.getDataProject(context);
   }
 }
 

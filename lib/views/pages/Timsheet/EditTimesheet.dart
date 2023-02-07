@@ -15,6 +15,8 @@ import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesApi.dar
 import 'package:timsheet_mobile/Models/Timesheet/mode/employees/EmployeesModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/mode/project/ProjectModel.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/training/TrainingApi.dart';
+import 'package:timsheet_mobile/Models/Timesheet/mode/training/TrainingModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
@@ -38,6 +40,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
   bool _showEmployees = false;
   bool _showClient = false;
   bool _showProject = false;
+  bool _showTraining = false;
 
 
   List options = [
@@ -64,6 +67,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
   TextEditingController client = TextEditingController();
   TextEditingController service = TextEditingController();
   TextEditingController projectNameC = TextEditingController();
+  TextEditingController trainingNameC = TextEditingController();
 
   String mode = '';
 
@@ -77,6 +81,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
   int? proposalIdMode;
   int? serviceIdMode;
   int? serviceUserIdMode;
+  String? trainingIdMode;
   
   // list employees
   EmployeesModel? selectedUser;
@@ -92,6 +97,10 @@ class _EditTimesheetState extends State<EditTimesheet> {
   // projects
   List<ProjectModel>? _project;  
   Future<dynamic> ? _futureProject;
+
+  // training
+  List<TrainingModel>? _training;
+  Future<dynamic>? _futureTraining;
 
 
 
@@ -125,6 +134,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // project
     _futureProject = getProject();
 
+    // training
+    _futureTraining = getTraining();
 
   }
 
@@ -319,6 +330,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -334,6 +346,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -349,6 +362,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -368,6 +382,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -383,6 +398,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -398,6 +414,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -417,6 +434,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -432,6 +450,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -447,6 +466,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showTraining = false;
                                       _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -465,6 +485,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -485,6 +506,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -499,6 +521,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -519,6 +542,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = true;
@@ -533,6 +557,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = true;
@@ -550,6 +575,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -567,6 +593,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = true;
                                   _showClient = false;
@@ -615,6 +642,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = true;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -622,6 +650,77 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
+                            _showTraining == true ?
+                            Row(
+                              children: [
+                                Flexible(
+                                  child:  Consumer<TimesheetState>(
+                                    builder: (context, data, _) {
+                                      return TextField(
+                                        readOnly: true,
+                                        controller: trainingNameC..text = data.trainingName,
+                                        decoration: InputDecoration(
+                                          hintText: "Training"
+                                        ),
+
+                                      );
+                                    }
+                                  )
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    showModalBottomSheet<void>(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                      ),
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context, StateSetter setState) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 10),
+                                                    Text("Your Training", style: TextStyle(fontSize: 24),),
+                                                    Divider(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: ListView.builder(
+                                                        physics: NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: _training?.length,
+                                                        itemBuilder: ((context, i){
+                                                          return Ink(
+                                                            child: ListTile(
+                                                              title: Text("${_training![i].training_name}"),
+                                                              onTap: (){
+                                                                trainingIdMode = _training![i].id;
+                                                                Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
+                                                                Navigator.pop(context);
+                                                              },
+                                                            ),
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                  ),
+                                )
+                              ],
+                            ) : SizedBox(),
                             Divider(),
                             // ---------- Development -----------
                             Padding(
@@ -635,6 +734,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = true;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -721,6 +821,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onChanged: (val){
                                 setState(() {
                                   _mode_id = val;
+                                  _showTraining = false;
                                   _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
@@ -1009,6 +1110,21 @@ class _EditTimesheetState extends State<EditTimesheet> {
         "serviceused_id": serviceUserIdMode
       });
 
+    // -- training --
+    }else if(_mode_id == 9){
+     print({"training_id": trainingIdMode});
+      request.body = json.encode({
+        "timesheet_id": widget.id,
+        "timestart": "${timeStart.text}",
+        "timefinish": "${timeEnd.text}",
+        "date": "${dateinput.text}",
+        "is_overtime": "0",
+        "input_from": "pms",
+        "description": "${description.text}",
+        "employees_id": "$employees_id",
+        "tmode_id": _mode_id,
+        "training_id": trainingIdMode
+      }); 
     // -- umum --
     }else{
       print('umum');
@@ -1080,5 +1196,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
   
   getProject()async{
     _project = await ProjectApi.getDataProject(context);
+  }
+
+  getTraining()async{
+    _training = await TrainingApi.getDataProject(context);
   }
 }
