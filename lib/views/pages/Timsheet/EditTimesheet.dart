@@ -209,6 +209,13 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // -- chargeable time --
     }else if(mode_id == 23 || mode_id == 22 || mode_id == 19 || mode_id == 15 || mode_id == 17 ||mode_id == 16 || mode_id == 21 || mode_id == 20 || mode_id == 18){
       Provider.of<TimesheetState>(context, listen: false).changeAssignment(widget.companies_name!, widget.service_name!);
+      setState(() {
+        _showClient = true;
+        proposalIdMode = widget.proposal_id;
+        serviceIdMode = widget.services_id;
+        serviceUserIdMode = widget.serviceused_id;
+
+      });
     // -- training --
     }else if(mode_id == 9){
       Provider.of<TimesheetState>(context, listen: false).changeProjectName(widget.project_name!);
