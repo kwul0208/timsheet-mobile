@@ -218,7 +218,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
       });
     // -- training --
     }else if(mode_id == 9){
-      Provider.of<TimesheetState>(context, listen: false).changeProjectName(widget.project_name!);
+      Provider.of<TimesheetState>(context, listen: false)..changeTrainingName(widget.training_name);
+      setState(() {
+        _showTraining = true;
+        trainingIdMode = widget.training_id.toString();
+      });
     }
   }
 
@@ -276,6 +280,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                            dateinput.text = formattedDate; //set output date to TextField value.
                         });
                         getAssignment();
+                        getTraining();
                       } else {
                         print("Date is not selected");
                       }
