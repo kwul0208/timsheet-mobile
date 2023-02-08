@@ -24,8 +24,8 @@ class Overtime extends StatelessWidget {
             bottom:  TabBar(
               // isScrollable: true,
               unselectedLabelColor: Colors.white,
-              indicatorColor: Colors.redAccent[100],
-              labelColor:  Colors.redAccent[100],
+              indicatorColor: Colors.black,
+              labelColor:  Colors.black,
               tabs:  [
                 Tab(text: "Plan", icon: Icon(Icons.more_time)),
                 Tab(text: "Check", icon: Icon(Icons.format_list_bulleted_outlined)),
