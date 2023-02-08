@@ -85,7 +85,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
   TextEditingController service = TextEditingController();
   TextEditingController projectNameC = TextEditingController();
   TextEditingController trainingNameC = TextEditingController();
-
+  TextEditingController employeeNameC = TextEditingController();
   String mode = '';
 
 
@@ -120,7 +120,10 @@ class _EditTimesheetState extends State<EditTimesheet> {
   List<TrainingModel>? _training;
   Future<dynamic>? _futureTraining;
 
-
+  // employee
+   List<EmployeesModel>? _allUsers;
+  // This list holds the data for the list view
+  List<EmployeesModel> _foundUsers = [];
 
   @override
   void initState(){
@@ -158,6 +161,29 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // check chlild mode for initial default value
     Future.delayed(Duration.zero, () async {
       checkChildMode(widget.tmode_id);
+    });
+  }
+
+
+    // This function is called whenever the text field changes
+  void _runFilter(String enteredKeyword) {
+    List<EmployeesModel>? results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = _employees;
+    } else {
+      results = _employees!
+          .where((user) =>
+              user.fullname.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+    print('objectxx');
+          print(_employees);
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundUsers = results!;
     });
   }
 
@@ -659,37 +685,148 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 print(val);
                               }
                             ),
-                            FutureBuilder(
-                              future: _futureEmployees,
-                              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState == ConnectionState.done) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: _showEmployees == true ? DropdownButton<EmployeesModel>(
-                                      hint: widget.tmode_id == 8 ? Text("${widget.support_to_employees_name}") : Text("-- Choose --"),
-                                      value: selectedUser,
-                                      onChanged: (EmployeesModel? newValue) {
-                                        setState(() {
-                                          suportEmployeeIdMode = newValue?.id;
-                                          selectedUser = newValue;
-                                        });
-                                      },
-                                      items: _employees?.map((EmployeesModel user) {
-                                        return new DropdownMenuItem<EmployeesModel>(
-                                          value: user,
-                                          child: Text(
-                                            user.fullname,
-                                            style: new TextStyle(color: Colors.black),
-                                          ),
+                            _showEmployees == true ?
+                            Row(
+                              children: [
+                                Flexible(
+                                  child:  Consumer<TimesheetState>(
+                                    builder: (context, data, _) {
+                                      return TextField(
+                                        readOnly: true,
+                                        controller: employeeNameC..text = data.employeeName,
+                                        decoration: InputDecoration(
+                                          hintText: "Employees"
+                                        ),
+
+                                      );
+                                    }
+                                  )
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    setState(() {
+                                      _foundUsers = _employees!;
+                                    });
+                                    showModalBottomSheet<void>(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                      ),
+                                      context: context,
+                                      isScrollControlled: true, // set this to true
+                                      builder: (context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context, StateSetter setState ) {
+                                            return DraggableScrollableSheet(
+                                              expand: false,
+                                              builder: (context, scrollController) {
+                                                return Column(
+                                                  children: <Widget>[
+                                                    // Put all heading in column.
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        Align(
+                                                          alignment: Alignment.topCenter,
+                                                          child: Container(
+                                                            margin: EdgeInsets.symmetric(vertical: 8),
+                                                            height: 8.0,
+                                                            width: 70.0,
+                                                            decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                          child: Text('Select Employee', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              SizedBox(height: 20.0),
+                                                              TextField(
+                                                                onChanged: (value) => _runFilter(value),
+                                                                decoration: const InputDecoration(
+                                                                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                      ],
+                                                    ),
+                                                    // Wrap your DaysList in Expanded and provide scrollController to it
+                                                    Expanded(child: _foundUsers.isNotEmpty
+                                                      ? ListView.builder(
+                                                        controller: scrollController,
+                                                          itemCount: _foundUsers.length,
+                                                          itemBuilder: (context, index) => Card(
+                                                            key: ValueKey(_foundUsers[index].id),
+                                                            color: Config().primary,
+                                                            elevation: 4,
+                                                            // margin: const EdgeInsets.symmetric(vertical: 10),
+                                                            child: ListTile(
+                                                              title: Text(_foundUsers[index].fullname),
+                                                              onTap: (){
+                                                                suportEmployeeIdMode = _foundUsers[index].id;
+                                                                Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
+                                                                Navigator.pop(context);
+                                                              },
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : const Text(
+                                                          'No results found',
+                                                          style: TextStyle(fontSize: 24),
+                                                        ),),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
                                         );
-                                      }).toList(),
-                                    ) : SizedBox(),
-                                  );
-                                }else{
-                                  return SizedBox();
-                                }
-                              }
-                            ),
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                  ),
+                                )
+                              ],
+                            ) : SizedBox(),
+                            // FutureBuilder(
+                            //   future: _futureEmployees,
+                            //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            //     if (snapshot.connectionState == ConnectionState.done) {
+                            //       return Padding(
+                            //         padding: const EdgeInsets.only(left: 10),
+                            //         child: _showEmployees == true ? DropdownButton<EmployeesModel>(
+                            //           hint: widget.tmode_id == 8 ? Text("${widget.support_to_employees_name}") : Text("-- Choose --"),
+                            //           value: selectedUser,
+                            //           onChanged: (EmployeesModel? newValue) {
+                            //             setState(() {
+                            //               suportEmployeeIdMode = newValue?.id;
+                            //               selectedUser = newValue;
+                            //             });
+                            //           },
+                            //           items: _employees?.map((EmployeesModel user) {
+                            //             return new DropdownMenuItem<EmployeesModel>(
+                            //               value: user,
+                            //               child: Text(
+                            //                 user.fullname,
+                            //                 style: new TextStyle(color: Colors.black),
+                            //               ),
+                            //             );
+                            //           }).toList(),
+                            //         ) : SizedBox(),
+                            //       );
+                            //     }else{
+                            //       return SizedBox();
+                            //     }
+                            //   }
+                            // ),
                             Divider(),
 
                             //------------ Training -------------
@@ -1241,8 +1378,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
   getEmployees()async{
     _employees = await EmployeesApi.getEmployees(context);
-    print("employees");
-    print(_employees);
+    _foundUsers = _employees!;
     // selectedUser=_employees![0];
   }
 

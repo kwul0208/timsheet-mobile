@@ -46,12 +46,21 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  // ------ employee -------
+  String _employeeName = "";
+  String get employeeName => _employeeName;
+  void changeemployeeName(val){
+    _employeeName = val.toString();
+    notifyListeners();
+  }
+
   void reset(){
     _client = "";
     _service = '';
     _assignmentIds= [];
     _projetName = '';
     _trainingName = "";
+    _employeeName = "";
     notifyListeners();
   }
 
