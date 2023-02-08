@@ -961,22 +961,40 @@ class _addTimsheetState extends State<addTimsheet> {
                                         borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                                       ),
                                       context: context,
+                                      isScrollControlled: true,
                                       builder: (BuildContext context) {
                                         return StatefulBuilder(
                                           builder: (BuildContext context, StateSetter setState) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(top: 10),
-                                              child: SingleChildScrollView(
-                                                child: Column(
+                                            return DraggableScrollableSheet(
+                                              expand: false,
+                                              builder: (context, scrollController) {
+                                                return Column(
                                                   children: [
                                                     SizedBox(height: 10),
-                                                    Text("Your Assignment", style: TextStyle(fontSize: 24),),
-                                                    Divider(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                    Column(
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment.topCenter,
+                                                          child: Container(
+                                                            margin: EdgeInsets.symmetric(vertical: 8),
+                                                            height: 8.0,
+                                                            width: 70.0,
+                                                            decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 20),
+                                                          child: Text('Select project', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    
+                                                    Expanded(
                                                       child: ListView.builder(
-                                                        physics: NeverScrollableScrollPhysics(),
-                                                        shrinkWrap: true,
+                                                        controller: scrollController,
+                                                        // physics: NeverScrollableScrollPhysics(),
+                                                        // shrinkWrap: true,
                                                         itemCount: _project?.length,
                                                         itemBuilder: ((context, i){
                                                           return Ink(
@@ -987,14 +1005,16 @@ class _addTimsheetState extends State<addTimsheet> {
                                                                 Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
                                                                 Navigator.pop(context);
                                                               },
+                                                               shape: Border.all(color: Config().line, width: 1),
+
                                                             ),
                                                           );
                                                         }),
                                                       ),
                                                     ),
                                                   ],
-                                                ),
-                                              ),
+                                                );
+                                              }
                                             );
                                           }
                                         );
