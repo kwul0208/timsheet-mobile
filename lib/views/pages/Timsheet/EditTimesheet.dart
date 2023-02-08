@@ -1288,7 +1288,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                         ));
                         value['status'] == true ? {
                           Navigator.pop(context, dateinput.text),
-                          Navigator.pop(context, dateinput.text)
+                          // Navigator.pop(context, dateinput.text)
                         } : null;
                       });
                     },
