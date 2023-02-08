@@ -19,7 +19,7 @@ class ProjectApi {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '$baseUrl/mucnet_api/api/project/mucnet/read?employees_id=442'));
+            '$baseUrl/mucnet_api/api/project/mucnet/read?employees_id=$employees_id'));
 
     request.headers.addAll(headers);
 

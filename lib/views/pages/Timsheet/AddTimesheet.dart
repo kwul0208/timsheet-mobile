@@ -95,6 +95,7 @@ class _addTimsheetState extends State<addTimsheet> {
   List<AssignmentModel>? _assignment;
   Future<dynamic>? _futureAssignment;
   List _get = [];
+  List<AssignmentModel> _foundAssignment = [];
 
 
   // projects
@@ -129,7 +130,7 @@ class _addTimsheetState extends State<addTimsheet> {
     super.initState();
   }
 
-  // This function is called whenever the text field changes
+  // Employees search
   void _runFilter(String enteredKeyword) {
     List<EmployeesModel>? results = [];
     if (enteredKeyword.isEmpty) {
@@ -148,6 +149,28 @@ class _addTimsheetState extends State<addTimsheet> {
     // Refresh the UI
     setState(() {
       _foundUsers = results!;
+    });
+  }
+
+  // assignment search
+  void _runFilterAssignment(String enteredKeyword) {
+    List<AssignmentModel>? results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = _assignment;
+    } else {
+      results = _assignment!
+          .where((user) =>
+              user.companies_name!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+    print('objectxx');
+          print(_assignment);
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundAssignment = results!;
     });
   }
 
@@ -1143,36 +1166,73 @@ class _addTimsheetState extends State<addTimsheet> {
                                     GestureDetector(
                                       onTap: (){
                                         print('woy');
+                                        _foundAssignment = _assignment!;
                                         showModalBottomSheet<void>(
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                                           ),
                                           context: context,
+                                          isScrollControlled: true,
                                           builder: (BuildContext context) {
                                             return StatefulBuilder(
                                               builder: (BuildContext context, StateSetter setState) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.only(top: 10),
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
+                                                return DraggableScrollableSheet(
+                                                  expand: false,
+                                                  builder: (context, scrollController) {
+                                                    return Column(
                                                       children: [
-                                                        SizedBox(height: 10),
-                                                        Text("Your Assignment", style: TextStyle(fontSize: 24),),
-                                                        Divider(),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(10.0),
-                                                          child: ListView.builder(
-                                                            physics: NeverScrollableScrollPhysics(),
-                                                            shrinkWrap: true,
-                                                            itemCount: _assignment?.length,
-                                                            itemBuilder: ((context, i){
-                                                              return CardAssignment(width: width, companies_name: _assignment![i].companies_name, name_service: _assignment![i].service_name, year: _assignment![i].service_period, ope: _assignment![i].ope, assign_numbber: _assignment![i].assignment_number, scope: _assignment![i].service_scope, proposal_id: _assignment![i].proposal_id, service_id: _assignment![i].services_id, serviceused_id: _assignment![i].serviceused_id,);
-                                                            }),
+                                                        Column(
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment.topCenter,
+                                                              child: Container(
+                                                                margin: EdgeInsets.symmetric(vertical: 8),
+                                                                height: 8.0,
+                                                                width: 70.0,
+                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                            Padding(
+                                                              padding: EdgeInsets.only(bottom: 20),
+                                                              child: Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                            ),
+                                                            Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              SizedBox(height: 20.0),
+                                                              TextField(
+                                                                onChanged: (value) => _runFilterAssignment(value),
+                                                                decoration: const InputDecoration(
+                                                                    labelText: 'Companies Name', suffixIcon: Icon(Icons.search)),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
+                                                        SizedBox(height: 16),
+                                                          ],
+                                                        ),
+                                                        Expanded(
+                                                          child:  _foundUsers.isNotEmpty
+                                                            ? ListView.builder(
+                                                              controller: scrollController,
+                                                              itemCount: _foundAssignment.length,
+                                                              itemBuilder: ((context, i){
+                                                                return Padding(
+                                                                  padding: const EdgeInsets.all(10.0),
+                                                                  child: CardAssignment(width: width, companies_name: _foundAssignment[i].companies_name, name_service: _foundAssignment[i].service_name, year: _foundAssignment[i].service_period, ope: _foundAssignment[i].ope, assign_numbber: _foundAssignment[i].assignment_number, scope: _foundAssignment[i].service_scope, proposal_id: _foundAssignment[i].proposal_id, service_id: _foundAssignment[i].services_id, serviceused_id: _foundAssignment[i].serviceused_id,),
+                                                                );
+                                                              }),
+                                                          ) : const Text(
+                                                          'No results found',
+                                                          style: TextStyle(fontSize: 24),
+                                                        ),),
+                                                        
                                                       ],
-                                                    ),
-                                                  ),
+                                                    );
+                                                  }
                                                 );
                                               }
                                             );
@@ -1443,6 +1503,7 @@ class _addTimsheetState extends State<addTimsheet> {
 
   getAssignment()async{
     _assignment = await AssignmentApi.getDataAssignment(context, dateinput.text);
+    _foundAssignment = _assignment!;
   }
 
   getProject()async{
