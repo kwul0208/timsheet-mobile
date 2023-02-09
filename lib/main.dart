@@ -12,6 +12,8 @@ import 'package:timsheet_mobile/views/menu/Overtime.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
 import 'package:timsheet_mobile/views/menu/WFH.dart';
 import 'package:timsheet_mobile/views/pages/Auth/Login.dart';
+import 'package:flutter/services.dart';
+
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -24,6 +26,9 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: ((context) => TimesheetState())),
