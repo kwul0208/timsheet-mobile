@@ -706,9 +706,9 @@ class _TimesheetState extends State<Timesheet> {
                             ),
                             onPressed: () {
                               if (_timesheet![0].status == 'locked') {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => UnlockRequestTimesheet(date: dateForAdd,)));
+                                _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
                               }else if(_timesheet![0].status == 'unlock_request') {
-                                _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date}");
+                                _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date} (pending)");
                               }
                                 
                             })

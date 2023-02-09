@@ -9,4 +9,5 @@ class Config{
   Color subText = Colors.grey;
   Color redAccent = Colors.redAccent[100]!;
   Color grey2 = Color.fromARGB(255, 236, 240, 252);
+  Color bgLoading = Color.fromARGB(78, 0, 0, 0);
 }
