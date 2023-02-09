@@ -219,7 +219,7 @@ class _PlanState extends State<Plan> {
                     Container(
                       width: width,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 236, 240, 252),
+                        color: Config().grey2,
                         borderRadius: BorderRadius.circular(8)
                       ),
                       child: Padding(
