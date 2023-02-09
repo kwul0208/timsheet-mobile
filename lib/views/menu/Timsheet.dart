@@ -18,6 +18,8 @@ import 'package:timsheet_mobile/Helper/Helper.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/views/pages/Timsheet/UnlockRequestTimesheet.dart';
+import 'package:flutter_html/flutter_html.dart';
+
 
 class Timesheet extends StatefulWidget {
   const Timesheet({super.key});
@@ -161,7 +163,7 @@ class _TimesheetState extends State<Timesheet> {
     );
   }
 
-  _showDialogLocked() {
+  _showDialogLocked(String val) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -184,7 +186,7 @@ class _TimesheetState extends State<Timesheet> {
                   ),
                   Divider(),
                   Text(
-                      "This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet"),
+                      "${val}"),
                   Divider(),
                   GestureDetector(
                       onTap: () {
@@ -317,7 +319,7 @@ class _TimesheetState extends State<Timesheet> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Consumer<TimesheetState>(
                         builder: (context, data, _) {
-                      if (_timesheet![0].status == "locked") {
+                      if (_timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request") {
                         return Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Container(
@@ -477,12 +479,13 @@ class _TimesheetState extends State<Timesheet> {
                                       // -- end --
 
                                       SizedBox(height: 10),
-                                      Text(
-                                        "${_timesheet![0].timesheet[i]['description']}",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 13),
-                                      ),
+                                      // Text(
+                                      //   "${_timesheet![0].timesheet[i]['description']}",
+                                      //   style: TextStyle(
+                                      //       color: Colors.black54,
+                                      //       fontSize: 13),
+                                      // ),
+                                      Html(data: "${_timesheet![0].timesheet[i]['description']}"),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -693,7 +696,7 @@ class _TimesheetState extends State<Timesheet> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _timesheet![0].status == 'locked'
+                    _timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request"
                         ? FloatingActionButton(
                             heroTag: "btn1",
                             backgroundColor: Color.fromARGB(255, 175, 212, 87),
@@ -702,7 +705,12 @@ class _TimesheetState extends State<Timesheet> {
                               size: 28,
                             ),
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => UnlockRequestTimesheet(date: dateForAdd,)));
+                              if (_timesheet![0].status == 'locked') {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => UnlockRequestTimesheet(date: dateForAdd,)));
+                              }else if(_timesheet![0].status == 'unlock_request') {
+                                _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date}");
+                              }
+                                
                             })
                         : SizedBox(),
                     SizedBox(height: 10),
@@ -711,13 +719,13 @@ class _TimesheetState extends State<Timesheet> {
                       backgroundColor: Config().primary,
                       child: Icon(Icons.add),
                       onPressed: () {
-                        if (_timesheet![0].status != 'locked') {
+                        if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
+                          _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                        } else {
                           setState(() {
                             _scrollDate = dateForAdd;
                           });
                           _displaySecondView(addTimsheet(date: dateForAdd));
-                        } else {
-                          _showDialogLocked();
                         }
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet(date: dateForAdd)));
                       },
