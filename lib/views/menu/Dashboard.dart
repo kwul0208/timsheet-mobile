@@ -218,9 +218,15 @@ class _DashboardState extends State<Dashboard> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        CardWidget(title: "Empty Timsheet", total: 3, icon: Icons.calendar_month,),
-                        CardWidget(title: "Meeting", total: 1, icon: Icons.meeting_room_outlined,),
-                        CardWidget(title: "Cuti", total: 5, icon: Icons.insert_emoticon_outlined ,),
+                        CardWidget(title: "Unlock Request for Timesheet", total: 1, icon: Icons.meeting_room_outlined,),
+                        CardWidget(title: "Overtime Plan", total: 3, icon: Icons.work_history,),
+                        CardWidget(title: "Unlock for OT Plan", total: 5, icon: Icons.lock_clock_outlined ,),
+                        CardWidget(title: "Total Overtime", total: 5, icon: Icons.work_history,),
+                        CardWidget(title: "RWD", total: 5, icon: Icons.laptop,),
+                        CardWidget(title: "Leave", total: 5, icon: Icons.exit_to_app_outlined,),
+                        CardWidget(title: "Holiday", total: 5, icon: Icons.holiday_village_outlined,),
+                        CardWidget(title: "Other Summary", total: 5, icon: Icons.menu,),
+
                       ],
                     ),
                   )

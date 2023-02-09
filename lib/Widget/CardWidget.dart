@@ -30,10 +30,11 @@ class CardWidget extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(icon, color: Config().primary, size: 30,),
             Text("$total", style: TextStyle(color: Config().primary, fontSize: 44, fontWeight: FontWeight.w500),),
-            Text(title, style: TextStyle(color: Config().primary, fontSize: 14, fontWeight: FontWeight.w600))
+            Align(child: Text(title, style: TextStyle(color: Config().primary, fontSize: 14, fontWeight: FontWeight.w600), textAlign: TextAlign.center,))
           ],
         ),
       ),
