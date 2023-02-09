@@ -4,9 +4,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Models/Profile/ProfileApi.dart';
+import 'package:timsheet_mobile/Models/Profile/ProfileModel.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
 import 'package:timsheet_mobile/Widget/CardWidget.dart';
+import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/TestPage.dart';
 import 'package:timsheet_mobile/views/menu/AppCheckExample.dart';
 // import 'package:flutter_linkify/flutter_linkify.dart';
@@ -24,6 +27,10 @@ class _DashboardState extends State<Dashboard> {
 
   String? _fullname;
   Future<dynamic>? _futureFullname;
+
+  // -- profile --
+  List<ProfileModel>? _profile;
+  Future<dynamic>? _futureProfile;
   
   Future getDataEmployee()async{
     final storage = new FlutterSecureStorage();
@@ -35,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
   void initState(){
     super.initState();
     _futureFullname = getDataEmployee();
+    _futureProfile = getProfile();
   }
 
   @override
@@ -77,38 +85,43 @@ class _DashboardState extends State<Dashboard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
-                                SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: ()async{
-                                    final storage = new FlutterSecureStorage();
-                                    await storage.deleteAll();
-                                    Provider.of<MainState>(context, listen: false).changeLogin(false);
-                                  },
-                                  child: Icon(Icons.logout, color: Colors.red,)
-                                )
-                              ],
-                            ),
+                            Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
+                            SizedBox(width: 10),
                             SizedBox(height: 10,),
-                            Row(
-                              children: [
-                                CircleAvatar(backgroundImage: AssetImage('assets/ahmad.png',),),
-                                SizedBox(width: 10,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    FutureBuilder(
-                                      future: _futureFullname,
-                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                        return Text("${_fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),);
-                                      }
-                                    ),
-                                    Text("Job Position", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
-                                  ],
-                                ),
-                              ],
+                            FutureBuilder(
+                              future: _futureProfile,
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState == ConnectionState.done) {
+                                  return Row(
+                                    children: [
+                                      _profile![0].url_photo == null ? CircleAvatar(backgroundImage: AssetImage('assets/ahmad.png',),) : CircleAvatar(backgroundImage: NetworkImage("${_profile![0].url_photo}")),
+                                      SizedBox(width: 10,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("${_profile![0].fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
+                                          Text("${_profile![0].position} ${_profile![0].departement}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }else{
+                                  return Row(
+                                    children: [
+                                      ShimmerWidget(width: 50, height: 50, isCircle: true),
+                                      SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ShimmerWidget(width: 100, height: 16, isCircle: false),
+                                          SizedBox(height: 5,),
+                                          ShimmerWidget(width: 80, height: 12, isCircle: false)
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                }
+                              }
                             ),
                             
                           ],
@@ -117,14 +130,26 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Positioned(
                       right: 10,
-                      top: height/15,
+                      top: height/20,
                       child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
+                        onTap: ()async{
+                          final storage = new FlutterSecureStorage();
+                          await storage.deleteAll();
+                          Provider.of<MainState>(context, listen: false).changeLogin(false);
                         },
-                        child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
+                        child: Icon(Icons.logout, color: Colors.red,)
+                      )
                     ),
+                    // Positioned(
+                    //   right: 10,
+                    //   top: height/15,
+                    //   child: GestureDetector(
+                    //     onTap: (){
+                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
+                    //       // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
+                    //     },
+                    //     child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
+                    // ),
                   ],
                 ),
                 Container(
@@ -206,6 +231,12 @@ class _DashboardState extends State<Dashboard> {
         ),
       )
     );
+  }
+
+  // -- API --
+  Future getProfile()async{
+    _profile = await ProfileApi.getDataAssignment(context);
+    print(_profile);
   }
 }
 
