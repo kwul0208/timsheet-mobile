@@ -140,16 +140,16 @@ class _DashboardState extends State<Dashboard> {
                         child: Icon(Icons.logout, color: Colors.red,)
                       )
                     ),
-                    // Positioned(
-                    //   right: 10,
-                    //   top: height/15,
-                    //   child: GestureDetector(
-                    //     onTap: (){
-                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
-                    //       // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
-                    //     },
-                    //     child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
-                    // ),
+                    Positioned(
+                      right: 10,
+                      top: height/10,
+                      child: GestureDetector(
+                        onTap: (){
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
+                        },
+                        child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
+                    ),
                   ],
                 ),
                 Container(
