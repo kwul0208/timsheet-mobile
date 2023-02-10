@@ -21,6 +21,8 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/views/pages/Timsheet/UnlockRequestTimesheet.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:draggable_fab/draggable_fab.dart';
+
 
 
 class Timesheet extends StatefulWidget {
@@ -920,8 +922,13 @@ class _TimesheetState extends State<Timesheet> {
                       );
                     });
                   } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Column(
+                      children: [
+                        ShimmerCardTImesheet(width: width),
+                        ShimmerCardTImesheet(width: width),
+                        ShimmerCardTImesheet(width: width),
+                        ShimmerCardTImesheet(width: width),
+                      ],
                     );
                   }
                 })
