@@ -608,7 +608,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 Text(
                                                   "${_timesheet![0].timesheet[i]['service_name']}",
                                                   style:
-                                                      TextStyle(fontSize: 12),
+                                                      TextStyle(),
                                                 )
                                               ],
                                             )
@@ -655,13 +655,9 @@ class _TimesheetState extends State<Timesheet> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                    "Inputed Date   : ${_timesheet![0].timesheet[i]['date_input']}",
-                                                    style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 12)),
-                                                // Text("Inputed From  : Meeting and Discussion System", style: TextStyle(color: Colors.black54, fontSize: 12)),
-                                                // Text("Updated Date  : 2023/02/07 10:00", style: TextStyle(color: Colors.black54, fontSize: 12)),
+                                                Text("Inputed Date   : ${_timesheet![0].timesheet[i]['date_input']}",),
+                                                Text("Inputed From  : ${_timesheet![0].timesheet[i]['input_from']}"),
+                                                Text("Updated Date  : ${_timesheet![0].timesheet[i]['date_update']}"),
                                               ],
                                             )
                                           : SizedBox(),
