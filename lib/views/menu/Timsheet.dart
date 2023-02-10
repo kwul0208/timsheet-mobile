@@ -684,10 +684,23 @@ class _TimesheetState extends State<Timesheet> {
                                             children: [
                                               GestureDetector(
                                                   onTap: () {
-                                                    print(_isLoading);
-                                                    _showConfirm(_timesheet![0]
-                                                            .timesheet[i]
-                                                        ['timesheet_id']);
+                                                    if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
+                                                    if(_timesheet![0].relocked_date == null){
+                                                      _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                    }else{
+                                                      // -- check tanggal relock sudah exp belum
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                      // -- unvalid --
+                                                      if(forRelockDate.compareTo(forTodayDate) < 0){
+                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      }else{
+                                                        _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                      }
+                                                    }
+                                                  } else {
+                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                  }
                                                   },
                                                   child: Icon(
                                                     Icons.delete_forever,
@@ -696,77 +709,145 @@ class _TimesheetState extends State<Timesheet> {
                                                   )),
                                               GestureDetector(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _scrollDate = dateForAdd;
-                                                  });
-                                                  print(_timesheet![0]
-                                                      .timesheet[i]['id']);
-                                                  // print(_timesheet![0].timesheet);
-                                                  // return null;
-                                                  // this.proposal_id, this.services_id, this.serviceused_id, this.companies_name, this.service_name, this.support_to_employees_id, this.support_to_employees_name, this.project_id, this.project_name, this.training_id, this.training_name
-                                                  Provider.of<TimesheetState>(
-                                                          context,
-                                                          listen: false)
-                                                      .reset();
-                                                  _displaySecondView(
-                                                      EditTimesheet(
-                                                    id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['timesheet_id'],
-                                                    date: _timesheet![0]
-                                                        .timesheet[i]['date'],
-                                                    timeStart: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['timestart'],
-                                                    timeEnd: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['timefinish'],
-                                                    desc: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['description'],
-                                                    tmode_id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['tmode_id'],
-                                                    proposal_id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['proposal_id'],
-                                                    services_id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['services_id'],
-                                                    serviceused_id:
-                                                        _timesheet![0]
-                                                                .timesheet[i]
-                                                            ['serviceused_id'],
-                                                    companies_name:
-                                                        _timesheet![0]
-                                                                .timesheet[i]
-                                                            ['companies_name'],
-                                                    service_name: _timesheet![0]
-                                                        .timesheet[i]
-                                                            ['service_name']
-                                                        .toString(),
-                                                    support_to_employees_id:
-                                                        _timesheet![0]
-                                                                .timesheet[i][
-                                                            'support_to_employees_id'],
-                                                    support_to_employees_name:
-                                                        _timesheet![0]
-                                                                .timesheet[i][
-                                                            'support_to_employees_name'],
-                                                    project_id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['project_id'],
-                                                    project_name: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['project_name'],
-                                                    training_id: _timesheet![0]
-                                                            .timesheet[i]
-                                                        ['training_id'],
-                                                    training_name:
-                                                        _timesheet![0]
-                                                                .timesheet[i]
-                                                            ['training_name'],
-                                                  ));
+                                                  if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
+                                                    if(_timesheet![0].relocked_date == null){
+                                                      _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                    }else{
+                                                      // -- check tanggal relock sudah exp belum
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                      // -- unvalid --
+                                                      if(forRelockDate.compareTo(forTodayDate) < 0){
+                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      }else{
+                                                        setState(() {
+                                                          _scrollDate = dateForAdd;
+                                                        });
+                                                        
+                                                        Provider.of<TimesheetState>(context, listen: false).reset();
+                                                        _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]
+                                                              ['timesheet_id'],
+                                                          date: _timesheet![0]
+                                                              .timesheet[i]['date'],
+                                                          timeStart: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['timestart'],
+                                                          timeEnd: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['timefinish'],
+                                                          desc: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['description'],
+                                                          tmode_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['tmode_id'],
+                                                          proposal_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['proposal_id'],
+                                                          services_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['services_id'],
+                                                          serviceused_id:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['serviceused_id'],
+                                                          companies_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['companies_name'],
+                                                          service_name: _timesheet![0]
+                                                              .timesheet[i]
+                                                                  ['service_name']
+                                                              .toString(),
+                                                          support_to_employees_id:
+                                                              _timesheet![0]
+                                                                      .timesheet[i][
+                                                                  'support_to_employees_id'],
+                                                          support_to_employees_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i][
+                                                                  'support_to_employees_name'],
+                                                          project_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['project_id'],
+                                                          project_name: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['project_name'],
+                                                          training_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['training_id'],
+                                                          training_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['training_name'],
+                                                        ));
+                                                     
+                                                      }
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      _scrollDate = dateForAdd;
+                                                    });
+                                                    
+                                                    Provider.of<TimesheetState>(context, listen: false).reset();
+                                                    _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]
+                                                          ['timesheet_id'],
+                                                      date: _timesheet![0]
+                                                          .timesheet[i]['date'],
+                                                      timeStart: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['timestart'],
+                                                      timeEnd: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['timefinish'],
+                                                      desc: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['description'],
+                                                      tmode_id: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['tmode_id'],
+                                                      proposal_id: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['proposal_id'],
+                                                      services_id: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['services_id'],
+                                                      serviceused_id:
+                                                          _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['serviceused_id'],
+                                                      companies_name:
+                                                          _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['companies_name'],
+                                                      service_name: _timesheet![0]
+                                                          .timesheet[i]
+                                                              ['service_name']
+                                                          .toString(),
+                                                      support_to_employees_id:
+                                                          _timesheet![0]
+                                                                  .timesheet[i][
+                                                              'support_to_employees_id'],
+                                                      support_to_employees_name:
+                                                          _timesheet![0]
+                                                                  .timesheet[i][
+                                                              'support_to_employees_name'],
+                                                      project_id: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['project_id'],
+                                                      project_name: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['project_name'],
+                                                      training_id: _timesheet![0]
+                                                              .timesheet[i]
+                                                          ['training_id'],
+                                                      training_name:
+                                                          _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['training_name'],
+                                                    ));
+                                                                                                    
+                                                  }
                                                 },
                                                 child: Container(
                                                     decoration: BoxDecoration(
