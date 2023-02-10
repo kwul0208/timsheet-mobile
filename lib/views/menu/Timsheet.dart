@@ -239,6 +239,7 @@ class _TimesheetState extends State<Timesheet> {
                 print(dateForAdd);
                 dateForAdd = formattedDate;
                 getTimesheet(formattedDate, true);
+                indexDetail = null;
               },
               leftMargin: 20,
               monthColor: Colors.black,
@@ -894,14 +895,14 @@ class _TimesheetState extends State<Timesheet> {
                                                       child: indexDetail == i
                                                           ? Icon(
                                                               Icons
-                                                                  .keyboard_arrow_down_rounded,
+                                                                  .keyboard_arrow_up_rounded,
                                                               color: Config()
                                                                   .primary,
                                                               size: 22,
                                                             )
                                                           : Icon(
                                                               Icons
-                                                                  .keyboard_arrow_up_rounded,
+                                                                  .keyboard_arrow_down_rounded,
                                                               color: Config()
                                                                   .primary,
                                                               size: 22,
