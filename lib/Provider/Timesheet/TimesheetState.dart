@@ -10,6 +10,15 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+
+  // -- add loading
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  void changeIsLoading(){
+    _isLoading = !_isLoading;
+    notifyListeners();
+  }
+
   
 
 

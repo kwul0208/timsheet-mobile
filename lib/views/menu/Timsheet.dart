@@ -11,6 +11,8 @@ import 'package:timsheet_mobile/Models/Timesheet/TimesheetApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
+import 'package:timsheet_mobile/Widget/Shimmer/ShimmerCardTImeseet.dart';
+import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/DetailTimesheet.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/EditTimesheet.dart';
@@ -54,7 +56,7 @@ class _TimesheetState extends State<Timesheet> {
     DateTime dt = DateTime.parse(DateTime.now().toString());
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
     dateForAdd = formattedDate;
-    _futureTimesheet = getTimesheet(formattedDate);
+    _futureTimesheet = getTimesheet(formattedDate, false);
   }
 
   Future<void> _displaySecondView(Widget view) async {
@@ -71,7 +73,7 @@ class _TimesheetState extends State<Timesheet> {
     print(result);
     if (result == dateForAdd) {
       Timer(Duration(milliseconds: 100), () {
-        getTimesheet(result);
+        getTimesheet(result, true);
         print('reloaddd');
         setState(() {
           _scrollDate = dateForAdd;
@@ -234,7 +236,7 @@ class _TimesheetState extends State<Timesheet> {
                 String formattedDate = DateFormat("yyyy-MM-dd").format(date);
                 print(dateForAdd);
                 dateForAdd = formattedDate;
-                getTimesheet(formattedDate);
+                getTimesheet(formattedDate, true);
               },
               leftMargin: 20,
               monthColor: Colors.black,
@@ -319,35 +321,57 @@ class _TimesheetState extends State<Timesheet> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Consumer<TimesheetState>(
                         builder: (context, data, _) {
-                      if (_timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request") {
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: width,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: Config().grey2,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.lock_outline,
-                                  size: 26,
+                      // -- check loading
+                      if (data.isLoading == false) {
+                        // -- check ada data ga
+                        if(_timesheet![0].timesheet.length != 0){
+                          if (_timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request") {
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                width: width,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Config().grey2,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.lock_outline,
+                                      size: 26,
+                                    ),
+                                    Text(
+                                      "Locked",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Locked",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox();
+                              ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        }else{
+                          return Center(
+                            child: Image.asset('assets/empty.jpg')
+                          );
+                        }
+                        // -- end check data
+                      }else{
+                         return Column(
+                           children: [
+                             ShimmerCardTImesheet(width: width),
+                             ShimmerCardTImesheet(width: width),
+                             ShimmerCardTImesheet(width: width),
+                             ShimmerCardTImesheet(width: width),
+                           ],
+                         );
                       }
+
+
                     });
                   } else {
                     return SizedBox();
@@ -741,12 +765,21 @@ class _TimesheetState extends State<Timesheet> {
   }
 
   // API
-  Future<void> getTimesheet(date) async {
+  Future<void> getTimesheet(date, load) async {
     // _timesheet!.clear();
+    if (load == true) {
+      _timesheet![0].timesheet.clear();
+      Provider.of<TimesheetState>(context, listen: false).changeRefresh();
+    }
+
+    Provider.of<TimesheetState>(context, listen: false).changeIsLoading();
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
 
     _timesheet = await TimesheetApi.getDataApi(context, date, employees_id!);
+    
+    Provider.of<TimesheetState>(context, listen: false).changeIsLoading();
+
     Provider.of<TimesheetState>(context, listen: false).changeRefresh();
   }
 
