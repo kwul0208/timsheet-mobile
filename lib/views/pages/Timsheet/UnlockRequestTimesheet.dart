@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class UnlockRequestTimesheet extends StatefulWidget {
   const UnlockRequestTimesheet({super.key, this.date});
@@ -33,6 +34,8 @@ class _UnlockRequestTimesheetState extends State<UnlockRequestTimesheet> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime dt = DateTime.parse("${widget.date}");
+    String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
     var size, height, width;
 
     // getting the size of the window
@@ -104,7 +107,7 @@ class _UnlockRequestTimesheetState extends State<UnlockRequestTimesheet> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text("${widget.date}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                    child: Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
                   ),
                 ),
                 Form(

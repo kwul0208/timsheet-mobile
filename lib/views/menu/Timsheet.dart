@@ -253,68 +253,7 @@ class _TimesheetState extends State<Timesheet> {
               height: 10,
               color: Config().line,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(20.0),
-            //   child: FutureBuilder(
-            //     future: _futureTimesheet,
-            //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.done) {
-            //         return Consumer<TimesheetState>(
-            //           builder: (context, data, _) {
-            //             print(data.refresh);
-            //             return Container(
-            //               child: Row(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   Column(
-            //                     children: [
-            //                       Row(
-            //                         children: [
-            //                           Container(
-            //                             width: 7,
-            //                             height: 7,
-            //                             decoration: BoxDecoration(
-            //                               color: Config().primary,
-            //                               borderRadius: BorderRadius.circular(5)
-            //                             ),
-            //                           ),
-            //                           SizedBox(width: 5),
-            //                           Text("Total Time", style: TextStyle(color: Config().subText),),
-            //                         ],
-            //                       ),
-            //                       Text("${Helper().formatedTime(time: _timesheet![0].time_duration)}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-            //                     ],
-            //                   ),
-            //                   Column(
-            //                     children: [
-            //                       Row(
-            //                         children: [
-            //                           Container(
-            //                             width: 7,
-            //                             height: 7,
-            //                             decoration: BoxDecoration(
-            //                               color: Config().primary,
-            //                               borderRadius: BorderRadius.circular(5)
-            //                             ),
-            //                           ),
-            //                           SizedBox(width: 5),
-            //                           Text('Overtime', style: TextStyle(color: Config().subText))
-            //                         ],
-            //                       ),
-            //                       Text("00:00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-            //                     ],
-            //                   ),
-            //                 ],
-            //               ),
-            //             );
-            //           }
-            //         );
-            //       }else{
-            //         return SizedBox();
-            //       }
-            //     }
-            //   ),
-            // ),
+           
             FutureBuilder(
                 future: _futureTimesheet,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -323,40 +262,236 @@ class _TimesheetState extends State<Timesheet> {
                         builder: (context, data, _) {
                       // -- check loading
                       if (data.isLoading == false) {
-                        // -- check ada data ga
+                        // -- format date untuk relock date
+                        String formattedDate = "";
+                        if (_timesheet![0].relocked_date != null) {
+                          DateTime dt = DateTime.parse("${_timesheet![0].relocked_date}");
+                          formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                        }
+                        // --  jika ada data
                         if(_timesheet![0].timesheet.length != 0){
                           if (_timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request") {
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                width: width,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    color: Config().grey2,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.lock_outline,
-                                      size: 26,
-                                    ),
-                                    Text(
-                                      "Locked",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
-                                    )
-                                  ],
+
+                            // -- check relock date --
+                            if(_timesheet![0].relocked_date == null){
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: width,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: Config().grey2,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.lock_outline,
+                                        size: 26,
+                                      ),
+                                      Text(
+                                        "Locked",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            }else{
+
+                              // -- check tanggal relock sudah exp belum
+                              DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                              DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                              // -- unvalid --
+                              if(forRelockDate.compareTo(forTodayDate) < 0){
+                                return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      width: width,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          color: Config().grey2,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            size: 26,
+                                          ),
+                                          Text(
+                                            "Locked",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                              // -- valid
+                              }else { //if(forRelockDate.compareTo(forTodayDate) > 0)
+                                  return Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Container(
+                                      width: width,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        color: Config().bgLock,
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.lock_open_outlined,
+                                                  size: 34,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(width: 5,),
+                                                Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),)
+                                              ],
+                                            ),
+                                            Text("Will be locked at $formattedDate", style: TextStyle(color: Colors.white, fontSize: 15),)
+                                        ],),
+                                      ),
+                                    ),
+                                  );
+                              }
+                              
+                            }
                           } else {
                             return SizedBox();
                           }
+
+                        // jika tidak ada data
                         }else{
+                          
+
                           return Center(
-                            child: Image.asset('assets/empty.jpg')
+                            child: Column(
+                              children: [
+                                // check status locked
+                                _timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request" ?
+                                  // kondisi masih ke lock
+                                  _timesheet![0].relocked_date == null ? 
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                        width: width,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Config().grey2,
+                                            borderRadius: BorderRadius.circular(10)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.lock_outline,
+                                              size: 26,
+                                            ),
+                                            Text(
+                                              "Locked",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ) 
+                                    :
+                                    // kodisi udah ke unlock
+                                    Builder(
+                                      builder: (context) {
+                                        // -- check tanggal relock sudah exp belum
+                                        DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                        DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                        // -- unvalid --
+                                        if(forRelockDate.compareTo(forTodayDate) < 0){
+                                          return Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Container(
+                                                width: width,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                    color: Config().grey2,
+                                                    borderRadius: BorderRadius.circular(10)),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.lock_outline,
+                                                      size: 26,
+                                                    ),
+                                                    Text(
+                                                      "Locked",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                        // -- valid
+                                        }else { //if(forRelockDate.compareTo(forTodayDate) > 0)
+                                            return Padding(
+                                              padding: EdgeInsets.all(10),
+                                              child: Container(
+                                                width: width,
+                                                height: 80,
+                                                decoration: BoxDecoration(
+                                                  color: Config().bgLock,
+                                                  borderRadius: BorderRadius.circular(10)
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.lock_open_outlined,
+                                                            size: 34,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(width: 5,),
+                                                          Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),)
+                                                        ],
+                                                      ),
+                                                      Text("Will be locked at $formattedDate", style: TextStyle(color: Colors.white, fontSize: 15),)
+                                                  ],),
+                                                ),
+                                              ),
+                                            );
+                                        }
+                                      }
+                                    )
+                                    :
+                                    // kondisi open 
+                                    SizedBox(),
+                          
+                                Image.asset('assets/empty.jpg'),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Your timesheet for this date is empty, request for unlock to complete it.", 
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              ],
+                            )
                           );
                         }
                         // -- end check data
@@ -723,14 +858,27 @@ class _TimesheetState extends State<Timesheet> {
                     _timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request"
                         ? FloatingActionButton(
                             heroTag: "btn1",
-                            backgroundColor: Color.fromARGB(255, 175, 212, 87),
+                            backgroundColor: Config().bgLock,
                             child: Icon(
                               Icons.lock_open_outlined,
                               size: 28,
                             ),
                             onPressed: () {
                               if (_timesheet![0].status == 'locked') {
-                                _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
+                                if (_timesheet![0].relocked_date == null) {
+                                  _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
+                                } else{
+                                  // -- check tanggal relock sudah exp belum
+                                  DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                  DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                  // -- unvalid --
+                                  if(forRelockDate.compareTo(forTodayDate) < 0){
+                                    _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
+                                  }else{
+                                    _showDialogLocked("Your Request has been approved. Now you can add your timesheet before ${_timesheet![0].relocked_date}");
+
+                                  }
+                                }
                               }else if(_timesheet![0].status == 'unlock_request') {
                                 _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date} (pending)");
                               }
@@ -744,7 +892,24 @@ class _TimesheetState extends State<Timesheet> {
                       child: Icon(Icons.add),
                       onPressed: () {
                         if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
-                          _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                          if(_timesheet![0].relocked_date == null){
+                            _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                          }else{
+                            // -- check tanggal relock sudah exp belum
+                            DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                            DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                            // -- unvalid --
+                            if(forRelockDate.compareTo(forTodayDate) < 0){
+                              _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                            }else{
+                              setState(() {
+                                _scrollDate = dateForAdd;
+                              });
+                              _displaySecondView(addTimsheet(date: dateForAdd));
+                            }
+
+                            }
+
                         } else {
                           setState(() {
                             _scrollDate = dateForAdd;
