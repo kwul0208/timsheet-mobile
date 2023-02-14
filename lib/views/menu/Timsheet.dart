@@ -995,129 +995,142 @@ class _TimesheetState extends State<Timesheet> {
               future: _futureTimesheet,
               builder: (BuildContext contect, AsyncSnapshot snapshot){
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Container(
-                                  width: width/1.6,
-                                  // height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("Chargeable Time", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                ),
-                                Container(
-                                  width: width/3.8,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                )
-                              ],
+                  return Consumer<TimesheetState>(
+                    builder: (context, data, _) {
+                      if(_timesheet![0].timesheet.length >= 1){
+                        
+                          int seconds = _timesheet![0].oa_duration; // some number of seconds
+                          Duration duration = Duration(seconds: seconds);
+                          String formattedDurationTotalTime = duration.toString().split('.').first.padLeft(8, "0");
+
+                        return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)
                             ),
-                            SizedBox(height: 2),
-                            Row(
-                              children: [
-                                Container(
-                                  width: width/1.6,
-                                  // height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: width/1.6,
+                                        // height: 20,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("Chargeable Time", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: width/3.8,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("Daily Routine", style: TextStyle(color: Colors.white,),),
+                                  SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: width/1.6,
+                                        // height: 20,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("Daily Routine", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: width/3.8,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                ),
-                                Container(
-                                  width: width/3.8,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
+                                  SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: width/1.6,
+                                        // height: 20,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("Total Working Time", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: width/3.8,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("${formattedDurationTotalTime.substring(0, 5)}", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                  SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: width/1.6,
+                                        // height: 20,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("Total Over Time", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: width/3.8,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                            SizedBox(height: 2),
-                            Row(
-                              children: [
-                                Container(
-                                  width: width/1.6,
-                                  // height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("Total Working Time", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                ),
-                                Container(
-                                  width: width/3.8,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Row(
-                              children: [
-                                Container(
-                                  width: width/1.6,
-                                  // height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("Total Over Time", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                ),
-                                Container(
-                                  width: width/3.8,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                          ),
+                        );
+                      }else{
+                        return SizedBox();
+                      }
+                    }
+                    );
                 }else{
                   return SizedBox();
                 }
