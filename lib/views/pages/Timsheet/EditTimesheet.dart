@@ -137,8 +137,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
     // initial value
     dateinput.text = widget.date!;
-    timeStart.text = widget.timeStart!;
-    timeEnd.text = widget.timeEnd!;
+    timeStart.text = widget.timeStart!.substring(0, 5);
+    timeEnd.text = widget.timeEnd!.substring(0, 5);
     description.text = widget.desc!;
     
     // Default time
@@ -1571,6 +1571,16 @@ class _EditTimesheetState extends State<EditTimesheet> {
     if(timeStart.text.isEmpty|| timeEnd.text.isEmpty || dateinput.text.isEmpty || description.text.isEmpty ||  _mode_id == 0){
       return {"status": false, "message": "Your form is not complete!"};
     }
+    
+    // validasi input time harus maksimal 3 jam
+    DateTime startDateTime = DateTime.parse("1970-01-01 " + timeStart.text + ":00");
+    DateTime endDateTime = DateTime.parse("1970-01-01 " + timeEnd.text + ":00");
+    
+    int secondsBetween = endDateTime.difference(startDateTime).inSeconds;
+    if (secondsBetween > 10800 ) {
+      return {"status": false, "message": "Time duration maximum 3 hours"};
+    }
+
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
 
