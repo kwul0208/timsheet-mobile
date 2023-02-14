@@ -277,37 +277,47 @@ class _TimesheetState extends State<Timesheet> {
 
                             // -- check relock date --
                             if(_timesheet![0].relocked_date == null){
-                              return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  width: width,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Config().grey2,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.lock_outline,
-                                        size: 26,
-                                      ),
-                                      Text(
-                                        "Locked",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
+                              // 1. check tanggal locknya == today ? lock : no
+                              DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                              DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                              // -- unlock --
+                              if(forlockDate.compareTo(forTodayDate) > 0){
+                                return SizedBox();
+
+                              // -- lock --
+                              }else{
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    width: width,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Config().grey2,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.lock_outline,
+                                          size: 26,
+                                        ),
+                                        Text(
+                                          "Locked",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             }else{
 
                               // -- check tanggal relock sudah exp belum
-                              DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                              DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
                               DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
-                              // -- unvalid --
+                              // -- unvalid/lock --
                               if(forRelockDate.compareTo(forTodayDate) < 0){
                                 return Padding(
                                     padding: const EdgeInsets.all(10.0),
@@ -415,7 +425,7 @@ class _TimesheetState extends State<Timesheet> {
                                     Builder(
                                       builder: (context) {
                                         // -- check tanggal relock sudah exp belum
-                                        DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                        DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
                                         DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                         // -- unvalid --
                                         if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -526,7 +536,11 @@ class _TimesheetState extends State<Timesheet> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Consumer<TimesheetState>(
                     builder: (context, data, _) {
-                      if(_timesheet![0].status == "open"){
+                      // 1. check tanggal locknya == today ? lock : no
+                      DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                      // forlockDate.compareTo(forTodayDate) > 0
+                      if(_timesheet![0].status == "open" || forlockDate.compareTo(forTodayDate) > 0){
                         if (_timesheet![0].timesheet.length >= 1) {
                           int hours = _timesheet![0].oa_duration;
                           double check_hour = hours / 3600;
@@ -746,10 +760,16 @@ class _TimesheetState extends State<Timesheet> {
                                                   onTap: () {
                                                     if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
                                                     if(_timesheet![0].relocked_date == null){
-                                                      _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                      if(forlockDate.compareTo(forTodayDate) > 0){
+                                                        _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                      }else{
+                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      }
                                                     }else{
                                                       // -- check tanggal relock sudah exp belum
-                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
                                                       DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                                       // -- unvalid --
                                                       if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -771,10 +791,76 @@ class _TimesheetState extends State<Timesheet> {
                                                 onTap: () {
                                                   if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
                                                     if(_timesheet![0].relocked_date == null){
-                                                      _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                      if(forlockDate.compareTo(forTodayDate) > 0){
+                                                        setState(() {
+                                                          _scrollDate = dateForAdd;
+                                                        });
+                                                        
+                                                        Provider.of<TimesheetState>(context, listen: false).reset();
+                                                        _displaySecondView(EditTimesheet(id: _timesheet![0].timesheet[i]
+                                                              ['timesheet_id'],
+                                                          date: _timesheet![0]
+                                                              .timesheet[i]['date'],
+                                                          timeStart: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['timestart'],
+                                                          timeEnd: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['timefinish'],
+                                                          desc: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['description'],
+                                                          tmode_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['tmode_id'],
+                                                          proposal_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['proposal_id'],
+                                                          services_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['services_id'],
+                                                          serviceused_id:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['serviceused_id'],
+                                                          companies_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['companies_name'],
+                                                          service_name: _timesheet![0]
+                                                              .timesheet[i]
+                                                                  ['service_name']
+                                                              .toString(),
+                                                          support_to_employees_id:
+                                                              _timesheet![0]
+                                                                      .timesheet[i][
+                                                                  'support_to_employees_id'],
+                                                          support_to_employees_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i][
+                                                                  'support_to_employees_name'],
+                                                          project_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['project_id'],
+                                                          project_name: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['project_name'],
+                                                          training_id: _timesheet![0]
+                                                                  .timesheet[i]
+                                                              ['training_id'],
+                                                          training_name:
+                                                              _timesheet![0]
+                                                                      .timesheet[i]
+                                                                  ['training_name'],
+                                                        ));
+                                                      }else{
+                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                      }
                                                     }else{
                                                       // -- check tanggal relock sudah exp belum
-                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
                                                       DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                                       // -- unvalid --
                                                       if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -1147,36 +1233,48 @@ class _TimesheetState extends State<Timesheet> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request"
-                        ? FloatingActionButton(
-                            heroTag: "btn1",
-                            backgroundColor: Config().bgLock,
-                            child: Icon(
-                              Icons.lock_open_outlined,
-                              size: 28,
-                            ),
-                            onPressed: () {
-                              if (_timesheet![0].status == 'locked') {
-                                if (_timesheet![0].relocked_date == null) {
-                                  _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
-                                } else{
-                                  // -- check tanggal relock sudah exp belum
-                                  DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
-                                  DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
-                                  // -- unvalid --
-                                  if(forRelockDate.compareTo(forTodayDate) < 0){
+                    Builder(
+                      builder: (context) {
+                        if(_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request"){
+                          DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                          DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                          if (forlockDate.compareTo(forTodayDate) > 0) {
+                            return SizedBox();
+                          }else{
+                            return FloatingActionButton(
+                              heroTag: "btn1",
+                              backgroundColor: Config().bgLock,
+                              child: Icon(
+                                Icons.lock_open_outlined,
+                                size: 28,
+                              ),
+                              onPressed: () {
+                                if (_timesheet![0].status == 'locked') {
+                                  if (_timesheet![0].relocked_date == null) {
                                     _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
-                                  }else{
-                                    _showDialogLocked("Your Request has been approved. Now you can add your timesheet before ${_timesheet![0].relocked_date}");
+                                  } else{
+                                    // -- check tanggal relock sudah exp belum
+                                    DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                    DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                    // -- unvalid --
+                                    if(forRelockDate.compareTo(forTodayDate) < 0){
+                                      _displaySecondView(UnlockRequestTimesheet(date: dateForAdd,));
+                                    }else{
+                                      _showDialogLocked("Your Request has been approved. Now you can add your timesheet before ${_timesheet![0].relocked_date}");
 
+                                    }
                                   }
+                                }else if(_timesheet![0].status == 'unlock_request') {
+                                  _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date} (pending)");
                                 }
-                              }else if(_timesheet![0].status == 'unlock_request') {
-                                _showDialogLocked("Request has not been approved. Your unlocked request date : ${_timesheet![0].unlocked_request_date} (pending)");
-                              }
-                                
-                            })
-                        : SizedBox(),
+
+                              });
+                          }
+                        }else{
+                          return SizedBox();
+                        }
+                      }
+                    ),
                     SizedBox(height: 10),
                     FloatingActionButton(
                       heroTag: "btn2",
@@ -1185,10 +1283,19 @@ class _TimesheetState extends State<Timesheet> {
                       onPressed: () {
                         if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
                           if(_timesheet![0].relocked_date == null){
+                            DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                          DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                          if (forlockDate.compareTo(forTodayDate) > 0) {
+                            setState(() {
+                              _scrollDate = dateForAdd;
+                            });
+                            _displaySecondView(addTimsheet(date: dateForAdd));
+                          }else{
                             _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                          }
                           }else{
                             // -- check tanggal relock sudah exp belum
-                            DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                            DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
                             DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                             // -- unvalid --
                             if(forRelockDate.compareTo(forTodayDate) < 0){
