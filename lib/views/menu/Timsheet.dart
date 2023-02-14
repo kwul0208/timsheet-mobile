@@ -256,7 +256,7 @@ class _TimesheetState extends State<Timesheet> {
               height: 10,
               color: Config().line,
             ),
-           
+            // -- alert lock
             FutureBuilder(
                 future: _futureTimesheet,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -519,6 +519,57 @@ class _TimesheetState extends State<Timesheet> {
                     return SizedBox();
                   }
                 }),
+            // -- alert before lock
+            FutureBuilder(
+              future: _futureTimesheet,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Consumer<TimesheetState>(
+                    builder: (context, data, _) {
+                      if(_timesheet![0].status == "open"){
+                        if (_timesheet![0].timesheet.length >= 1) {
+                          int hours = _timesheet![0].oa_duration;
+                          double check_hour = hours / 3600;
+                          if(check_hour < 8.0){
+                            DateTime dt = DateTime.parse("${_timesheet![0].locked_date}");
+                            String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: Config().redPallet,
+                                  borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Text("Your timesheet is incomplete.", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                      Text("Complete it immediatelly before locked on", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                      Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );  
+                          }else{
+                            return SizedBox();
+                          }
+                        }else{
+                          return SizedBox();
+                        }
+                      }else{
+                        return SizedBox();
+                      }
+                    }
+                  );
+                }else{
+                  return SizedBox();
+                }
+              }
+            ),
+            // -- timesheet
             FutureBuilder(
                 future: _futureTimesheet,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -644,14 +695,20 @@ class _TimesheetState extends State<Timesheet> {
                                           : SizedBox(),
                                       // -- end --
 
-                                      SizedBox(height: 10),
+                                      _timesheet![0].timesheet[i]['tmode_id'] ==
+                                              14 ? SizedBox() : SizedBox(height: 10),
                                       // Text(
                                       //   "${_timesheet![0].timesheet[i]['description']}",
                                       //   style: TextStyle(
                                       //       color: Colors.black54,
                                       //       fontSize: 13),
                                       // ),
-                                      Html(data: "${_timesheet![0].timesheet[i]['description']}"),
+                                      // _name.length > 10 ? _name.substring(0, 10)+'...' : _name,
+                                      Text("Description:"),
+                                      indexDetail != i ? 
+                                        Html(data: "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }") 
+                                        : 
+                                        Html(data: "${_timesheet![0].timesheet[i]['description']}"),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -932,7 +989,140 @@ class _TimesheetState extends State<Timesheet> {
                       ],
                     );
                   }
-                })
+                }),
+            // -- summary
+            FutureBuilder(
+              future: _futureTimesheet,
+              builder: (BuildContext contect, AsyncSnapshot snapshot){
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: width,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Container(
+                                  width: width/1.6,
+                                  // height: 20,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("Chargeable Time", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                ),
+                                Container(
+                                  width: width/3.8,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 2),
+                            Row(
+                              children: [
+                                Container(
+                                  width: width/1.6,
+                                  // height: 20,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("Daily Routine", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                ),
+                                Container(
+                                  width: width/3.8,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 2),
+                            Row(
+                              children: [
+                                Container(
+                                  width: width/1.6,
+                                  // height: 20,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("Total Working Time", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                ),
+                                Container(
+                                  width: width/3.8,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 2),
+                            Row(
+                              children: [
+                                Container(
+                                  width: width/1.6,
+                                  // height: 20,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("Total Over Time", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                ),
+                                Container(
+                                  width: width/3.8,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text("5.00", style: TextStyle(color: Colors.white,),),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }else{
+                  return SizedBox();
+                }
+              },
+            )
           ],
         ),
       ),

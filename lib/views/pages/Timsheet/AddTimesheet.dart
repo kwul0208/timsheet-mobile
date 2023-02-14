@@ -1447,14 +1447,14 @@ class _addTimsheetState extends State<addTimsheet> {
                                                   builder: (context, scrollController) {
                                                     return Column(
                                                       children: [
-                                                        SizedBox(height: 10),
+                                                        // SizedBox(height: 10),
                                                         Column(
                                                           children: [
                                                             Align(
                                                               alignment: Alignment.topCenter,
                                                               child: Container(
-                                                                margin: EdgeInsets.symmetric(vertical: 8),
-                                                                height: 8.0,
+                                                                // margin: EdgeInsets.symmetric(vertical: 8),
+                                                                height: 5.0,
                                                                 width: 70.0,
                                                                 decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                               ),
