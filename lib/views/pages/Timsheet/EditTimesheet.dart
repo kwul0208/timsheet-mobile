@@ -58,6 +58,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
   bool _showClient = false;
   bool _showProject = false;
   bool _showTraining = false;
+  // child mode state
+  bool _showChildCT = false;
+  bool _showChildOA = false;
+  bool _showChildBT = false;
+  bool _showChildDev = false;
 
 
   List options = [
@@ -246,8 +251,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
       setState(() {
         _showEmployees = true;
         suportEmployeeIdMode = widget.support_to_employees_id!;
-        
       });
+      Provider.of<TimesheetState>(context, listen: false).changeemployeeName(widget.support_to_employees_name);
     // -- project --
     }else if(mode_id == 14){
       Provider.of<TimesheetState>(context, listen: false).changeProjectName(widget.project_name!);
@@ -277,6 +282,8 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime dt = DateTime.parse("${dateinput.text}");
+    String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
     var size, height, width;
 
     // getting the size of the window
@@ -300,54 +307,125 @@ class _EditTimesheetState extends State<EditTimesheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // TextField(
+                  //   controller: dateinput, //editing controller of this TextField
+                  //   decoration: InputDecoration(
+                  //       icon: Icon(Icons.calendar_today), //icon of text field
+                  //       labelText: "Enter Date" //label text of field
+                  //       ),
+                  //   readOnly:
+                  //       true, //set it true, so that user will not able to edit text
+                  //   onTap: () async {
+                  //     DateTime? pickedDate = await showDatePicker(
+                  //         context: context,
+                  //         initialDate: DateTime.now(),
+                  //         firstDate: DateTime(
+                  //             2022), //DateTime.now() - not to allow to choose before today.
+                  //         lastDate: DateTime(2024));
+
+                  //     if (pickedDate != null) {
+                  //       print(
+                  //           pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                  //       String formattedDate =
+                  //           DateFormat('yyyy-MM-dd').format(pickedDate);
+                  //       print(
+                  //           formattedDate); //formatted date output using intl package =>  2021-03-16
+                  //       //you can implement different kind of Date Format here according to your requirement
+
+                  //       setState(() {
+                  //          dateinput.text = formattedDate; //set output date to TextField value.
+                  //       });
+                  //       getAssignment();
+                  //       getTraining();
+                  //     } else {
+                  //       print("Date is not selected");
+                  //     }
+                  //   },
+                  // ),
+                  Container(
+                    // width: width/1.8,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  // Row(
+                  //   children: [
+                  //     Flexible(
+                  //         child: TextField(
+                  //       controller: timeStart, //editing controller of this TextField
+                  //       decoration: InputDecoration(
+                  //           icon: Icon(Icons.timer), //icon of text field
+                  //           labelText: "Enter Time" //label text of field
+                  //           ),
+                  //       readOnly:
+                  //           true, //set it true, so that user will not able to edit text
+                  //       onTap: () async {
+                  //         TimeOfDay? pickedTime = await showTimePicker(
+                  //           initialTime: _Tstart,
+                  //           context: context,
+                  //         );
+
+                  //         if (pickedTime != null) {
+                  //           String formattedTime = pickedTime.format(context);
+
+                  //           setState(() {
+                  //             timeStart.text = formattedTime; //set the value of text field.
+                  //             _Tstart = pickedTime;
+                  //           });
+                  //         } else {
+                  //           print("Time is not selected");
+                  //         }
+                  //       },
+                  //     )),
+                  //     SizedBox(
+                  //       width: 10,
+                  //     ),
+                  //     Flexible(
+                  //         child: TextField(
+                  //       controller: timeEnd, //editing controller of this TextField
+                  //       decoration: InputDecoration(
+                  //           icon: Icon(Icons.timer), //icon of text field
+                  //           labelText: "Enter Time" //label text of field
+                  //           ),
+                  //       readOnly:
+                  //           true, //set it true, so that user will not able to edit text
+                  //       onTap: () async {
+                  //         TimeOfDay? pickedTime = await showTimePicker(
+                  //           initialTime: _Tend,
+                  //           context: context,
+                  //         );
+
+                  //         if (pickedTime != null) {
+                  //           String formattedTime = pickedTime.format(context);
+                  //           print(formattedTime); //output 14:59:00
+                  //           //DateFormat() is from intl package, you can format the time on any pattern you need.
+
+                  //           setState(() {
+                  //             timeEnd.text = formattedTime;
+                  //             _Tend = pickedTime; //set the value of text field.
+                  //           });
+                  //         } else {
+                  //           print("Time is not selected");
+                  //         }
+                  //       },
+                  //     )),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 20,),
                   TextField(
-                    controller: dateinput, //editing controller of this TextField
+                    controller: timeStart, //editing controller of this TextField
                     decoration: InputDecoration(
-                        icon: Icon(Icons.calendar_today), //icon of text field
-                        labelText: "Enter Date" //label text of field
+                        labelText: "Time Start" //label text of field
                         ),
                     readOnly:
                         true, //set it true, so that user will not able to edit text
                     onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(
-                              2022), //DateTime.now() - not to allow to choose before today.
-                          lastDate: DateTime(2024));
-
-                      if (pickedDate != null) {
-                        print(
-                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
-                        print(
-                            formattedDate); //formatted date output using intl package =>  2021-03-16
-                        //you can implement different kind of Date Format here according to your requirement
-
-                        setState(() {
-                           dateinput.text = formattedDate; //set output date to TextField value.
-                        });
-                        getAssignment();
-                        getTraining();
-                      } else {
-                        print("Date is not selected");
-                      }
-                    },
-                  ),
-                  SizedBox(height: 20,),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: TextField(
-                        controller: timeStart, //editing controller of this TextField
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.timer), //icon of text field
-                            labelText: "Enter Time" //label text of field
-                            ),
-                        readOnly:
-                            true, //set it true, so that user will not able to edit text
-                        onTap: () async {
                           TimeOfDay? pickedTime = await showTimePicker(
                             initialTime: _Tstart,
                             context: context,
@@ -364,20 +442,15 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             print("Time is not selected");
                           }
                         },
-                      )),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Flexible(
-                          child: TextField(
-                        controller: timeEnd, //editing controller of this TextField
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.timer), //icon of text field
-                            labelText: "Enter Time" //label text of field
-                            ),
-                        readOnly:
-                            true, //set it true, so that user will not able to edit text
-                        onTap: () async {
+                  ),
+                  TextField(
+                    controller: timeEnd, //editing controller of this TextField
+                    decoration: InputDecoration(
+                      labelText: "Time Finish" //label text of field
+                    ),
+                    readOnly:
+                        true, //set it true, so that user will not able to edit text
+                    onTap: () async {
                           TimeOfDay? pickedTime = await showTimePicker(
                             initialTime: _Tend,
                             context: context,
@@ -396,19 +469,17 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             print("Time is not selected");
                           }
                         },
-                      )),
-                    ],
                   ),
-                  SizedBox(height: 30,),
+                  // SizedBox(height: 30,),
                   TextFormField(
                     controller: description,
                     decoration: InputDecoration(
                       label: Text("Description"),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Config().line,)
-                      )
+                      // border: OutlineInputBorder(
+                      //   borderSide: BorderSide(color: Config().line,)
+                      // )
                     ),
-                    maxLines: 3,
+                    maxLines: 2,
                   ),
                   SizedBox(height: 20,),
                   Text("Mode", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
@@ -421,24 +492,38 @@ class _EditTimesheetState extends State<EditTimesheet> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // ---------- chargeable time ---------
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].chargeable_time["name"]}", style: TextStyle(fontWeight: FontWeight.w500),),
-                            ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15, top: 10),
-                                child: Text("${_mode![0].chargeable_time["sub"]['2']['name']}"),
+                            TextFormField(
+                              onTap: (){
+                                setState(() {
+                                  _showChildCT = !_showChildCT;
+                                });
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),  
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
                               ),
+                              controller: TextEditingController(text: "${_mode![0].chargeable_time["name"]}"),
+                            ),
+                            SizedBox(height: 20),
+                            _showChildCT == true ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("${_mode![0].chargeable_time["sub"]['2']['name']}", style: TextStyle(color: Config().primary, fontWeight: FontWeight.w500, fontSize: 16),),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['1']['name']}", style: TextStyle(fontSize: 14, ),),
                                   value: _mode![0].chargeable_time["sub"]['2']['sub']['1']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -446,15 +531,14 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['2']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['2']['sub']['2']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -462,35 +546,30 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['2']['sub']['3']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['2']['sub']['3']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
                                     print(val);
                                   }
                                 ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Text("${_mode![0].chargeable_time["sub"]['3']['name']}"),
-                              ),
+                              Text("${_mode![0].chargeable_time["sub"]['3']['name']}", style: TextStyle(color: Config().primary, fontWeight: FontWeight.w500, fontSize: 16),),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['1']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['3']['sub']['1']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -498,15 +577,14 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['2']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['3']['sub']['2']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -514,35 +592,30 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['3']['sub']['3']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['3']['sub']['3']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
                                     print(val);
                                   }
                                 ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Text("${_mode![0].chargeable_time["sub"]['1']['name']}"),
-                              ),
+                              Text("${_mode![0].chargeable_time["sub"]['1']['name']}",style: TextStyle(color: Config().primary, fontWeight: FontWeight.w500, fontSize: 16),),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['1']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['1']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['1']['sub']['1']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -550,15 +623,14 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['2']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['2']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['1']['sub']['2']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
@@ -566,148 +638,518 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   }
                                 ),
                                 RadioListTile(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['3']['name']}", style: TextStyle(fontSize: 13, color: Config().subText),),
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].chargeable_time["sub"]['1']['sub']['3']['name']}", style: TextStyle(fontSize: 14),),
                                   value: _mode![0].chargeable_time["sub"]['1']['sub']['3']['id'], 
                                   groupValue: _mode_id, 
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
                                       _showTraining = false;
-                                      _showProject = false;
                                       _showEmployees = false;
                                       _showClient = true;
                                     });
                                     print(val);
                                   }
                                 ),
-                            Divider(),
+                              ],
+                            ) : SizedBox(),
+                            
                             //----------- Prospecting -----------
+                            // RadioListTile(
+                            //   contentPadding: EdgeInsets.all(0),
+                            //   title: Text("${_mode![0].prospecting["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            //   value: _mode![0].prospecting["id"], 
+                            //   groupValue: _mode_id, 
+                            //   onChanged: (val){
+                            //     setState(() {
+                            //       id = val;
+                            //       _showTraining = false;
+                            //       _showEmployees = false;
+                            //       _showClient = false;
+                            //       _showProject = false;
+                            //     });
+                            //     print(val);
+                            //   }
+                            // ),
+                            TextField(
+                              onTap: (){
+                                setState(() {
+                                  _mode_id = _mode![0].prospecting["id"];
+                                  _showTraining = false;
+                                  _showEmployees = false;
+                                  _showClient = false;
+                                  _showProject = false;
+                                });
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 2 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].prospecting["name"]}"),
+                            ),
                             SizedBox(height: 10),
-                            RadioListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].prospecting["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-                              value: _mode![0].prospecting["id"], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                });
-                                print(val);
-                              }
-                            ),
-                            Divider(),
                             // ---------- Office Ad -----------
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].office_admisitration["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
-                            ),
-                            RadioListTile(
-                              title: Text("${_mode![0].office_admisitration["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13),),
-                              value: _mode![0].office_admisitration["sub"]['1']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
+                            TextField(
+                              onTap: (){
                                 setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
+                                  _showChildOA = !_showChildOA;
                                 });
-                                print(val);
-                              }
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 13 || _mode_id == 28 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].office_admisitration["name"]}"),
                             ),
-                            RadioListTile(
-                              title: Text("${_mode![0].office_admisitration["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
-                              value: _mode![0].office_admisitration["sub"]['2']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                });
-                                print(val);
-                              }
-                            ),
-                            Divider(),
+                            _showChildOA == true ? Column(
+                              children: [
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].office_admisitration["sub"]['1']['name']}", style: TextStyle(fontSize: 14),),
+                                  value: _mode![0].office_admisitration["sub"]['1']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = false;
+                                      _showProject = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.only(left: 0),
+                                  title: Text("${_mode![0].office_admisitration["sub"]['2']['name']}", style: TextStyle(fontSize: 14)),
+                                  value: _mode![0].office_admisitration["sub"]['2']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = false;
+                                      _showProject = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                              ],
+                            ) : SizedBox(),
+                            SizedBox(height: 10),
                             //------------- BS Travel ----------
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].business_travel["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
-                            ),
-                            RadioListTile(
-                              title: Text("${_mode![0].business_travel["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
-                              value: _mode![0].business_travel["sub"]['1']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
+                            TextField(
+                              onTap: (){
                                 setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = true;
+                                  _showChildBT = !_showChildBT;
                                 });
-                                print(val);
-                              }
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 24 || _mode_id == 25 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].business_travel["name"]}"),
                             ),
-                            RadioListTile(
-                              title: Text("${_mode![0].business_travel["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
-                              value: _mode![0].business_travel["sub"]['2']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = true;
-                                });
-                                print(val);
-                              }
-                            ),
-                            Divider(),
+                            _showChildBT == true ? Column(
+                              children: [
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  title: Text("${_mode![0].business_travel["sub"]['1']['name']}", style: TextStyle(fontSize: 14)),
+                                  value: _mode![0].business_travel["sub"]['1']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = true;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  title: Text("${_mode![0].business_travel["sub"]['2']['name']}", style: TextStyle(fontSize: 14)),
+                                  value: _mode![0].business_travel["sub"]['2']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = true;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                              ],
+                            ) : SizedBox(),
                             //------------ Ishoma -------------
-                            RadioListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].ishoma["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-                              value: _mode![0].ishoma["id"], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
+                            // RadioListTile(
+                            //   contentPadding: EdgeInsets.all(0),
+                            //   title: Text("${_mode![0].ishoma["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            //   value: _mode![0].ishoma["id"], 
+                            //   groupValue: _mode_id, 
+                            //   onChanged: (val){
+                            //     setState(() {
+                            //       id = val;
+                            //       _showTraining = false;
+                            //       _showEmployees = false;
+                            //       _showClient = false;
+                            //       _showProject = false;
+                            //     });
+                            //     print(val);
+                            //   }
+                            // ),
+                            SizedBox(height: 10),
+                            TextField(
+                              onTap: (){
                                 setState(() {
-                                  _mode_id = val;
+                                  _mode_id = _mode![0].ishoma["id"];
                                   _showTraining = false;
-                                  _showProject = false;
                                   _showEmployees = false;
                                   _showClient = false;
-                                });
-                                print(val);
-                              }
-                            ),
-                            Divider(),
-                            //------------ Suport service -------------
-                            RadioListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].suport_service["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-                              value: _mode![0].suport_service["id"], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
                                   _showProject = false;
+                                });
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 6 ? Icon(Icons.check) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].ishoma["name"]}"),
+                            ),
+                            //------------ Suport service -------------
+                            // RadioListTile(
+                            //   contentPadding: EdgeInsets.all(0),
+                            //   title: Text("${_mode![0].suport_service["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            //   value: _mode![0].suport_service["id"], 
+                            //   groupValue: _mode_id, 
+                            //   onChanged: (val){
+                            //     setState(() {
+                            //       id = val;
+                            //       _showTraining = false;
+                            //       _showEmployees = true;
+                            //       _showClient = false;
+                            //       _showProject = false;
+                            //     });
+                            //     print(val);
+                            //   }
+                            // ),
+                            SizedBox(height: 10),
+                            TextField(
+                              onTap: (){
+                                setState(() {
+                                  _mode_id = _mode![0].suport_service["id"];
+                                  _showTraining = false;
                                   _showEmployees = true;
                                   _showClient = false;
+                                  _showProject = false;
                                 });
-                                print(val);
-                              }
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 8 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].suport_service["name"]}"),
                             ),
+                            
+
+                            //------------ Training -------------
+                            // RadioListTile(
+                            //   contentPadding: EdgeInsets.all(0),
+                            //   title: Text("${_mode![0].training["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            //   value: _mode![0].training["id"], 
+                            //   groupValue: _mode_id, 
+                            //   onChanged: (val){
+                            //     setState(() {
+                            //       id = val;
+                            //       _showTraining = true;
+                            //       _showEmployees = false;
+                            //       _showClient = false;
+                            //       _showProject = false;
+                            //     });
+                            //     print(val);
+                            //   }
+                            // ),
+                            SizedBox(height: 10),
+                            TextField(
+                              onTap: (){
+                                setState(() {
+                                  _mode_id = _mode![0].training["id"];
+                                  _showTraining = true;
+                                  _showEmployees = false;
+                                  _showClient = false;
+                                  _showProject = false;
+                                });
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 9 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].training["name"]}"),
+                            ),
+                            
+                            // ---------- Development -----------
+                            SizedBox(height: 10),
+                            TextField(
+                              onTap: (){
+                                setState(() {
+                                  _showChildDev = !_showChildDev;
+                                });
+                              },
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                focusedBorder:  UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: (){},
+                                  icon: _mode_id == 14 || _mode_id == 27 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                ),
+                              ),
+                              controller: TextEditingController(text: "${_mode![0].development["name"]}"),
+                            ),
+                            _showChildDev == true ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  title: Text("${_mode![0].development["sub"]['1']['name']}", style: TextStyle( fontSize: 14)),
+                                  value: _mode![0].development["sub"]['1']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = false;
+                                      _showProject = true;
+                                    });
+                                    Provider.of<TimesheetState>(context, listen: false).changeProjectName('');
+                                    print(val);
+                                  }
+                                ),
+                                RadioListTile(
+                                  contentPadding: EdgeInsets.all(0),
+                                  title: Text("${_mode![0].development["sub"]['2']['name']}", style: TextStyle( fontSize: 14)),
+                                  value: _mode![0].development["sub"]['2']['id'], 
+                                  groupValue: _mode_id, 
+                                  onChanged: (val){
+                                    setState(() {
+                                      _mode_id = val;
+                                      _showTraining = false;
+                                      _showEmployees = false;
+                                      _showClient = false;
+                                      _showProject = false;
+                                    });
+                                    print(val);
+                                  }
+                                ),
+                              ],
+                            ) : SizedBox(),
+
+                            // Client
+                            //  _showClient == true ? Padding(
+                            //   padding: const EdgeInsets.only(left: 10),
+                            //   child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
+                            // ) : SizedBox(),
+                            SizedBox(height: 20),
+                            _showClient == true ? Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Consumer<TimesheetState>(
+                                        builder: (context, data, _) {
+                                          // -- initial after state change --
+                                         
+                                          if(data.assignmentIds.length != 0){
+                                            proposalIdMode = data.assignmentIds[0];
+                                            serviceIdMode = data.assignmentIds[1];
+                                            serviceUserIdMode = data.assignmentIds[2];
+                                          }
+
+                                          return TextField(
+                                            readOnly: true,
+                                            controller: client..text = data.client,
+                                            decoration: InputDecoration(
+                                              hintText: "Client"
+                                            ),
+                                            
+                                          );
+                                        }
+                                      )
+                                    ),
+                                    GestureDetector(
+                                      onTap: (){
+                                        print('woy');
+                                        Provider.of<TimesheetState>(context, listen: false).changeIndexA(null);
+                                        _foundAssignment = _assignment!;
+                                        showModalBottomSheet<void>(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                          ),
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (BuildContext context) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context, StateSetter setState) {
+                                                return DraggableScrollableSheet(
+                                                  expand: false,
+                                                  builder: (context, scrollController) {
+                                                    return Column(
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment.topCenter,
+                                                              child: Container(
+                                                                // margin: EdgeInsets.symmetric(vertical: 8),
+                                                                height: 5.0,
+                                                                width: 70.0,
+                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                            Padding(
+                                                              padding: EdgeInsets.only(left: 20 ,bottom: 20),
+                                                              child: Row(
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    onTap: (){
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Divider(),
+                                                            Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              SizedBox(height: 20.0),
+                                                              SizedBox(
+                                                                height: 50,
+                                                                child: TextField(
+                                                                  onChanged: (value) => _runFilterAssignment(value),
+                                                                  decoration: InputDecoration(
+                                                                    label: Text("Search Client Name"),
+                                                                    prefixIcon: Icon(Icons.search),
+                                                                    border: OutlineInputBorder(
+                                                                      borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                          ],
+                                                        ),
+                                                        Expanded(
+                                                          child:  _foundUsers.isNotEmpty
+                                                            ? ListView.builder(
+                                                              controller: scrollController,
+                                                              itemCount: _foundAssignment.length,
+                                                              itemBuilder: ((context, i){
+                                                                return Padding(
+                                                                  padding: const EdgeInsets.all(10.0),
+                                                                  child: CardAssignment(width: width, companies_name: _foundAssignment[i].companies_name, name_service: _foundAssignment[i].service_name, year: _foundAssignment[i].service_period, ope: _foundAssignment[i].ope, assign_numbber: _foundAssignment[i].assignment_number, scope: _foundAssignment[i].service_scope, proposal_id: _foundAssignment[i].proposal_id, service_id: _foundAssignment[i].services_id, serviceused_id: _foundAssignment[i].serviceused_id, i: i,),
+                                                                );
+                                                              }),
+                                                          ) : const Text(
+                                                          'No results found',
+                                                          style: TextStyle(fontSize: 24),
+                                                        ),),
+                                                        
+                                                      ],
+                                                    );
+                                                  }
+                                                );
+                                              }
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color:Colors.orange,
+                                              width: 2)),
+                                      child: Padding(
+                                        padding:const EdgeInsets.all(3.0),
+                                        child: Icon(
+                                          Icons.more_horiz,
+                                          color: Colors.orange,
+                                          size: 16,
+                                        ),
+                                      ))
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Consumer<TimesheetState>(
+                                  builder: (context, data, _) {
+                                    return TextField(
+                                      readOnly: true,
+                                      controller: service..text = data.service,
+                                      decoration: InputDecoration(
+                                        hintText: "Service"
+                                      ),
+                                    );
+                                  }
+                                )
+
+                              ],
+                            ) : SizedBox(),
+
                             _showEmployees == true ?
                             Row(
                               children: [
@@ -718,7 +1160,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                         readOnly: true,
                                         controller: employeeNameC..text = data.employeeName,
                                         decoration: InputDecoration(
-                                          hintText: "Employees"
+                                          label: Text("Employees")
                                         ),
 
                                       );
@@ -751,8 +1193,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                         Align(
                                                           alignment: Alignment.topCenter,
                                                           child: Container(
-                                                            margin: EdgeInsets.symmetric(vertical: 8),
-                                                            height: 8.0,
+                                                            height: 5.0,
                                                             width: 70.0,
                                                             decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                           ),
@@ -760,7 +1201,18 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                         SizedBox(height: 16),
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                          child: Text('Select Employee', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                          child: Row(
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    onTap: (){
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  Text('Select Employees', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                ],
+                                                              ),
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -768,10 +1220,17 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: <Widget>[
                                                               SizedBox(height: 20.0),
-                                                              TextField(
-                                                                onChanged: (value) => _runFilter(value),
-                                                                decoration: const InputDecoration(
-                                                                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                              SizedBox(
+                                                                height: 40,
+                                                                child: TextField(
+                                                                  onChanged: (value) => _runFilter(value),
+                                                                  decoration: const InputDecoration(
+                                                                    labelText: 'Search', prefixIcon: Icon(Icons.search),
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                      ),
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
@@ -786,16 +1245,21 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                           itemCount: _foundUsers.length,
                                                           itemBuilder: (context, index) => Card(
                                                             key: ValueKey(_foundUsers[index].id),
-                                                            color: Config().primary,
-                                                            elevation: 4,
+                                                            elevation: 1,
                                                             // margin: const EdgeInsets.symmetric(vertical: 10),
-                                                            child: ListTile(
-                                                              title: Text(_foundUsers[index].fullname),
-                                                              onTap: (){
-                                                                suportEmployeeIdMode = _foundUsers[index].id;
-                                                                Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
-                                                                Navigator.pop(context);
-                                                              },
+                                                            child: Consumer<TimesheetState>(
+                                                              builder: (context, data, _) {
+                                                                return ListTile(
+                                                                  title: Text(_foundUsers[index].fullname),
+                                                                  trailing: data.indexSelectedEmployee == index ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                                                  onTap: (){
+                                                                    suportEmployeeIdMode = _foundUsers[index].id;
+                                                                    Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
+                                                                    Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(index);
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                );
+                                                              }
                                                             ),
                                                           ),
                                                         )
@@ -814,63 +1278,28 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color:Colors.orange,
+                                              width: 2)),
+                                      child: Padding(
+                                        padding:const EdgeInsets.all(3.0),
+                                        child: Icon(
+                                          Icons.more_horiz,
+                                          color: Colors.orange,
+                                          size: 16,
+                                        ),
+                                      ))
                                   ),
                                 )
                               ],
                             ) : SizedBox(),
-                            // FutureBuilder(
-                            //   future: _futureEmployees,
-                            //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            //     if (snapshot.connectionState == ConnectionState.done) {
-                            //       return Padding(
-                            //         padding: const EdgeInsets.only(left: 10),
-                            //         child: _showEmployees == true ? DropdownButton<EmployeesModel>(
-                            //           hint: widget.tmode_id == 8 ? Text("${widget.support_to_employees_name}") : Text("-- Choose --"),
-                            //           value: selectedUser,
-                            //           onChanged: (EmployeesModel? newValue) {
-                            //             setState(() {
-                            //               suportEmployeeIdMode = newValue?.id;
-                            //               selectedUser = newValue;
-                            //             });
-                            //           },
-                            //           items: _employees?.map((EmployeesModel user) {
-                            //             return new DropdownMenuItem<EmployeesModel>(
-                            //               value: user,
-                            //               child: Text(
-                            //                 user.fullname,
-                            //                 style: new TextStyle(color: Colors.black),
-                            //               ),
-                            //             );
-                            //           }).toList(),
-                            //         ) : SizedBox(),
-                            //       );
-                            //     }else{
-                            //       return SizedBox();
-                            //     }
-                            //   }
-                            // ),
-                            Divider(),
-
-                            //------------ Training -------------
-                            RadioListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              title: Text("${_mode![0].training["name"]}", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-                              value: _mode![0].training["id"], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = true;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                });
-                                print(val);
-                              }
-                            ),
+                            
                             _showTraining == true ?
                             Row(
+
                               children: [
                                 Flexible(
                                   child:  Consumer<TimesheetState>(
@@ -879,7 +1308,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                         readOnly: true,
                                         controller: trainingNameC..text = data.trainingName,
                                         decoration: InputDecoration(
-                                          hintText: "Training"
+                                          label: Text("Training")
                                         ),
 
                                       );
@@ -915,7 +1344,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                             child: ListTile(
                                                               title: Text("${_training![i].training_name}"),
                                                               onTap: (){
-                                                                trainingIdMode = _training![i].id;
+                                                                trainingIdMode = _training![i].id.toString();
                                                                 Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
                                                                 Navigator.pop(context);
                                                               },
@@ -935,239 +1364,45 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color:Colors.orange,
+                                              width: 2)),
+                                      child: Padding(
+                                        padding:const EdgeInsets.all(3.0),
+                                        child: Icon(
+                                          Icons.more_horiz,
+                                          color: Colors.orange,
+                                          size: 16,
+                                        ),
+                                      ))
                                   ),
                                 )
                               ],
                             ) : SizedBox(),
-                            Divider(),
-                            // ---------- Development -----------
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("${_mode![0].development["name"]}", style: TextStyle(fontWeight: FontWeight.w500)),
-                            ),
-                            RadioListTile(
-                              title: Text("${_mode![0].development["sub"]['1']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
-                              value: _mode![0].development["sub"]['1']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = true;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                }); 
-                                print(val);
-                              }
-                            ),
+
                             _showProject == true ?
                             Row(
                               children: [
-                                Flexible(
-                                  child:  Consumer<TimesheetState>(
-                                    builder: (context, data, _) {
-                                      return TextField(
-                                        readOnly: true,
-                                        controller: projectNameC..text = data.projectName,
-                                        decoration: InputDecoration(
-                                          hintText: "project"
-                                        ),
-
-                                      );
-                                    }
-                                  )
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    print('woy');
-                                    showModalBottomSheet<void>(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                                      ),
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder: (BuildContext context) {
-                                        return StatefulBuilder(
-                                          builder: (BuildContext context, StateSetter setState) {
-                                            return DraggableScrollableSheet(
-                                              expand: false,
-                                              builder: (context, scrollController) {
-                                                return Column(
-                                                  children: [
-                                                    SizedBox(height: 10),
-                                                    Column(
-                                                      children: [
-                                                        Align(
-                                                          alignment: Alignment.topCenter,
-                                                          child: Container(
-                                                            margin: EdgeInsets.symmetric(vertical: 8),
-                                                            height: 8.0,
-                                                            width: 70.0,
-                                                            decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 16),
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 20),
-                                                          child: Text('Select project', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    
-                                                    Expanded(
-                                                      child: ListView.builder(
-                                                        controller: scrollController,
-                                                        // physics: NeverScrollableScrollPhysics(),
-                                                        // shrinkWrap: true,
-                                                        itemCount: _project?.length,
-                                                        itemBuilder: ((context, i){
-                                                          return Ink(
-                                                            child: ListTile(
-                                                              title: Text("${_project![i].project_name}"),
-                                                              onTap: (){
-                                                                projectIdMode = _project![i].id;
-                                                                Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
-                                                                Navigator.pop(context);
-                                                              },
-                                                               shape: Border.all(color: Config().line, width: 1),
-
-                                                            ),
-                                                          );
-                                                        }),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              }
-                                            );
-                                          }
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
-                                  ),
-                                )
-                              ],
-                            ) : SizedBox(),
-                            RadioListTile(
-                              title: Text("${_mode![0].development["sub"]['2']['name']}", style: TextStyle(color: Config().subText, fontSize: 13)),
-                              value: _mode![0].development["sub"]['2']['id'], 
-                              groupValue: _mode_id, 
-                              onChanged: (val){
-                                setState(() {
-                                  _mode_id = val;
-                                  _showTraining = false;
-                                  _showProject = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                });
-                                print(val);
-                              }
-                            ),
-                            
-                            Divider(),
-                            // Client
-                             _showClient == true ? Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
-                            ) : SizedBox(),
-
-                            _showClient == true ? Column(
-                              children: [
-                                // Padding(
-                                //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                //   child: DropdownSearch<dynamic>(
-                                //     showSelectedItems: false,
-                                //     showClearButton: true,
-                                //     dropdownSearchDecoration: InputDecoration(
-                                //       labelText: "Search",
-                                //       hintText: "Search Name",
-                                //     ),
-                                //     //have two mode: menu mode and dialog mode
-                                //     mode: Mode.DIALOG,
-                                //     //if you want show search box
-                                //     showSearchBox: true,
-                                //     //get data from the internet
-                                //     onFind: (text) async {
-                                //       final storage = new FlutterSecureStorage();
-                                //       var employees_id = await storage.read(key: 'employees_id');
-                                      
-                                //       var headers = {
-                                //         'Content-Type': 'application/json',
-                                //       };
-                                //       var request = http.Request(
-                                //           'GET',
-                                //           Uri.parse(
-                                //               '$baseUrl/mucnet_api/api/assignment-consultant'));
-
-                                //         request.body = json.encode({
-                                //           "date": "${dateinput.text}",
-                                //           "employees_id": employees_id
-                                //         });
-
-                                //       request.headers.addAll(headers);
-
-                                //       http.StreamedResponse response = await request.send();
-
-                                //       if (response.statusCode == 200) {
-                                //         var x = await response.stream.bytesToString();
-                                //         List data = jsonDecode(x);
-
-                                //         setState(() {
-                                //           _get = data;
-                                //         });
-                                //       }else{
-                                //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                //           content: Text("failed!, ${response.reasonPhrase}"),
-                                //         ));
-                                //       }
-
-                                //       return _get as List<dynamic>;
-                                //     },
-
-                                //     //what do you want anfter item clicked
-                                //     onChanged: (value) {
-
-                                //      print(value);
-
-                                      
-                                //     },
-
-                                //     //this data appear in dropdown after clicked
-                                //     itemAsString: (item) => item['companies_name'],
-                                //   ),
-                                // ),
-
-                                Row(
-                                  children: [
                                     Flexible(
-                                      child: Consumer<TimesheetState>(
+                                      child:  Consumer<TimesheetState>(
                                         builder: (context, data, _) {
-                                          // -- initial after state change --
-                                          if(data.assignmentIds.length != 0){
-                                            proposalIdMode = data.assignmentIds[0];
-                                            serviceIdMode = data.assignmentIds[1];
-                                            serviceUserIdMode = data.assignmentIds[2];
-                                          }
-
                                           return TextField(
                                             readOnly: true,
-                                            controller: client..text = data.client,
+                                            controller: projectNameC..text = data.projectName,
                                             decoration: InputDecoration(
-                                              hintText: "Client"
+                                              label: Text("project")
                                             ),
-                                            
+
                                           );
                                         }
                                       )
                                     ),
                                     GestureDetector(
                                       onTap: (){
-                                        _foundAssignment = _assignment!;
+                                        print('woy');
                                         showModalBottomSheet<void>(
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -1182,6 +1417,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                   builder: (context, scrollController) {
                                                     return Column(
                                                       children: [
+                                                        SizedBox(height: 10),
                                                         Column(
                                                           children: [
                                                             Align(
@@ -1195,42 +1431,54 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                             ),
                                                             SizedBox(height: 16),
                                                             Padding(
-                                                              padding: EdgeInsets.only(bottom: 20),
-                                                              child: Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                                            ),
-                                                            Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: <Widget>[
-                                                              SizedBox(height: 20.0),
-                                                              TextField(
-                                                                onChanged: (value) => _runFilterAssignment(value),
-                                                                decoration: const InputDecoration(
-                                                                    labelText: 'Companies Name', suffixIcon: Icon(Icons.search)),
+                                                              padding: EdgeInsets.only(left: 20,bottom: 20),
+                                                              child: Row(
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    onTap: (){
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  Text('Select Project', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 16),
+                                                            ),
                                                           ],
                                                         ),
-                                                        Expanded(
-                                                          child:  _foundUsers.isNotEmpty
-                                                            ? ListView.builder(
-                                                              controller: scrollController,
-                                                              itemCount: _foundAssignment.length,
-                                                              itemBuilder: ((context, i){
-                                                                return Padding(
-                                                                  padding: const EdgeInsets.all(10.0),
-                                                                  child: CardAssignment(width: width, companies_name: _foundAssignment[i].companies_name, name_service: _foundAssignment[i].service_name, year: _foundAssignment[i].service_period, ope: _foundAssignment[i].ope, assign_numbber: _foundAssignment[i].assignment_number, scope: _foundAssignment[i].service_scope, proposal_id: _foundAssignment[i].proposal_id, service_id: _foundAssignment[i].services_id, serviceused_id: _foundAssignment[i].serviceused_id,),
-                                                                );
-                                                              }),
-                                                          ) : const Text(
-                                                          'No results found',
-                                                          style: TextStyle(fontSize: 24),
-                                                        ),),
                                                         
+                                                        Expanded(
+                                                          child: ListView.builder(
+                                                            controller: scrollController,
+                                                            // physics: NeverScrollableScrollPhysics(),
+                                                            // shrinkWrap: true,
+                                                            itemCount: _project?.length,
+                                                            itemBuilder: ((context, i){
+                                                              return Ink(
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                                                                  child: Consumer<TimesheetState>(
+                                                                    builder: (context, data, _) {
+                                                                      return ListTile(
+                                                                        trailing: data.indexSelectedProject == i ? Icon(Icons.check, size: 34, color: Config().primary,) : SizedBox(),
+                                                                        title: Text("${_project![i].project_name}"),
+                                                                        onTap: (){
+                                                                          projectIdMode = _project![i].id;
+                                                                          Provider.of<TimesheetState>(context, listen: false).changeProjectName(_project![i].project_name!);
+                                                                          Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedProject(i);
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                        shape: Border.all(color: Config().line, width: 1),
+
+                                                                      );
+                                                                    }
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }),
+                                                          ),
+                                                        ),
                                                       ],
                                                     );
                                                   }
@@ -1242,25 +1490,26 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                                        child: Icon(Icons.assignment, color: Config().redAccent, size: 30,),
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color:Colors.orange,
+                                              width: 2)),
+                                      child: Padding(
+                                        padding:const EdgeInsets.all(3.0),
+                                        child: Icon(
+                                          Icons.more_horiz,
+                                          color: Colors.orange,
+                                          size: 16,
+                                        ),
+                                      ))
                                       ),
                                     )
                                   ],
-                                ),
-                                Consumer<TimesheetState>(
-                                  builder: (context, data, _) {
-                                    return TextField(
-                                      readOnly: true,
-                                      controller: service..text = data.service,
-                                      decoration: InputDecoration(
-                                        hintText: "Service"
-                                      ),
-                                    );
-                                  }
-                                )
+                            ) : SizedBox(),
 
-                              ],
-                            ) : SizedBox()
+
 
                           ],
                         );

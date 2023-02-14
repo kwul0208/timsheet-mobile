@@ -16,7 +16,7 @@ class Helper{
   }
 
    bool isValidTimeRange(TimeOfDay startTime, TimeOfDay endTime) {
-    return ((endTime.hour > startTime.hour) || (endTime.minute > startTime.minute))
-        ;
+    return ((endTime.hour > startTime.hour));
+    // return ((endTime.hour > startTime.hour) || (endTime.minute > startTime.minute));
   }
 }

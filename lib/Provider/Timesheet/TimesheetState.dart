@@ -41,11 +41,33 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  int? _indexA;
+  int? get indexA => _indexA;
+  void changeIndexA(val){
+    _indexA = val;
+    notifyListeners();
+  }
+
+  int? _indexS;
+  int? get indexS => _indexS;
+  void changeIndexS(val){
+    _indexS = val;
+    notifyListeners();
+  }
+ 
+
   // ------- Project ----------
   String _projetName = '';
   String get projectName => _projetName;
   void changeProjectName(String val){
     _projetName = val;
+    notifyListeners();
+  }
+
+  int? _indexSelectedProject;
+  int? get indexSelectedProject => _indexSelectedProject;
+  void changeIndexSelectedProject(val){
+    _indexSelectedProject = val;
     notifyListeners();
   }
 
@@ -62,6 +84,13 @@ class TimesheetState extends ChangeNotifier{
   String get employeeName => _employeeName;
   void changeemployeeName(val){
     _employeeName = val.toString();
+    notifyListeners();
+  }
+
+  int? _indexSelectedEmployee;
+  int? get indexSelectedEmployee => _indexSelectedEmployee;
+  void changeIndexSelectedEmployee(val){
+    _indexSelectedEmployee = val;
     notifyListeners();
   }
 

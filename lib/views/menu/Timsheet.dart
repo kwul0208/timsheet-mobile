@@ -487,10 +487,14 @@ class _TimesheetState extends State<Timesheet> {
                                 Image.asset('assets/empty.jpg'),
                                 Padding(
                                   padding: const EdgeInsets.all(20.0),
-                                  child: Text(
-                                    "Your timesheet for this date is empty, request for unlock to complete it.", 
+                                  child: _timesheet![0].status == "open" ? Text(
+                                    "Your timesheet for this date is empty.", 
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 16),
+                                  ) : Text(
+                                    "Your timesheet for this date is empty, request for unlock to complete it.", 
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),                                
                                   ),
                                 )
                               ],
