@@ -296,6 +296,29 @@ class _addTimsheetState extends State<addTimsheet> {
                       TimeOfDay? pickedTime = await showTimePicker(
                         initialTime: TimeOfDay.now(),
                         context: context,
+                        initialEntryMode: TimePickerEntryMode.input,
+                        builder: (context, child){
+                          return Theme(
+                            data: ThemeData.light().copyWith(
+                              
+                              colorScheme: ColorScheme.light(
+                                // change the border color
+                                primary: Config().primary,
+                                // change the text color
+                                onSurface: Config().primary,
+                                
+                              ),
+                              
+                              // button colors 
+                              buttonTheme: ButtonThemeData(
+                                colorScheme: ColorScheme.light(
+                                  primary: Colors.green,
+                                ),
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        }
                       );
 
                       if (pickedTime != null) {
@@ -347,6 +370,29 @@ class _addTimsheetState extends State<addTimsheet> {
                       TimeOfDay? pickedTime = await showTimePicker(
                         initialTime: TimeOfDay.now(),
                         context: context,
+                        initialEntryMode: TimePickerEntryMode.input,
+                        builder: (context, child){
+                          return Theme(
+                            data: ThemeData.light().copyWith(
+                              
+                              colorScheme: ColorScheme.light(
+                                // change the border color
+                                primary: Config().primary,
+                                // change the text color
+                                onSurface: Config().primary,
+                                
+                              ),
+                              
+                              // button colors 
+                              buttonTheme: ButtonThemeData(
+                                colorScheme: ColorScheme.light(
+                                  primary: Colors.green,
+                                ),
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        }
                       );
 
                       if (pickedTime != null) {
