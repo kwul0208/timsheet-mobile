@@ -223,7 +223,7 @@ class _TimesheetState extends State<Timesheet> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Config().primary,
-        title: Text("Timesheet"),
+        title: Text("Timesheet", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, fontFamily: "Inter")),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -245,7 +245,7 @@ class _TimesheetState extends State<Timesheet> {
               monthColor: Colors.black,
               dayColor: Colors.black,
               activeDayColor: Colors.white,
-              activeBackgroundDayColor: Colors.orange,
+              activeBackgroundDayColor: Config().orangePallet,
               dotsColor: Color(0xFF333A47),
               // selectableDayPredicate: (date) => date.day != 23,
               // locale: 'en_ISO',
@@ -491,9 +491,47 @@ class _TimesheetState extends State<Timesheet> {
                                       }
                                     )
                                     :
-                                    // kondisi open 
+                                    // kondisi open
+                                    // -- ada alert not complete
+                                    Consumer<TimesheetState>(
+                                      builder: (context, data,_) {
+                                        // chack range date from today - date lock = today < 5hr = show
+                                        DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+                                        print(_timesheet![0].locked_date!);
+                                        DateTime inputDate = DateTime.parse(_timesheet![0].locked_date!);
+                                        String formattedDate = dateFormat.format(inputDate);
+                                        DateTime lock_date = dateFormat.parse(formattedDate);
+
+                                        DateTime today = DateTime.now();
+                                        Duration difference = lock_date.difference(today);
+                                        int totalDays = difference.inDays;
+                                        if(totalDays <= 5){
+                                          return Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Container(
+                                              width: width,
+                                              decoration: BoxDecoration(
+                                                color: Config().redPallet,
+                                                borderRadius: BorderRadius.circular(10)
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Text("Your timesheet is incomplete.", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                                    Text("Complete it immediatelly before locked on", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                                    Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),);
+                                        }else{
+                                          return SizedBox();
+                                        }
+                                      }
+                                    ),
                                     SizedBox(),
-                          
+                                
                                 Image.asset('assets/empty.jpg'),
                                 Padding(
                                   padding: const EdgeInsets.all(20.0),
@@ -529,6 +567,7 @@ class _TimesheetState extends State<Timesheet> {
                     return SizedBox();
                   }
                 }),
+            
             // -- alert before lock
             FutureBuilder(
               future: _futureTimesheet,
