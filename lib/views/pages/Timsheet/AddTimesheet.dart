@@ -509,7 +509,7 @@ class _addTimsheetState extends State<addTimsheet> {
                       //   borderSide: BorderSide(color: Config().line,)
                       // )
                     ),
-                    maxLines: 2,
+                    maxLines: 4,
                   ),
                   SizedBox(height: 20,),
                   Text("Mode", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),

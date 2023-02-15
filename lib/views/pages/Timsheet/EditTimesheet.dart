@@ -479,7 +479,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                       //   borderSide: BorderSide(color: Config().line,)
                       // )
                     ),
-                    maxLines: 2,
+                    maxLines: 4,
                   ),
                   SizedBox(height: 20,),
                   Text("Mode", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
@@ -523,6 +523,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -538,6 +539,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -553,6 +555,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -569,6 +572,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -584,6 +588,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -599,6 +604,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -615,6 +621,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -630,6 +637,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -645,6 +653,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -780,6 +789,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -795,6 +805,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   onChanged: (val){
                                     setState(() {
                                       _mode_id = val;
+                                      _showProject = false;
                                       _showTraining = false;
                                       _showEmployees = false;
                                       _showClient = true;
@@ -994,146 +1005,135 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             SizedBox(height: 20),
                             _showClient == true ? Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Consumer<TimesheetState>(
-                                        builder: (context, data, _) {
-                                          // -- initial after state change --
-                                         
-                                          if(data.assignmentIds.length != 0){
-                                            proposalIdMode = data.assignmentIds[0];
-                                            serviceIdMode = data.assignmentIds[1];
-                                            serviceUserIdMode = data.assignmentIds[2];
-                                          }
+                                Consumer<TimesheetState>(
+                                  builder: (context, data, _) {
+                                    // -- initial after state change --
+                                   
+                                    if(data.assignmentIds.length != 0){
+                                      proposalIdMode = data.assignmentIds[0];
+                                      serviceIdMode = data.assignmentIds[1];
+                                      serviceUserIdMode = data.assignmentIds[2];
+                                    }
 
-                                          return TextField(
-                                            readOnly: true,
-                                            controller: client..text = data.client,
-                                            decoration: InputDecoration(
-                                              hintText: "Client"
-                                            ),
-                                            
-                                          );
-                                        }
-                                      )
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        print('woy');
-                                        Provider.of<TimesheetState>(context, listen: false).changeIndexA(null);
-                                        _foundAssignment = _assignment!;
-                                        showModalBottomSheet<void>(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                                          ),
-                                          context: context,
-                                          isScrollControlled: true,
-                                          builder: (BuildContext context) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context, StateSetter setState) {
-                                                return DraggableScrollableSheet(
-                                                  expand: false,
-                                                  builder: (context, scrollController) {
-                                                    return Column(
-                                                      children: [
-                                                        Column(
+                                    return TextField(
+                                      readOnly: true,
+                                      controller: client..text = data.client,
+                                      decoration: InputDecoration(
+                                        hintText: "Client",
+                                        suffixIcon: IconButton(
+                                          onPressed: (){
+                                            print('woy');
+                                            Provider.of<TimesheetState>(context, listen: false).changeIndexA(null);
+                                            _foundAssignment = _assignment!;
+                                            showModalBottomSheet<void>(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                              ),
+                                              context: context,
+                                              isScrollControlled: true,
+                                              builder: (BuildContext context) {
+                                                return StatefulBuilder(
+                                                  builder: (BuildContext context, StateSetter setState) {
+                                                    return DraggableScrollableSheet(
+                                                      expand: false,
+                                                      builder: (context, scrollController) {
+                                                        return Column(
                                                           children: [
-                                                            Align(
-                                                              alignment: Alignment.topCenter,
-                                                              child: Container(
-                                                                // margin: EdgeInsets.symmetric(vertical: 8),
-                                                                height: 5.0,
-                                                                width: 70.0,
-                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 20 ,bottom: 20),
-                                                              child: Row(
-                                                                children: [
-                                                                  GestureDetector(
-                                                                    onTap: (){
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                            Column(
+                                                              children: [
+                                                                Align(
+                                                                  alignment: Alignment.topCenter,
+                                                                  child: Container(
+                                                                    // margin: EdgeInsets.symmetric(vertical: 8),
+                                                                    height: 5.0,
+                                                                    width: 70.0,
+                                                                    decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                                   ),
-                                                                  SizedBox(width: 20),
-                                                                  Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                ),
+                                                                SizedBox(height: 16),
+                                                                Padding(
+                                                                  padding: EdgeInsets.only(left: 20 ,bottom: 20),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap: (){
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                        child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                      ),
+                                                                      SizedBox(width: 20),
+                                                                      Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Divider(),
+                                                                Padding(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  TextFormField(
+                                                                    onChanged: (value) => _runFilterAssignment(value),
+                                                                    decoration: InputDecoration(
+                                                                      isDense: true, 
+                                                                      contentPadding: EdgeInsets.fromLTRB(10, 10, 10,1),
+                                                                      hintText: "Search Client Name",
+                                                                      prefixIcon: Icon(Icons.search),
+                                                                      border: OutlineInputBorder(
+                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                 ],
                                                               ),
                                                             ),
-                                                            Divider(),
-                                                            Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: <Widget>[
-                                                              SizedBox(height: 20.0),
-                                                              SizedBox(
-                                                                height: 50,
-                                                                child: TextField(
-                                                                  onChanged: (value) => _runFilterAssignment(value),
-                                                                  decoration: InputDecoration(
-                                                                    label: Text("Search Client Name"),
-                                                                    prefixIcon: Icon(Icons.search),
-                                                                    border: OutlineInputBorder(
-                                                                      borderRadius:BorderRadius.all(Radius.circular(10.0)),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 16),
+                                                            SizedBox(height: 16),
+                                                              ],
+                                                            ),
+                                                            Expanded(
+                                                              child:  _foundUsers.isNotEmpty
+                                                                ? ListView.builder(
+                                                                  controller: scrollController,
+                                                                  itemCount: _foundAssignment.length,
+                                                                  itemBuilder: ((context, i){
+                                                                    return Padding(
+                                                                      padding: const EdgeInsets.all(10.0),
+                                                                      child: CardAssignment(width: width, companies_name: _foundAssignment[i].companies_name, name_service: _foundAssignment[i].service_name, year: _foundAssignment[i].service_period, ope: _foundAssignment[i].ope, assign_numbber: _foundAssignment[i].assignment_number, scope: _foundAssignment[i].service_scope, proposal_id: _foundAssignment[i].proposal_id, service_id: _foundAssignment[i].services_id, serviceused_id: _foundAssignment[i].serviceused_id, i: i,),
+                                                                    );
+                                                                  }),
+                                                              ) : const Text(
+                                                              'No results found',
+                                                              style: TextStyle(fontSize: 24),
+                                                            ),),
+                                                            
                                                           ],
-                                                        ),
-                                                        Expanded(
-                                                          child:  _foundUsers.isNotEmpty
-                                                            ? ListView.builder(
-                                                              controller: scrollController,
-                                                              itemCount: _foundAssignment.length,
-                                                              itemBuilder: ((context, i){
-                                                                return Padding(
-                                                                  padding: const EdgeInsets.all(10.0),
-                                                                  child: CardAssignment(width: width, companies_name: _foundAssignment[i].companies_name, name_service: _foundAssignment[i].service_name, year: _foundAssignment[i].service_period, ope: _foundAssignment[i].ope, assign_numbber: _foundAssignment[i].assignment_number, scope: _foundAssignment[i].service_scope, proposal_id: _foundAssignment[i].proposal_id, service_id: _foundAssignment[i].services_id, serviceused_id: _foundAssignment[i].serviceused_id, i: i,),
-                                                                );
-                                                              }),
-                                                          ) : const Text(
-                                                          'No results found',
-                                                          style: TextStyle(fontSize: 24),
-                                                        ),),
-                                                        
-                                                      ],
+                                                        );
+                                                      }
                                                     );
                                                   }
                                                 );
-                                              }
+                                              },
                                             );
                                           },
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                                        child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:BorderRadius.circular(20),
-                                          border: Border.all(
-                                              color:Colors.orange,
-                                              width: 2)),
-                                      child: Padding(
-                                        padding:const EdgeInsets.all(3.0),
-                                        child: Icon(
-                                          Icons.more_horiz,
-                                          color: Colors.orange,
-                                          size: 16,
-                                        ),
-                                      ))
+                                          icon: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:BorderRadius.circular(20),
+                                              border: Border.all(
+                                                  color:Colors.orange,
+                                                  width: 2)),
+                                          child: Padding(
+                                            padding:const EdgeInsets.all(3.0),
+                                            child: Icon(
+                                              Icons.more_horiz,
+                                              color: Colors.orange,
+                                              size: 16,
+                                            ),
+                                          )),
+                                        )
                                       ),
-                                    )
-                                  ],
+                                      
+                                    );
+                                  }
                                 ),
                                 Consumer<TimesheetState>(
                                   builder: (context, data, _) {
@@ -1151,57 +1151,186 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             ) : SizedBox(),
 
                             _showEmployees == true ?
-                            Row(
-                              children: [
-                                Flexible(
-                                  child:  Consumer<TimesheetState>(
-                                    builder: (context, data, _) {
-                                      return TextField(
-                                        readOnly: true,
-                                        controller: employeeNameC..text = data.employeeName,
-                                        decoration: InputDecoration(
-                                          label: Text("Employees")
-                                        ),
-
-                                      );
-                                    }
-                                  )
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    setState(() {
-                                      _foundUsers = _employees!;
-                                    });
-                                    showModalBottomSheet<void>(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                                      ),
-                                      context: context,
-                                      isScrollControlled: true, // set this to true
-                                      builder: (context) {
-                                        return StatefulBuilder(
-                                          builder: (BuildContext context, StateSetter setState ) {
-                                            return DraggableScrollableSheet(
-                                              expand: false,
-                                              builder: (context, scrollController) {
-                                                return Column(
-                                                  children: <Widget>[
-                                                    // Put all heading in column.
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                            Consumer<TimesheetState>(
+                              builder: (context, data, _) {
+                                return TextField(
+                                  readOnly: true,
+                                  controller: employeeNameC..text = data.employeeName,
+                                  decoration: InputDecoration(
+                                    label: Text("Employees"),
+                                    suffixIcon: IconButton(
+                                      onPressed: (){
+                                        setState(() {
+                                          _foundUsers = _employees!;
+                                        });
+                                        showModalBottomSheet<void>(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                          ),
+                                          context: context,
+                                          isScrollControlled: true, // set this to true
+                                          builder: (context) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context, StateSetter setState ) {
+                                                return DraggableScrollableSheet(
+                                                  expand: false,
+                                                  builder: (context, scrollController) {
+                                                    return Column(
                                                       children: <Widget>[
-                                                        Align(
-                                                          alignment: Alignment.topCenter,
-                                                          child: Container(
-                                                            height: 5.0,
-                                                            width: 70.0,
-                                                            decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
-                                                          ),
+                                                        // Put all heading in column.
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: <Widget>[
+                                                            Align(
+                                                              alignment: Alignment.topCenter,
+                                                              child: Container(
+                                                                height: 5.0,
+                                                                width: 70.0,
+                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                            Padding(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                              child: Row(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap: (){
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                        child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                      ),
+                                                                      SizedBox(width: 20),
+                                                                      Text('Select Employees', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                    ],
+                                                                  ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  SizedBox(height: 20.0),
+                                                                  TextFormField(
+                                                                    onChanged: (value) => _runFilter(value),
+                                                                    decoration: const InputDecoration(
+                                                                      isDense: true, 
+                                                                      contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                                                      hintText: 'Search',
+                                                                      prefixIcon: Icon(Icons.search),
+                                                                      border: OutlineInputBorder(
+                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                          ],
                                                         ),
-                                                        SizedBox(height: 16),
-                                                        Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                          child: Row(
+                                                        // Wrap your DaysList in Expanded and provide scrollController to it
+                                                        Expanded(child: _foundUsers.isNotEmpty
+                                                          ? ListView.builder(
+                                                            controller: scrollController,
+                                                              itemCount: _foundUsers.length,
+                                                              itemBuilder: (context, index) => Card(
+                                                                key: ValueKey(_foundUsers[index].id),
+                                                                elevation: 1,
+                                                                // margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                child: Consumer<TimesheetState>(
+                                                                  builder: (context, data, _) {
+                                                                    return ListTile(
+                                                                      leading: CircleAvatar(
+                                                                        backgroundImage: NetworkImage(_foundUsers[index].url_photo!),
+                                                                        backgroundColor: Colors.grey,
+                                                                      ),
+                                                                      title: Text(_foundUsers[index].fullname),
+                                                                      trailing: data.indexSelectedEmployee == index ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                                                      onTap: (){
+                                                                        suportEmployeeIdMode = _foundUsers[index].id;
+                                                                        Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
+                                                                        Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(index);
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    );
+                                                                  }
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : const Text(
+                                                              'No results found',
+                                                              style: TextStyle(fontSize: 24),
+                                                            ),),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:BorderRadius.circular(20),
+                                            border: Border.all(
+                                                color:Colors.orange,
+                                                width: 2)),
+                                        child: Padding(
+                                          padding:const EdgeInsets.all(3.0),
+                                          child: Icon(
+                                            Icons.more_horiz,
+                                            color: Colors.orange,
+                                            size: 16,
+                                          ),
+                                        )),
+                                    )
+                                  ),
+
+                                );
+                              }
+                            ) : SizedBox(),
+                            
+                            _showTraining == true ?
+                            Consumer<TimesheetState>(
+                              builder: (context, data, _) {
+                                return TextField(
+                                  readOnly: true,
+                                  controller: trainingNameC..text = data.trainingName,
+                                  decoration: InputDecoration(
+                                    label: Text("Training"),
+                                    suffixIcon: IconButton(
+                                      onPressed: (){
+                                        showModalBottomSheet<void>(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                          ),
+                                          context: context,
+                                            isScrollControlled: true,
+                                            builder: (BuildContext context) {
+                                              return StatefulBuilder(
+                                                builder: (BuildContext context, StateSetter setState) {
+                                                  return DraggableScrollableSheet(
+                                                  expand: false,
+                                                  builder: (context, scrollController) {
+                                                    return Column(
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment.topCenter,
+                                                              child: Container(
+                                                                margin: EdgeInsets.symmetric(vertical: 0),
+                                                                height: 5.0,
+                                                                width: 70.0,
+                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                            Padding(
+                                                              padding: EdgeInsets.only(left: 20,bottom: 20),
+                                                              child: Row(
                                                                 children: [
                                                                   GestureDetector(
                                                                     onTap: (){
@@ -1210,75 +1339,43 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                                     child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
                                                                   ),
                                                                   SizedBox(width: 20),
-                                                                  Text('Select Employees', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                  Text('Select Training', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                                                                 ],
                                                               ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: <Widget>[
-                                                              SizedBox(height: 20.0),
-                                                              SizedBox(
-                                                                height: 40,
-                                                                child: TextField(
-                                                                  onChanged: (value) => _runFilter(value),
-                                                                  decoration: const InputDecoration(
-                                                                    labelText: 'Search', prefixIcon: Icon(Icons.search),
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
-                                                                      ),
+                                                        Expanded(
+                                                          child: ListView.builder(
+                                                            controller: scrollController,
+                                                            itemCount: _training?.length,
+                                                            itemBuilder: ((context, i){
+                                                              return Ink(
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                                                                  child: ListTile(
+                                                                    title: Text("${_training![i].training_name}"),
+                                                                    onTap: (){
+                                                                      trainingIdMode = _training![i].id.toString();
+                                                                      Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
+                                                                      Navigator.pop(context);
+                                                                    },
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              );
+                                                            }),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 16),
                                                       ],
-                                                    ),
-                                                    // Wrap your DaysList in Expanded and provide scrollController to it
-                                                    Expanded(child: _foundUsers.isNotEmpty
-                                                      ? ListView.builder(
-                                                        controller: scrollController,
-                                                          itemCount: _foundUsers.length,
-                                                          itemBuilder: (context, index) => Card(
-                                                            key: ValueKey(_foundUsers[index].id),
-                                                            elevation: 1,
-                                                            // margin: const EdgeInsets.symmetric(vertical: 10),
-                                                            child: Consumer<TimesheetState>(
-                                                              builder: (context, data, _) {
-                                                                return ListTile(
-                                                                  title: Text(_foundUsers[index].fullname),
-                                                                  trailing: data.indexSelectedEmployee == index ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
-                                                                  onTap: (){
-                                                                    suportEmployeeIdMode = _foundUsers[index].id;
-                                                                    Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
-                                                                    Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(index);
-                                                                    Navigator.pop(context);
-                                                                  },
-                                                                );
-                                                              }
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : const Text(
-                                                          'No results found',
-                                                          style: TextStyle(fontSize: 24),
-                                                        ),),
-                                                  ],
+                                                    );
+                                                  }
                                                 );
-                                              },
+                                              }
                                             );
-                                          }
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Container(
+                                    icon: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:BorderRadius.circular(20),
                                           border: Border.all(
@@ -1291,117 +1388,24 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                           color: Colors.orange,
                                           size: 16,
                                         ),
-                                      ))
-                                  ),
-                                )
-                              ],
-                            ) : SizedBox(),
-                            
-                            _showTraining == true ?
-                            Row(
-
-                              children: [
-                                Flexible(
-                                  child:  Consumer<TimesheetState>(
-                                    builder: (context, data, _) {
-                                      return TextField(
-                                        readOnly: true,
-                                        controller: trainingNameC..text = data.trainingName,
-                                        decoration: InputDecoration(
-                                          label: Text("Training")
-                                        ),
-
-                                      );
-                                    }
+                                      )),
                                   )
-                                ),
-                                GestureDetector(
-                                  onTap: (){
-                                    showModalBottomSheet<void>(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                                      ),
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return StatefulBuilder(
-                                          builder: (BuildContext context, StateSetter setState) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(top: 10),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(height: 10),
-                                                    Text("Your Training", style: TextStyle(fontSize: 24),),
-                                                    Divider(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: ListView.builder(
-                                                        physics: NeverScrollableScrollPhysics(),
-                                                        shrinkWrap: true,
-                                                        itemCount: _training?.length,
-                                                        itemBuilder: ((context, i){
-                                                          return Ink(
-                                                            child: ListTile(
-                                                              title: Text("${_training![i].training_name}"),
-                                                              onTap: (){
-                                                                trainingIdMode = _training![i].id.toString();
-                                                                Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
-                                                                Navigator.pop(context);
-                                                              },
-                                                            ),
-                                                          );
-                                                        }),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:BorderRadius.circular(20),
-                                          border: Border.all(
-                                              color:Colors.orange,
-                                              width: 2)),
-                                      child: Padding(
-                                        padding:const EdgeInsets.all(3.0),
-                                        child: Icon(
-                                          Icons.more_horiz,
-                                          color: Colors.orange,
-                                          size: 16,
-                                        ),
-                                      ))
                                   ),
-                                )
-                              ],
+
+                                );
+                              }
                             ) : SizedBox(),
 
                             _showProject == true ?
-                            Row(
-                              children: [
-                                    Flexible(
-                                      child:  Consumer<TimesheetState>(
-                                        builder: (context, data, _) {
-                                          return TextField(
-                                            readOnly: true,
-                                            controller: projectNameC..text = data.projectName,
-                                            decoration: InputDecoration(
-                                              label: Text("project")
-                                            ),
-
-                                          );
-                                        }
-                                      )
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
+                            Consumer<TimesheetState>(
+                              builder: (context, data, _) {
+                                return TextField(
+                                  readOnly: true,
+                                  controller: projectNameC..text = data.projectName,
+                                  decoration: InputDecoration(
+                                    label: Text("project"),
+                                    suffixIcon: IconButton(
+                                      onPressed: (){
                                         print('woy');
                                         showModalBottomSheet<void>(
                                           shape: RoundedRectangleBorder(
@@ -1417,14 +1421,13 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                   builder: (context, scrollController) {
                                                     return Column(
                                                       children: [
-                                                        SizedBox(height: 10),
                                                         Column(
                                                           children: [
                                                             Align(
                                                               alignment: Alignment.topCenter,
                                                               child: Container(
-                                                                margin: EdgeInsets.symmetric(vertical: 8),
-                                                                height: 8.0,
+                                                                margin: EdgeInsets.symmetric(vertical: 0),
+                                                                height: 5.0,
                                                                 width: 70.0,
                                                                 decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                               ),
@@ -1488,25 +1491,29 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                           },
                                         );
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                                        child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:BorderRadius.circular(20),
-                                          border: Border.all(
-                                              color:Colors.orange,
-                                              width: 2)),
-                                      child: Padding(
-                                        padding:const EdgeInsets.all(3.0),
-                                        child: Icon(
-                                          Icons.more_horiz,
-                                          color: Colors.orange,
-                                          size: 16,
-                                        ),
-                                      ))
+                                      icon: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                                      child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:BorderRadius.circular(20),
+                                        border: Border.all(
+                                            color:Colors.orange,
+                                            width: 2)),
+                                    child: Padding(
+                                      padding:const EdgeInsets.all(3.0),
+                                      child: Icon(
+                                        Icons.more_horiz,
+                                        color: Colors.orange,
+                                        size: 16,
                                       ),
-                                    )
-                                  ],
+                                    ))
+                                    ),
+                                  )
+
+                                  ),
+
+                                );
+                              }
                             ) : SizedBox(),
 
 
