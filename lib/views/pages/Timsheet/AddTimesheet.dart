@@ -1092,16 +1092,15 @@ class _addTimsheetState extends State<addTimsheet> {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: <Widget>[
                                                                   SizedBox(height: 20.0),
-                                                                  SizedBox(
-                                                                    height: 50,
-                                                                    child: TextField(
-                                                                      onChanged: (value) => _runFilterAssignment(value),
-                                                                      decoration: InputDecoration(
-                                                                        label: Text("Search Client Name"),
-                                                                        prefixIcon: Icon(Icons.search),
-                                                                        border: OutlineInputBorder(
-                                                                          borderRadius:BorderRadius.all(Radius.circular(10.0)),
-                                                                        ),
+                                                                  TextFormField(
+                                                                    onChanged: (value) => _runFilterAssignment(value),
+                                                                    decoration: InputDecoration(
+                                                                      isDense: true, 
+                                                                      contentPadding: EdgeInsets.fromLTRB(10, 10, 10,1),
+                                                                      hintText: "Search Client Name",
+                                                                      prefixIcon: Icon(Icons.search),
+                                                                      border: OutlineInputBorder(
+                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -1232,16 +1231,16 @@ class _addTimsheetState extends State<addTimsheet> {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: <Widget>[
                                                                   SizedBox(height: 20.0),
-                                                                  SizedBox(
-                                                                    height: 40,
-                                                                    child: TextField(
-                                                                      onChanged: (value) => _runFilter(value),
-                                                                      decoration: const InputDecoration(
-                                                                        labelText: 'Search', prefixIcon: Icon(Icons.search),
-                                                                        border: OutlineInputBorder(
-                                                                            borderRadius:BorderRadius.all(Radius.circular(10.0)),
-                                                                          ),
-                                                                      ),
+                                                                  TextFormField(
+                                                                    onChanged: (value) => _runFilter(value),
+                                                                    decoration: const InputDecoration(
+                                                                      isDense: true, 
+                                                                      contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                                                      hintText: 'Search',
+                                                                      prefixIcon: Icon(Icons.search),
+                                                                      border: OutlineInputBorder(
+                                                                          borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                        ),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -1256,12 +1255,16 @@ class _addTimsheetState extends State<addTimsheet> {
                                                             controller: scrollController,
                                                               itemCount: _foundUsers.length,
                                                               itemBuilder: (context, index) => Card(
-                                                                key: ValueKey(_foundUsers[index].id),
-                                                                elevation: 1,
+                                                                // key: ValueKey(_foundUsers[index].id),
+                                                                // elevation: 1,
                                                                 // margin: const EdgeInsets.symmetric(vertical: 10),
                                                                 child: Consumer<TimesheetState>(
                                                                   builder: (context, data, _) {
                                                                     return ListTile(
+                                                                      leading: CircleAvatar(
+                                                                        backgroundImage: NetworkImage(_foundUsers[index].url_photo!),
+                                                                        backgroundColor: Colors.grey,
+                                                                      ),
                                                                       title: Text(_foundUsers[index].fullname),
                                                                       trailing: data.indexSelectedEmployee == index ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
                                                                       onTap: (){
@@ -1324,40 +1327,74 @@ class _addTimsheetState extends State<addTimsheet> {
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                                           ),
                                           context: context,
-                                          builder: (BuildContext context) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context, StateSetter setState) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.only(top: 10),
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 10),
-                                                        Text("Your Training", style: TextStyle(fontSize: 24),),
-                                                        Divider(),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(10.0),
-                                                          child: ListView.builder(
-                                                            physics: NeverScrollableScrollPhysics(),
-                                                            shrinkWrap: true,
-                                                            itemCount: _training?.length,
-                                                            itemBuilder: ((context, i){
-                                                              return Ink(
-                                                                child: ListTile(
-                                                                  title: Text("${_training![i].training_name}"),
-                                                                  onTap: (){
-                                                                    trainingIdMode = _training![i].id.toString();
-                                                                    Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
-                                                                    Navigator.pop(context);
-                                                                  },
+                                            isScrollControlled: true,
+                                            builder: (BuildContext context) {
+                                              return StatefulBuilder(
+                                                builder: (BuildContext context, StateSetter setState) {
+                                                  return DraggableScrollableSheet(
+                                                  expand: false,
+                                                  builder: (context, scrollController) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(top: 0),
+                                                      child: Column(
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              Align(
+                                                                alignment: Alignment.topCenter,
+                                                                child: Container(
+                                                                  margin: EdgeInsets.symmetric(vertical: 0),
+                                                                  height: 5.0,
+                                                                  width: 70.0,
+                                                                  decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                                 ),
-                                                              );
-                                                            }),
+                                                              ),
+                                                              SizedBox(height: 16),
+                                                              Padding(
+                                                                padding: EdgeInsets.only(left: 20,bottom: 20),
+                                                                child: Row(
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                    ),
+                                                                    SizedBox(width: 20),
+                                                                    Text('Select Training', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                          
+                                                          Expanded(
+                                                            child: ListView.builder(
+                                                              controller: scrollController,
+                                                              // physics: NeverScrollableScrollPhysics(),
+                                                              // shrinkWrap: true,
+                                                              itemCount: _training?.length,
+                                                              itemBuilder: ((context, i){
+                                                                  return Ink(
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+                                                                    child: ListTile(
+                                                                      title: Text("${_training![i].training_name}"),
+                                                                      onTap: (){
+                                                                        trainingIdMode = _training![i].id.toString();
+                                                                        Provider.of<TimesheetState>(context, listen: false).changeTrainingName(_training![i].training_name);
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }
                                                 );
                                               }
                                             );
@@ -1760,6 +1797,8 @@ class _addTimsheetState extends State<addTimsheet> {
   
   getEmployees()async{
     _employees = await EmployeesApi.getEmployees(context);
+    print('employees');
+    print(_employees);
     _foundUsers = _employees!;
     // selectedUser=_employees![0];
   }

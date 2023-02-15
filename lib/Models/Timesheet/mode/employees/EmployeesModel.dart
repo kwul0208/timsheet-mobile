@@ -1,13 +1,15 @@
 class EmployeesModel{
   final int id;
   final String fullname;
+  final String? url_photo;
 
-  EmployeesModel({required this.id, required this.fullname});
+  EmployeesModel({required this.id, required this.fullname, this.url_photo});
 
   factory EmployeesModel.fromJson(dynamic json){
     return EmployeesModel(
       id: json['id'],
-      fullname: json['fullname']
+      fullname: json['fullname'],
+      url_photo: json['url_photo']
     );
   }
 
@@ -19,7 +21,7 @@ class EmployeesModel{
 
   @override
   String toString(){
-    return '{id: $id, fullname: $fullname}';
+    return '{id: $id, fullname: $fullname, url_photo: $url_photo}';
   }
   
 }

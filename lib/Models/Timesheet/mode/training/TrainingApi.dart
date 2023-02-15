@@ -20,7 +20,8 @@ class TrainingApi {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '$baseUrl/mucnet_api/api/training/read?employees_id=116&date=$date'));
+            '$baseUrl/mucnet_api/api/training/read?employees_id=$employees_id&date=$date'));
+            // '$baseUrl/mucnet_api/api/training/read?employees_id=402&date=2023-01-24'));
 
     request.headers.addAll(headers);
 
