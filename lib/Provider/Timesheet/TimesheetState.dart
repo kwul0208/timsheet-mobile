@@ -101,6 +101,11 @@ class TimesheetState extends ChangeNotifier{
     _projetName = '';
     _trainingName = "";
     _employeeName = "";
+
+    _indexA = null;
+    _indexS = null;
+    _indexSelectedProject = null;
+    _indexSelectedEmployee = null;
     notifyListeners();
   }
 

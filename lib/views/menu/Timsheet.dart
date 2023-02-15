@@ -1325,6 +1325,7 @@ class _TimesheetState extends State<Timesheet> {
                             DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
                           DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                           if (forlockDate.compareTo(forTodayDate) > 0) {
+                            Provider.of<TimesheetState>(context, listen: false).reset();
                             setState(() {
                               _scrollDate = dateForAdd;
                             });
@@ -1340,6 +1341,7 @@ class _TimesheetState extends State<Timesheet> {
                             if(forRelockDate.compareTo(forTodayDate) < 0){
                               _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
                             }else{
+                              Provider.of<TimesheetState>(context, listen: false).reset();
                               setState(() {
                                 _scrollDate = dateForAdd;
                               });
@@ -1349,6 +1351,7 @@ class _TimesheetState extends State<Timesheet> {
                             }
 
                         } else {
+                          Provider.of<TimesheetState>(context, listen: false).reset();
                           setState(() {
                             _scrollDate = dateForAdd;
                           });
