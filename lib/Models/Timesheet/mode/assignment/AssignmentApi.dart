@@ -19,8 +19,8 @@ class AssignmentApi {
     var request = http.Request(
         'GET',
         Uri.parse(
-            // '$baseUrl/mucnet_api/api/pm/assignment-consultant?date=${date}&employees_id=442'));
-            '$baseUrl/mucnet_api/api/pm/assignment-consultant?date=${date}&employees_id=${employees_id}'));
+            '$baseUrl/mucnet_api/api/pm/assignment-consultant?date=${date}&employees_id=442'));
+            // '$baseUrl/mucnet_api/api/pm/assignment-consultant?date=${date}&employees_id=${employees_id}'));
 
       // request.body = json.encode({
       //   "date": "${date}",

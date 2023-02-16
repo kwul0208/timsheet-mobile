@@ -28,7 +28,7 @@ class CardAssignment extends StatelessWidget {
       onTap: (){
         Provider.of<TimesheetState>(context, listen: false).changeAssignmentIds([proposal_id, service_id, serviceused_id]);
         Provider.of<TimesheetState>(context, listen: false).changeAssignment(companies_name!, name_service!);
-        Provider.of<TimesheetState>(context, listen: false).changeIndexS(i);
+        Provider.of<TimesheetState>(context, listen: false).changeIndexS(serviceused_id);
         Navigator.pop(context);
       },
       child: Padding(
@@ -146,7 +146,7 @@ class CardAssignment extends StatelessWidget {
             ),
             Consumer<TimesheetState>(
               builder: (context, data, _) {
-                if (data.indexS == i) {
+                if (data.indexS == serviceused_id) {
                   return Positioned(
                     right: 10,
                     child: Icon(Icons.check, color: Config().primary, size: 30,));
