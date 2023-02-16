@@ -351,29 +351,72 @@ class _addTimsheetState extends State<addTimsheet> {
                             content: Text("time ${formattedTime} is not allowed"),
                           ));
                         }else{
-                          var check_hour =  Helper().getDurationRangeHour(timeStart.text, timeEnd.text);
                           var parts = formattedTime.split(':');
-                          // -- ckeck hour lebih dari 1 hour ?
-                          if(check_hour <= 1.0){
-                            String timeString = formattedTime;
-                            DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
-                            DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
-                            String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
-                            var parts2 = nextHourString.split(':');
-                            
+                          // -- not first input timesheet
+                          if(_timeX.isNotEmpty){
+                            var check_hour =  Helper().getDurationRangeHour(timeStart.text, timeEnd.text);
+                            if(check_hour <= 1.0){
+                              String timeString = formattedTime;
+                              DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
+                              DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
+                              String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
+                              var parts2 = nextHourString.split(':');
+                              
 
-                            setState(() {
-                              // timeStart.text = pickedTime.format(context); //set the value of text field.
-                              timeStart.text = formattedTime; //set the value of text field.
-                              timeEnd.text = "${nextHourString}";
-                              _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
-                              _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
-                            });
+                              setState(() {
+                                // timeStart.text = pickedTime.format(context); //set the value of text field.
+                                timeStart.text = formattedTime; //set the value of text field.
+                                timeEnd.text = "${nextHourString}";
+                                _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                                _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+                              });
+                            }else{
+                              setState(() {
+                                timeStart.text = formattedTime;
+                                _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                              });
+                            }
                           }else{
-                            timeStart.text = formattedTime;
-                            _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
-                          }
+                            if(timeEnd.text.isEmpty){
+                              String timeString = formattedTime;
+                              DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
+                              DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
+                              String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
+                              var parts2 = nextHourString.split(':');
+                              
 
+                              setState(() {
+                                // timeStart.text = pickedTime.format(context); //set the value of text field.
+                                timeStart.text = formattedTime; //set the value of text field.
+                                timeEnd.text = "${nextHourString}";
+                                _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                                _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+                              });
+                            }else{
+                              var check_hour =  Helper().getDurationRangeHour(timeStart.text, timeEnd.text);
+                              if(check_hour <= 1.0){
+                                String timeString = formattedTime;
+                                DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
+                                DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
+                                String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
+                                var parts2 = nextHourString.split(':');
+                                
+
+                                setState(() {
+                                  // timeStart.text = pickedTime.format(context); //set the value of text field.
+                                  timeStart.text = formattedTime; //set the value of text field.
+                                  timeEnd.text = "${nextHourString}";
+                                  _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                                  _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+                                });
+                              }else{
+                                setState(() {
+                                  timeStart.text = formattedTime;
+                                  _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                                });
+                              }
+                            }
+                          }
                           
                         };
                       } else {
@@ -444,9 +487,11 @@ class _addTimsheetState extends State<addTimsheet> {
                             content: Text("time ${formattedTime} is not allowed"),
                           ));
                         }else{
+                          var parts2 = formattedTime.split(':');
                           setState(() {
                             // timeEnd.text = pickedTime.format(context); //set the value of text field.
                             timeEnd.text = formattedTime; //set the value of text field.
+                            _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
                           });
                         };
 
