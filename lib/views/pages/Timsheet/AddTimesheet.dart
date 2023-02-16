@@ -1379,11 +1379,11 @@ class _addTimsheetState extends State<addTimsheet> {
                                                                         backgroundColor: Colors.grey,
                                                                       ),
                                                                       title: Text(_foundUsers[index].fullname),
-                                                                      trailing: data.indexSelectedEmployee == index ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                                                      trailing: data.indexSelectedEmployee == _foundUsers[index].id ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
                                                                       onTap: (){
                                                                         employeeIdMode = _foundUsers[index].id;
                                                                         Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
-                                                                        Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(index);
+                                                                        Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(_foundUsers[index].id);
                                                                         Navigator.pop(context);
                                                                       },
                                                                     );
