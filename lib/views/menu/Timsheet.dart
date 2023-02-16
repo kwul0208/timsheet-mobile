@@ -91,7 +91,7 @@ class _TimesheetState extends State<Timesheet> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: Text("Hapus"),
+            title: Text("Delete"),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -108,7 +108,7 @@ class _TimesheetState extends State<Timesheet> {
                                       size: 50,
                                       color: Color.fromRGBO(47, 158, 95, 1),
                                     ),
-                                    Text('Berhasil')
+                                    Text('Success')
                                   ],
                                 ))
                               : SizedBox()
@@ -145,7 +145,7 @@ class _TimesheetState extends State<Timesheet> {
                             });
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
-                                  "Gagal! Silahkan coba beberapa saat lagi"),
+                                  "Failed! try again later please."),
                             ));
                           }
                         });
@@ -154,7 +154,7 @@ class _TimesheetState extends State<Timesheet> {
                   : SizedBox(),
               _isStatus == 'false'
                   ? TextButton(
-                      child: const Text('batal'),
+                      child: const Text('cancel'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
