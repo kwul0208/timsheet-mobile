@@ -60,6 +60,9 @@ class _addTimsheetState extends State<addTimsheet> {
     {'title': 'Project', 'isActive': false},
   ];
 
+  // default form
+  TimeOfDay _Tstart = TimeOfDay.now();
+  TimeOfDay _Tend = TimeOfDay.now();
 
   // form
   TextEditingController dateinput = TextEditingController(); 
@@ -130,8 +133,7 @@ class _addTimsheetState extends State<addTimsheet> {
     _futureAssignment = getAssignment();
     _futureProject = getProject();
     _futureTraining = getTraining();
-
-        // at the beginning, all users are shown
+    
     super.initState();
   }
 
@@ -294,7 +296,7 @@ class _addTimsheetState extends State<addTimsheet> {
                         true, //set it true, so that user will not able to edit text
                     onTap: () async {
                       TimeOfDay? pickedTime = await showTimePicker(
-                        initialTime: TimeOfDay.now(),
+                        initialTime: _Tstart,
                         context: context,
                         initialEntryMode: TimePickerEntryMode.input,
                         builder: (context, child){
@@ -349,10 +351,30 @@ class _addTimsheetState extends State<addTimsheet> {
                             content: Text("time ${formattedTime} is not allowed"),
                           ));
                         }else{
-                          setState(() {
-                            // timeStart.text = pickedTime.format(context); //set the value of text field.
-                            timeStart.text = formattedTime; //set the value of text field.
-                          });
+                          var check_hour =  Helper().getDurationRangeHour(timeStart.text, timeEnd.text);
+                          var parts = formattedTime.split(':');
+                          // -- ckeck hour lebih dari 1 hour ?
+                          if(check_hour <= 1.0){
+                            String timeString = formattedTime;
+                            DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
+                            DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
+                            String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
+                            var parts2 = nextHourString.split(':');
+                            
+
+                            setState(() {
+                              // timeStart.text = pickedTime.format(context); //set the value of text field.
+                              timeStart.text = formattedTime; //set the value of text field.
+                              timeEnd.text = "${nextHourString}";
+                              _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                              _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+                            });
+                          }else{
+                            timeStart.text = formattedTime;
+                            _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+                          }
+
+                          
                         };
                       } else {
                         print("Time is not selected");
@@ -368,7 +390,7 @@ class _addTimsheetState extends State<addTimsheet> {
                         true, //set it true, so that user will not able to edit text
                     onTap: () async {
                       TimeOfDay? pickedTime = await showTimePicker(
-                        initialTime: TimeOfDay.now(),
+                        initialTime: _Tend,
                         context: context,
                         initialEntryMode: TimePickerEntryMode.input,
                         builder: (context, child){
@@ -1833,6 +1855,28 @@ class _addTimsheetState extends State<addTimsheet> {
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
     _timeX = await TimeExistapi.getTime(context, widget.date, employees_id!);
+
+    if(_timeX.isNotEmpty){
+      // Default time
+      var str = "${_timeX.last}";
+
+      // get next 1 hour
+      String timeString = str;
+      DateTime time = DateTime.parse("2023-02-16 $timeString:00"); // parse time string to DateTime object
+      DateTime nextHour = time.add(Duration(hours: 1)); // add one hour to the time
+      String nextHourString = "${nextHour.hour.toString().padLeft(2, '0')}:${nextHour.minute.toString().padLeft(2, '0')}"; // convert DateTime to string in "hh:mm" format
+      var parts = str.split(':');
+      var parts2 = nextHourString.split(':');
+
+      setState(() {
+        timeStart.text = "${str}";
+        timeEnd.text = "${nextHourString}";
+        _Tstart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+        _Tend = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+        _timeOfDayStart = TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+      _timeOfDayEnd = TimeOfDay(hour: int.parse(parts2[0]), minute: int.parse(parts2[1]));
+      });
+    }
   }
 
   getMode()async{
@@ -1843,8 +1887,6 @@ class _addTimsheetState extends State<addTimsheet> {
   
   getEmployees()async{
     _employees = await EmployeesApi.getEmployees(context);
-    print('employees');
-    print(_employees);
     _foundUsers = _employees!;
     // selectedUser=_employees![0];
   }

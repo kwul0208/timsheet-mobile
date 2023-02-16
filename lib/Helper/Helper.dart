@@ -19,4 +19,20 @@ class Helper{
     return ((endTime.hour > startTime.hour));
     // return ((endTime.hour > startTime.hour) || (endTime.minute > startTime.minute));
   }
+
+  getDurationRangeHour(timestart, timeEnd){
+    String startTimeString = timestart;
+    String endTimeString = timeEnd;
+
+    DateTime startTime = DateTime.parse("2023-02-16 $startTimeString:00");
+    DateTime endTime = DateTime.parse("2023-02-16 $endTimeString:00");
+
+    Duration duration = endTime.difference(startTime);
+
+    int durationInSeconds = duration.inSeconds;
+    double check_hour = durationInSeconds / 3600;
+
+    return check_hour;
+
+  }
 }
