@@ -639,6 +639,9 @@ class _addTimsheetState extends State<addTimsheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildCT = !_showChildCT;
+                                  _showChildBT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -823,6 +826,11 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -843,6 +851,9 @@ class _addTimsheetState extends State<addTimsheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildOA = !_showChildOA;
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
                                 });
                               },
                               readOnly: true,
@@ -899,6 +910,9 @@ class _addTimsheetState extends State<addTimsheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildBT = !_showChildBT;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -973,6 +987,11 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -1013,6 +1032,11 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showEmployees = true;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -1055,6 +1079,11 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -1076,6 +1105,9 @@ class _addTimsheetState extends State<addTimsheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildDev = !_showChildDev;
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,

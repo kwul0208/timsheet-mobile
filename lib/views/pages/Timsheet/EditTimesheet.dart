@@ -542,6 +542,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildCT = !_showChildCT;
+                                  _showChildBT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -735,6 +738,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -750,11 +758,15 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               controller: TextEditingController(text: "${_mode![0].prospecting["name"]}"),
                             ),
                             SizedBox(height: 10),
+
                             // ---------- Office Ad -----------
                             TextField(
                               onTap: (){
                                 setState(() {
                                   _showChildOA = !_showChildOA;
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
                                 });
                               },
                               readOnly: true,
@@ -811,6 +823,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildBT = !_showChildBT;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -887,6 +902,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -927,6 +947,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _showEmployees = true;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -969,6 +994,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _showEmployees = false;
                                   _showClient = false;
                                   _showProject = false;
+
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildDev = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
@@ -990,6 +1020,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                               onTap: (){
                                 setState(() {
                                   _showChildDev = !_showChildDev;
+                                  _showChildBT = false;
+                                  _showChildCT = false;
+                                  _showChildOA = false;
                                 });
                               },
                               readOnly: true,
