@@ -210,7 +210,7 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 20, bottom: 10),
-                    child: Text('Today Sumary',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
+                    child: Text('Today Summary',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
                   ),
                   Container(
                     height: 140,
