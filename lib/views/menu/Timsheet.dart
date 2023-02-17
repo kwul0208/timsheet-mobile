@@ -785,7 +785,7 @@ class _TimesheetState extends State<Timesheet> {
                                         children: [
                                           Row(
                                             children: [
-                                              Image.asset('assets/time.png'),
+                                              Image.asset('assets/time.png', scale: 2,),
                                               SizedBox(width: 5),
                                               Text(
                                                 "${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}",
