@@ -53,14 +53,17 @@ class CardAssignment extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${companies_name}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                    Text("${companies_name}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
                     SizedBox(height: 6,),
                     name_service == '' ? 
                     Text(" -") :
-                    Text("${name_service}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Config().primary),),
+                    Text("${name_service}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Config().primary),),
                     SizedBox(height: 5),
                     SizedBox(height: 7),
-                    Text("Assignment Number:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                    Text("Service Period:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                    Text("${year}"),
+                    SizedBox(height: 10,),
+                    Text("Assignment Number:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                     Text("${assign_numbber}"),
                     SizedBox(height: 10,),
                     Consumer<TimesheetState>(
@@ -69,10 +72,10 @@ class CardAssignment extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("OPE: ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                              Text("OPE: ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                               Text("$ope"),
                               SizedBox(height: 10),
-                              Text("Scope:",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                              Text("Scope:",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                               Text("$scope")
                             ],
                           );
