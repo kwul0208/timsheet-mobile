@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -622,6 +623,7 @@ class _TimesheetState extends State<Timesheet> {
                 }
               }
             ),
+            
             // -- timesheet
             FutureBuilder(
                 future: _futureTimesheet,
@@ -783,13 +785,13 @@ class _TimesheetState extends State<Timesheet> {
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(Icons.access_time),
+                                              Image.asset('assets/time.png'),
                                               SizedBox(width: 5),
                                               Text(
                                                 "${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}",
                                                 style: TextStyle(
                                                     fontWeight:
-                                                        FontWeight.w500),
+                                                        FontWeight.w700),
                                               ),
                                             ],
                                           ),
@@ -821,11 +823,16 @@ class _TimesheetState extends State<Timesheet> {
                                                     _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
                                                   }
                                                   },
-                                                  child: Icon(
-                                                    Icons.delete_forever,
-                                                    color: Colors.red,
-                                                    size: 30,
-                                                  )),
+                                                  // child: Icon(
+                                                  //   Icons.delete_forever,
+                                                  //   color: Colors.red,
+                                                  //   size: 30,
+                                                  // )
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 6),
+                                                    child: Image.asset("assets/delete.png", scale: 2,),
+                                                  ),
+                                                ),
                                               GestureDetector(
                                                 onTap: () {
                                                   if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
@@ -1034,25 +1041,28 @@ class _TimesheetState extends State<Timesheet> {
                                                                                                     
                                                   }
                                                 },
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.orange,
-                                                            width: 2)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              3.0),
-                                                      child: Icon(
-                                                        Icons.edit,
-                                                        color: Colors.orange,
-                                                        size: 16,
-                                                      ),
-                                                    )),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 4, right: 4),
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.orange,
+                                                              width: 2)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                3.0),
+                                                        child: Icon(
+                                                          Icons.edit,
+                                                          color: Colors.orange,
+                                                          size: 16,
+                                                        ),
+                                                      )),
+                                                ),
                                               ),
                                               SizedBox(width: 5),
                                               Container(

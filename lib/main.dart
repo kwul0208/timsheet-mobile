@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        // fontFamily: 'Inter'
+        fontFamily: 'Inter'
       ),
       home: Consumer<MainState>(
         builder: (context, data, _) {
