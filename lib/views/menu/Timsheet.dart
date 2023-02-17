@@ -715,7 +715,13 @@ class _TimesheetState extends State<Timesheet> {
                                                   20 ||
                                               _timesheet![0].timesheet[i]
                                                       ['tmode_id'] ==
-                                                  18
+                                                  18 ||
+                                              _timesheet![0].timesheet[i]
+                                                      ['tmode_id'] ==
+                                                  24 ||
+                                              _timesheet![0].timesheet[i]
+                                                      ['tmode_id'] ==
+                                                  25
                                           ? Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -731,7 +737,9 @@ class _TimesheetState extends State<Timesheet> {
                                                   "${_timesheet![0].timesheet[i]['service_name']}",
                                                   style:
                                                       TextStyle(),
-                                                )
+                                                ),
+                                                SizedBox(height: 10),
+                                                Text("Service Periode : ${_timesheet![0].timesheet[i]['service_period']}")
                                               ],
                                             )
                                           : SizedBox(),
