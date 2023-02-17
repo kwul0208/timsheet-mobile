@@ -23,9 +23,11 @@ import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
 class addTimsheet extends StatefulWidget {
-  const addTimsheet({super.key, required this.date});
+  const addTimsheet({super.key, required this.date, this.is_consultant, this.work_from});
 
   final String date;
+  final String? is_consultant;
+  final String? work_from;
 
   @override
   State<addTimsheet> createState() => _addTimsheetState();
@@ -636,6 +638,7 @@ class _addTimsheetState extends State<addTimsheet> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // ---------- chargeable time ---------
+                            widget.is_consultant == "1" ?
                             TextFormField(
                               onTap: (){
                                 setState(() {
@@ -656,7 +659,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 ),
                               ),
                               controller: TextEditingController(text: "${_mode![0].chargeable_time["name"]}"),
-                            ),
+                            ) : SizedBox(),
                             SizedBox(height: 20),
                             _showChildCT == true ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -980,33 +983,34 @@ class _addTimsheetState extends State<addTimsheet> {
                             //   }
                             // ),
                             SizedBox(height: 10),
-                            TextField(
-                              onTap: (){
-                                setState(() {
-                                  id = _mode![0].ishoma["id"];
-                                  _showTraining = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                  _showProject = false;
+                            widget.work_from == "office" ? 
+                              TextField(
+                                onTap: (){
+                                  setState(() {
+                                    id = _mode![0].ishoma["id"];
+                                    _showTraining = false;
+                                    _showEmployees = false;
+                                    _showClient = false;
+                                    _showProject = false;
 
-                                  _showChildBT = false;
-                                  _showChildCT = false;
-                                  _showChildDev = false;
-                                  _showChildOA = false;
-                                });
-                              },
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                focusedBorder:  UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                                    _showChildBT = false;
+                                    _showChildCT = false;
+                                    _showChildDev = false;
+                                    _showChildOA = false;
+                                  });
+                                },
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  focusedBorder:  UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: id == 6 ? Icon(Icons.check) : SizedBox(),
+                                  ),
                                 ),
-                                suffixIcon: IconButton(
-                                  onPressed: (){},
-                                  icon: id == 6 ? Icon(Icons.check) : SizedBox(),
-                                ),
-                              ),
-                              controller: TextEditingController(text: "${_mode![0].ishoma["name"]}"),
-                            ),
+                                controller: TextEditingController(text: "${_mode![0].ishoma["name"]}"),
+                              ) : SizedBox(),
                             //------------ Suport service -------------
                             // RadioListTile(
                             //   contentPadding: EdgeInsets.all(0),
@@ -1025,33 +1029,34 @@ class _addTimsheetState extends State<addTimsheet> {
                             //   }
                             // ),
                             SizedBox(height: 10),
-                            TextField(
-                              onTap: (){
-                                setState(() {
-                                  id = _mode![0].suport_service["id"];
-                                  _showTraining = false;
-                                  _showEmployees = true;
-                                  _showClient = false;
-                                  _showProject = false;
+                            widget.is_consultant == "0" ? 
+                              TextField(
+                                onTap: (){
+                                  setState(() {
+                                    id = _mode![0].suport_service["id"];
+                                    _showTraining = false;
+                                    _showEmployees = true;
+                                    _showClient = false;
+                                    _showProject = false;
 
-                                  _showChildBT = false;
-                                  _showChildCT = false;
-                                  _showChildDev = false;
-                                  _showChildOA = false;
-                                });
-                              },
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                focusedBorder:  UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                                    _showChildBT = false;
+                                    _showChildCT = false;
+                                    _showChildDev = false;
+                                    _showChildOA = false;
+                                  });
+                                },
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  focusedBorder:  UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: id == 8 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                  ),
                                 ),
-                                suffixIcon: IconButton(
-                                  onPressed: (){},
-                                  icon: id == 8 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
-                                ),
-                              ),
-                              controller: TextEditingController(text: "${_mode![0].suport_service["name"]}"),
-                            ),
+                                controller: TextEditingController(text: "${_mode![0].suport_service["name"]}"),
+                              ) : SizedBox(),
                             
 
                             //------------ Training -------------
@@ -1168,6 +1173,7 @@ class _addTimsheetState extends State<addTimsheet> {
                             //   child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
                             // ) : SizedBox(),
                             SizedBox(height: 20),
+                            widget.is_consultant == "1" ?
                             _showClient == true ? Column(
                               children: [
                                 Consumer<TimesheetState>(
@@ -1323,7 +1329,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                 )
 
                               ],
-                            ) : SizedBox(),
+                            ) : SizedBox() : SizedBox(),
 
                             _showEmployees == true ?
                             Consumer<TimesheetState>(

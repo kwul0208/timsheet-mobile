@@ -21,7 +21,7 @@ import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
 class EditTimesheet extends StatefulWidget {
-  const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id, this.proposal_id, this.services_id, this.serviceused_id, this.companies_name, this.service_name, this.support_to_employees_id, this.support_to_employees_name, this.project_id, this.project_name, this.training_id, this.training_name});
+  const EditTimesheet({super.key, required this.id, required this.date, required this.timeStart, required this.timeEnd, required this.desc, required this.tmode_id, this.proposal_id, this.services_id, this.serviceused_id, this.companies_name, this.service_name, this.support_to_employees_id, this.support_to_employees_name, this.project_id, this.project_name, this.training_id, this.training_name, this.is_consultant, this.work_from});
 
   final int? id;
   final String? date;
@@ -29,6 +29,8 @@ class EditTimesheet extends StatefulWidget {
   final String? timeEnd;
   final String? desc;
   final int? tmode_id;
+  final String? is_consultant;
+  final String? work_from;
   // -- child mode --
     // chargeable time
     final int? proposal_id;
@@ -538,27 +540,28 @@ class _EditTimesheetState extends State<EditTimesheet> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // ---------- chargeable time ---------
-                            TextFormField(
-                              onTap: (){
-                                setState(() {
-                                  _showChildCT = !_showChildCT;
-                                  _showChildBT = false;
-                                  _showChildDev = false;
-                                  _showChildOA = false;
-                                });
-                              },
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                focusedBorder:  UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),  
-                                suffixIcon: IconButton(
-                                  onPressed: (){},
-                                  icon: _mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                            widget.is_consultant == "1" ?
+                              TextFormField(
+                                onTap: (){
+                                  setState(() {
+                                    _showChildCT = !_showChildCT;
+                                    _showChildBT = false;
+                                    _showChildDev = false;
+                                    _showChildOA = false;
+                                  });
+                                },
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  focusedBorder:  UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),  
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: _mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                  ),
                                 ),
-                              ),
-                              controller: TextEditingController(text: "${_mode![0].chargeable_time["name"]}"),
-                            ),
+                                controller: TextEditingController(text: "${_mode![0].chargeable_time["name"]}"),
+                              ) : SizedBox(),
                             SizedBox(height: 20),
                             _showChildCT == true ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -894,33 +897,34 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             //   }
                             // ),
                             SizedBox(height: 10),
-                            TextField(
-                              onTap: (){
-                                setState(() {
-                                  _mode_id = _mode![0].ishoma["id"];
-                                  _showTraining = false;
-                                  _showEmployees = false;
-                                  _showClient = false;
-                                  _showProject = false;
+                            widget.work_from == "office" ?
+                              TextField(
+                                onTap: (){
+                                  setState(() {
+                                    _mode_id = _mode![0].ishoma["id"];
+                                    _showTraining = false;
+                                    _showEmployees = false;
+                                    _showClient = false;
+                                    _showProject = false;
 
-                                  _showChildBT = false;
-                                  _showChildCT = false;
-                                  _showChildDev = false;
-                                  _showChildOA = false;
-                                });
-                              },
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                focusedBorder:  UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                                    _showChildBT = false;
+                                    _showChildCT = false;
+                                    _showChildDev = false;
+                                    _showChildOA = false;
+                                  });
+                                },
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  focusedBorder:  UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: _mode_id == 6 ? Icon(Icons.check) : SizedBox(),
+                                  ),
                                 ),
-                                suffixIcon: IconButton(
-                                  onPressed: (){},
-                                  icon: _mode_id == 6 ? Icon(Icons.check) : SizedBox(),
-                                ),
-                              ),
-                              controller: TextEditingController(text: "${_mode![0].ishoma["name"]}"),
-                            ),
+                                controller: TextEditingController(text: "${_mode![0].ishoma["name"]}"),
+                              ) : SizedBox(),
                             //------------ Suport service -------------
                             // RadioListTile(
                             //   contentPadding: EdgeInsets.all(0),
@@ -939,33 +943,34 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             //   }
                             // ),
                             SizedBox(height: 10),
-                            TextField(
-                              onTap: (){
-                                setState(() {
-                                  _mode_id = _mode![0].suport_service["id"];
-                                  _showTraining = false;
-                                  _showEmployees = true;
-                                  _showClient = false;
-                                  _showProject = false;
+                            widget.is_consultant != "0" ?
+                              TextField(
+                                onTap: (){
+                                  setState(() {
+                                    _mode_id = _mode![0].suport_service["id"];
+                                    _showTraining = false;
+                                    _showEmployees = true;
+                                    _showClient = false;
+                                    _showProject = false;
 
-                                  _showChildBT = false;
-                                  _showChildCT = false;
-                                  _showChildDev = false;
-                                  _showChildOA = false;
-                                });
-                              },
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                focusedBorder:  UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                                    _showChildBT = false;
+                                    _showChildCT = false;
+                                    _showChildDev = false;
+                                    _showChildOA = false;
+                                  });
+                                },
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  focusedBorder:  UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: _mode_id == 8 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                                  ),
                                 ),
-                                suffixIcon: IconButton(
-                                  onPressed: (){},
-                                  icon: _mode_id == 8 ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
-                                ),
-                              ),
-                              controller: TextEditingController(text: "${_mode![0].suport_service["name"]}"),
-                            ),
+                                controller: TextEditingController(text: "${_mode![0].suport_service["name"]}"),
+                              ) : SizedBox(),
                             
 
                             //------------ Training -------------
@@ -1082,6 +1087,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             //   child: Text("Client", style: TextStyle(fontWeight: FontWeight.w500)),
                             // ) : SizedBox(),
                             SizedBox(height: 20),
+                            widget.is_consultant == "1" ?
                             _showClient == true ? Column(
                               children: [
                                 Consumer<TimesheetState>(
@@ -1236,7 +1242,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                 )
 
                               ],
-                            ) : SizedBox(),
+                            ) : SizedBox() : SizedBox(),
 
                             _showEmployees == true ?
                             Consumer<TimesheetState>(

@@ -41,6 +41,9 @@ class _TimesheetState extends State<Timesheet> {
   String _isStatus = 'false';
   // endStatus loading
 
+  // is consultant
+  String is_consultant = "1";
+
   String _scrollDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
   DateTime _dateTime = DateTime(DateTime.now().year, DateTime.now().month, 1);
@@ -60,6 +63,14 @@ class _TimesheetState extends State<Timesheet> {
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
     dateForAdd = formattedDate;
     _futureTimesheet = getTimesheet(formattedDate, false);
+    isConsultant();
+  }
+
+  Future<void> isConsultant()async{
+    final storage = new FlutterSecureStorage();
+    is_consultant= (await storage.read(key: 'is_consultant'))!;
+    print('is_consultant');
+    print(is_consultant);
   }
 
   Future<void> _displaySecondView(Widget view) async {
@@ -900,6 +911,8 @@ class _TimesheetState extends State<Timesheet> {
                                                               _timesheet![0]
                                                                       .timesheet[i]
                                                                   ['training_name'],
+                                                          is_consultant: is_consultant,
+                                                          work_from: _timesheet![0].work_from,
                                                         ));
                                                       }else{
                                                         _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
@@ -972,6 +985,8 @@ class _TimesheetState extends State<Timesheet> {
                                                               _timesheet![0]
                                                                       .timesheet[i]
                                                                   ['training_name'],
+                                                          is_consultant: is_consultant,
+                                                          work_from: _timesheet![0].work_from,
                                                         ));
                                                      
                                                       }
@@ -1037,6 +1052,8 @@ class _TimesheetState extends State<Timesheet> {
                                                           _timesheet![0]
                                                                   .timesheet[i]
                                                               ['training_name'],
+                                                      is_consultant: is_consultant,
+                                                      work_from: _timesheet![0].work_from,
                                                     ));
                                                                                                     
                                                   }
@@ -1339,7 +1356,7 @@ class _TimesheetState extends State<Timesheet> {
                             setState(() {
                               _scrollDate = dateForAdd;
                             });
-                            _displaySecondView(addTimsheet(date: dateForAdd));
+                            _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
                           }else{
                             _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
                           }
@@ -1355,7 +1372,7 @@ class _TimesheetState extends State<Timesheet> {
                               setState(() {
                                 _scrollDate = dateForAdd;
                               });
-                              _displaySecondView(addTimsheet(date: dateForAdd));
+                              _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
                             }
 
                             }
@@ -1365,7 +1382,7 @@ class _TimesheetState extends State<Timesheet> {
                           setState(() {
                             _scrollDate = dateForAdd;
                           });
-                          _displaySecondView(addTimsheet(date: dateForAdd));
+                          _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
                         }
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet(date: dateForAdd)));
                       },
