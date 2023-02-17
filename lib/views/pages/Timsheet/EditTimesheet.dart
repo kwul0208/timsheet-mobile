@@ -1759,14 +1759,13 @@ class _EditTimesheetState extends State<EditTimesheet> {
       });
 
     // -- chargeable time --
-    }else if(_mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18){
-      print('cargibel');
-      print({"proposal_id": proposalIdMode,
-        "services_id": serviceIdMode,
-        "serviceused_id": serviceUserIdMode
-      });
-      if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
-        return {"status": false, "message": "Your form is not complete!"};
+    }else if(_mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18 || _mode_id == 24 || _mode_id == 25){
+
+      // jika bisnis travel untuk non konsultan boleh kosong
+      if(_mode_id == 23 || _mode_id == 22 || _mode_id == 19 || _mode_id == 15 || _mode_id == 17 ||_mode_id == 16 || _mode_id == 21 || _mode_id == 20 || _mode_id == 18){
+        if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
+          return {"status": false, "message": "Your form is not complete!"};
+        }
       }
       request.body = json.encode({
         "timesheet_id": widget.id,

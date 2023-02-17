@@ -1905,9 +1905,12 @@ class _addTimsheetState extends State<addTimsheet> {
       });
 
     // -- chargeable time --
-    }else if(id == 23 || id == 22 || id == 19 || id == 15 || id == 17 ||id == 16 || id == 21 || id == 20 || id == 18){
-      if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
-        return {"status": false, "message": "Your form is not complete!"};
+    }else if(id == 23 || id == 22 || id == 19 || id == 15 || id == 17 ||id == 16 || id == 21 || id == 20 || id == 18 || id == 24 || id == 25){
+      // jika bisnis travel untuk non konsultan boleh kosong
+      if(id == 23 || id == 22 || id == 19 || id == 15 || id == 17 ||id == 16 || id == 21 || id == 20 || id == 18){
+        if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
+          return {"status": false, "message": "Your form is not complete!"};
+        }
       }
       request.body = json.encode({
         "timestart": "${timeStart.text}",
