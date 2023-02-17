@@ -1114,12 +1114,19 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                 return StatefulBuilder(
                                                   builder: (BuildContext context, StateSetter setState) {
                                                     return DraggableScrollableSheet(
+                                                      initialChildSize: .8,
+                                                      minChildSize: 0.25,
+                                                      maxChildSize: 0.97,
                                                       expand: false,
                                                       builder: (context, scrollController) {
                                                         return Column(
                                                           children: [
-                                                            Column(
-                                                              children: [
+                                                            Container(
+                                                              width: width,
+                                                              height: 180,
+                                                              child: ListView(
+                                                                controller: scrollController,
+                                                                children: [
                                                                 Align(
                                                                   alignment: Alignment.topCenter,
                                                                   child: Container(
@@ -1147,10 +1154,11 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                                 ),
                                                                 Divider(),
                                                                 Padding(
-                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                              child: Column(
+                                                                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                                  child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: <Widget>[
+                                                                  SizedBox(height: 10.0),
                                                                   TextFormField(
                                                                     onChanged: (value) => _runFilterAssignment(value),
                                                                     decoration: InputDecoration(
@@ -1164,15 +1172,16 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                                     ),
                                                                   ),
                                                                 ],
+                                                                  ),
+                                                                ),
+                                                                SizedBox(height: 10),
+
+                                                                ],
                                                               ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                              ],
                                                             ),
                                                             Expanded(
                                                               child:  _foundUsers.isNotEmpty
                                                                 ? ListView.builder(
-                                                                  controller: scrollController,
                                                                   itemCount: _foundAssignment.length,
                                                                   itemBuilder: ((context, i){
                                                                     return Padding(
@@ -1252,66 +1261,72 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                             return StatefulBuilder(
                                               builder: (BuildContext context, StateSetter setState ) {
                                                 return DraggableScrollableSheet(
+                                                  initialChildSize: .8,
+                                                  minChildSize: 0.25,
+                                                  maxChildSize: 0.97,
                                                   expand: false,
                                                   builder: (context, scrollController) {
                                                     return Column(
                                                       children: <Widget>[
                                                         // Put all heading in column.
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: <Widget>[
-                                                            Align(
-                                                              alignment: Alignment.topCenter,
-                                                              child: Container(
-                                                                height: 5.0,
-                                                                width: 70.0,
-                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                        Container(
+                                                          width: width,
+                                                          height: 150,
+                                                          child: ListView(
+                                                            controller: scrollController,
+                                                            children: <Widget>[
+                                                              Align(
+                                                                alignment: Alignment.topCenter,
+                                                                child: Container(
+                                                                  height: 5.0,
+                                                                  width: 70.0,
+                                                                  decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                                ),
                                                               ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                            Padding(
-                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                              child: Row(
-                                                                    children: [
-                                                                      GestureDetector(
-                                                                        onTap: (){
-                                                                          Navigator.pop(context);
-                                                                        },
-                                                                        child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
-                                                                      ),
-                                                                      SizedBox(width: 20),
-                                                                      Text('Select Employees', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                                                    ],
-                                                                  ),
-                                                            ),
-                                                            Padding(
-                                                              padding: const EdgeInsets.symmetric(horizontal: 24),
-                                                              child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: <Widget>[
-                                                                  SizedBox(height: 20.0),
-                                                                  TextFormField(
-                                                                    onChanged: (value) => _runFilter(value),
-                                                                    decoration: const InputDecoration(
-                                                                      isDense: true, 
-                                                                      contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                                                      hintText: 'Search',
-                                                                      prefixIcon: Icon(Icons.search),
-                                                                      border: OutlineInputBorder(
-                                                                        borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                              SizedBox(height: 16),
+                                                              Padding(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                                child: Row(
+                                                                      children: [
+                                                                        GestureDetector(
+                                                                          onTap: (){
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                        ),
+                                                                        SizedBox(width: 20),
+                                                                        Text('Select Employees', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                      ],
+                                                                    ),
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 24),
+                                                                child: Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: <Widget>[
+                                                                    SizedBox(height: 20.0),
+                                                                    TextFormField(
+                                                                      onChanged: (value) => _runFilter(value),
+                                                                      decoration: const InputDecoration(
+                                                                        isDense: true, 
+                                                                        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                                                        hintText: 'Search',
+                                                                        prefixIcon: Icon(Icons.search),
+                                                                        border: OutlineInputBorder(
+                                                                            borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                                                                          ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                          ],
+                                                              SizedBox(height: 16),
+                                                            ],
+                                                          ),
                                                         ),
                                                         // Wrap your DaysList in Expanded and provide scrollController to it
                                                         Expanded(child: _foundUsers.isNotEmpty
                                                           ? ListView.builder(
-                                                            controller: scrollController,
                                                               itemCount: _foundUsers.length,
                                                               itemBuilder: (context, index) => Card(
                                                                 key: ValueKey(_foundUsers[index].id),
@@ -1391,42 +1406,52 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                               return StatefulBuilder(
                                                 builder: (BuildContext context, StateSetter setState) {
                                                   return DraggableScrollableSheet(
+                                                  initialChildSize: .8,
+                                                  minChildSize: 0.25,
+                                                  maxChildSize: 0.97,
                                                   expand: false,
                                                   builder: (context, scrollController) {
-                                                    return Column(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Align(
-                                                              alignment: Alignment.topCenter,
-                                                              child: Container(
-                                                                margin: EdgeInsets.symmetric(vertical: 0),
-                                                                height: 5.0,
-                                                                width: 70.0,
-                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 20,bottom: 20),
-                                                              child: Row(
-                                                                children: [
-                                                                  GestureDetector(
-                                                                    onTap: (){
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(top: 0),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            width: width,
+                                                            height: 75,
+                                                            child: ListView(
+                                                              controller: scrollController,
+                                                              children: [
+                                                                Align(
+                                                                  alignment: Alignment.topCenter,
+                                                                  child: Container(
+                                                                    margin: EdgeInsets.symmetric(vertical: 0),
+                                                                    height: 5.0,
+                                                                    width: 70.0,
+                                                                    decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
                                                                   ),
-                                                                  SizedBox(width: 20),
-                                                                  Text('Select Training', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(height: 16),
+                                                                Padding(
+                                                                  padding: EdgeInsets.only(left: 20,bottom: 20),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap: (){
+                                                                          Navigator.pop(context);
+                                                                        },
+                                                                        child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                      ),
+                                                                      SizedBox(width: 20),
+                                                                      Text('Select Training', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                          Divider(),
                                                         Expanded(
                                                           child: ListView.builder(
-                                                            controller: scrollController,
                                                             itemCount: _training?.length,
                                                             itemBuilder: ((context, i){
                                                               return Ink(
@@ -1446,7 +1471,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                                           ),
                                                         ),
                                                       ],
-                                                    );
+                                                    ));
                                                   }
                                                 );
                                               }
@@ -1496,43 +1521,52 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                             return StatefulBuilder(
                                               builder: (BuildContext context, StateSetter setState) {
                                                 return DraggableScrollableSheet(
+                                                  initialChildSize: .8,
+                                                  minChildSize: 0.25,
+                                                  maxChildSize: 0.97,
                                                   expand: false,
                                                   builder: (context, scrollController) {
                                                     return Column(
                                                       children: [
-                                                        Column(
-                                                          children: [
-                                                            Align(
-                                                              alignment: Alignment.topCenter,
-                                                              child: Container(
-                                                                margin: EdgeInsets.symmetric(vertical: 0),
-                                                                height: 5.0,
-                                                                width: 70.0,
-                                                                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                        // SizedBox(height: 10),
+                                                        Container(
+                                                          width: width,
+                                                          height: 75,
+                                                          child: ListView(
+                                                            controller: scrollController,
+                                                            children: [
+                                                              Align(
+                                                                alignment: Alignment.topCenter,
+                                                                child: Container(
+                                                                  // margin: EdgeInsets.symmetric(vertical: 8),
+                                                                  height: 5.0,
+                                                                  width: 70.0,
+                                                                  decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                                                                ),
                                                               ),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                            Padding(
-                                                              padding: EdgeInsets.only(left: 20,bottom: 20),
-                                                              child: Row(
-                                                                children: [
-                                                                  GestureDetector(
-                                                                    onTap: (){
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                    child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
-                                                                  ),
-                                                                  SizedBox(width: 20),
-                                                                  Text('Select Project', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                                                ],
+                                                              SizedBox(height: 16),
+                                                              Padding(
+                                                                padding: EdgeInsets.only(left: 20,bottom: 20),
+                                                                child: Row(
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                                                                    ),
+                                                                    SizedBox(width: 20),
+                                                                    Text('Select Project', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
+                                                        Divider(),
                                                         
                                                         Expanded(
                                                           child: ListView.builder(
-                                                            controller: scrollController,
                                                             // physics: NeverScrollableScrollPhysics(),
                                                             // shrinkWrap: true,
                                                             itemCount: _project?.length,

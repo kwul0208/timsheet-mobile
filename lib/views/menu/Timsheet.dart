@@ -1383,6 +1383,8 @@ class _TimesheetState extends State<Timesheet> {
     var employees_id = await storage.read(key: 'employees_id');
 
     _timesheet = await TimesheetApi.getDataApi(context, date, employees_id!);
+    print("timesheet");
+    print(_timesheet);
     
     Provider.of<TimesheetState>(context, listen: false).changeIsLoading();
 

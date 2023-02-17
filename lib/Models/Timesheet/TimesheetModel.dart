@@ -13,8 +13,10 @@ class TimesheetModel{
   factory TimesheetModel.fromJson(dynamic json){
     return TimesheetModel(
       timesheet: json['timesheet'],
-      time_duration: json['time_duration'],
-      oa_duration: json['oa_duration'],
+      // time_duration: 3600,
+      // oa_duration: 3600,
+      time_duration: json['summary']['working_time'],
+      oa_duration: json['summary']['oa'],
       status: json['status'],
       locked_date: json['locked_date'],
       unlocked_request_date: json['unlocked_request_date'],

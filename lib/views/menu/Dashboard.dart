@@ -147,6 +147,84 @@ class _DashboardState extends State<Dashboard> {
                         onTap: (){
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
+                          // void _showModalBottomSheet(BuildContext context) {
+  showModalBottomSheet<void>(
+    context: context,
+    isDismissible: true,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return DraggableScrollableSheet(
+        initialChildSize: .8,
+        minChildSize: 0.25,
+        maxChildSize: 0.9,
+        expand: false,
+        builder: (context, scrollController) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(20),
+                topRight: const Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                // Add any other widgets you want to display above the ListView
+                Container(
+                  width: width,
+                  height: 50,
+                  child: ListView(
+                    controller: scrollController,
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          // margin: EdgeInsets.symmetric(vertical: 8),
+                          height: 5.0,
+                          width: 70.0,
+                          decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10.0)),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20 ,bottom: 20),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: Icon(Icons.close_outlined, color: Colors.black, size: 34,)
+                            ),
+                            SizedBox(width: 20),
+                            Text('Select Assignment', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 50,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text('Item $index'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+
+
+
                         },
                         child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
                     ),
