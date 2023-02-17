@@ -352,7 +352,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                      child: Text("${DateFormat('EEEE').format(dt)}, ${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
                     ),
                   ),
                   SizedBox(height: 10,),

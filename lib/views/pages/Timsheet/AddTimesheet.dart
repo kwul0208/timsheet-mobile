@@ -218,6 +218,7 @@ class _addTimsheetState extends State<addTimsheet> {
   Widget build(BuildContext context) {
     DateTime dt = DateTime.parse("${dateinput.text}");
     String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+    // print(DateFormat('EEEE').format(dt));
         var size, height, width;
 
     // getting the size of the window
@@ -285,7 +286,7 @@ class _addTimsheetState extends State<addTimsheet> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                      child: Text("${DateFormat('EEEE').format(dt)}, ${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
                     ),
                   ),
                   SizedBox(height: 20,),
