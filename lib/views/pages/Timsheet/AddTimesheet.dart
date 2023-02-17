@@ -469,17 +469,18 @@ class _addTimsheetState extends State<addTimsheet> {
 
                         var outputFormat = DateFormat('hh:mm a');
                         var outputDate = outputFormat.format(inputDate);
+                        print('outputDate'); // 12/31/2000 11:59 PM <-- MM/dd 12H format
                         print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
 
                         DateTime x = DateFormat.jm()
-                            .parse(outputDate).add(Duration(minutes: 1));
+                            .parse(outputDate).subtract(Duration(minutes: 1));
                             print(x);
 
                         //output 14:59
                         String formattedTime = pickedTime.format(context);
                         String v_f_time = DateFormat('HH:mm').format(x);
-                        print(formattedTime);
-                        print(v_f_time);
+                        // print(formattedTime);
+                        // print(v_f_time);
                         // end formating datetime
                         // validation
                         if (_timeX.contains(v_f_time)) {
