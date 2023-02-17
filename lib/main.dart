@@ -118,12 +118,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _children.elementAt(_curentIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Dashboard"),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 0 ? Image.asset("assets/dashboard_active.png", scale: 2,) : Image.asset("assets/dashboard_inactive.png", scale: 2,)), label: ""),
           BottomNavigationBarItem(
-              icon: Icon(Icons.task), label: "Timesheet"),
+              icon: Container(child: _curentIndex == 1 ? Image.asset("assets/rwd_active.png", scale: 2,) : Image.asset("assets/rwd_inactive.png", scale: 2,)), label: ""),
           BottomNavigationBarItem(
-              icon: Icon(Icons.work), label: "Overtime"),
-          BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: "WFH"),
+              icon: Container(child: Icon(Icons.edit_calendar, size: 26, color: _curentIndex == 2 ? Config().primary : Colors.black,)), label: ""),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: ""),
         ],
         onTap: onTapBar,
         currentIndex: _curentIndex,
