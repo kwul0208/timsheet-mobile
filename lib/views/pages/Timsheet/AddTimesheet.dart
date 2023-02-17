@@ -1867,6 +1867,9 @@ class _addTimsheetState extends State<addTimsheet> {
     var request = http.Request('POST', Uri.parse('${baseUrl}/mucnet_api/api/timesheet/update'));
     // -- suport service --
     if(id == 8){
+      if(employeeIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       print('suport_service');
       request.body = json.encode({
         "timestart": "${timeStart.text}",
@@ -1883,6 +1886,9 @@ class _addTimsheetState extends State<addTimsheet> {
     // -- project --
     }else if(id == 14){
       print({"project_id": projectIdMode});
+      if(projectIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       request.body = json.encode({
         "timestart": "${timeStart.text}",
         "timefinish": "${timeEnd.text}",
@@ -1897,6 +1903,9 @@ class _addTimsheetState extends State<addTimsheet> {
 
     // -- chargeable time --
     }else if(id == 23 || id == 22 || id == 19 || id == 15 || id == 17 ||id == 16 || id == 21 || id == 20 || id == 18){
+      if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       request.body = json.encode({
         "timestart": "${timeStart.text}",
         "timefinish": "${timeEnd.text}",
@@ -1914,6 +1923,9 @@ class _addTimsheetState extends State<addTimsheet> {
     // -- training --
     }else if(id == 9){
      print({"training_id": trainingIdMode});
+     if(trainingIdMode == null){
+      return {"status": false, "message": "Your form is not complete!"};
+     }
       request.body = json.encode({
         "timestart": "${timeStart.text}",
         "timefinish": "${timeEnd.text}",

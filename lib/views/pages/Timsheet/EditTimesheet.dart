@@ -292,6 +292,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
+    print("IsConsultant");
+    print(widget.is_consultant.runtimeType);
     return Stack(
       children: [
         Scaffold(
@@ -943,7 +946,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                             //   }
                             // ),
                             SizedBox(height: 10),
-                            widget.is_consultant != "0" ?
+                            widget.is_consultant == "0" ?
                               TextField(
                                 onTap: (){
                                   setState(() {
@@ -1718,7 +1721,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
 
      // -- suport service --
     if(_mode_id == 8){
-      print('suport_service');
+      if(suportEmployeeIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       print({"support_employees_id": suportEmployeeIdMode});
       request.body = json.encode({
         "timesheet_id": widget.id,
@@ -1736,6 +1741,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // -- project --
     }else if(_mode_id == 14){
       print({"project_id": projectIdMode});
+      if(projectIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       request.body = json.encode({
         "timesheet_id": widget.id,
         "timestart": "${timeStart.text}",
@@ -1756,6 +1764,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
         "services_id": serviceIdMode,
         "serviceused_id": serviceUserIdMode
       });
+      if(proposalIdMode == null || serviceIdMode == null || serviceUserIdMode == null){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
       request.body = json.encode({
         "timesheet_id": widget.id,
         "timestart": "${timeStart.text}",
@@ -1774,6 +1785,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
     // -- training --
     }else if(_mode_id == 9){
      print({"training_id": trainingIdMode});
+     if(trainingIdMode == null){
+      return {"status": false, "message": "Your form is not complete!"};
+     }
       request.body = json.encode({
         "timesheet_id": widget.id,
         "timestart": "${timeStart.text}",
