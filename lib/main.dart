@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<Widget> _children = [Dashboard(), Timesheet(), Overtime(), WFH()];
+  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime()];
 
   @override
   void initState(){

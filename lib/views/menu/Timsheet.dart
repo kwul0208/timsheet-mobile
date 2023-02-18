@@ -63,7 +63,7 @@ class _TimesheetState extends State<Timesheet> {
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
     dateForAdd = formattedDate;
     _futureTimesheet = getTimesheet(formattedDate, false);
-    // isConsultant();
+    isConsultant();
   }
 
   Future<void> isConsultant()async{
@@ -327,7 +327,7 @@ class _TimesheetState extends State<Timesheet> {
                             }else{
 
                               // -- check tanggal relock sudah exp belum
-                              DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
+                              DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
                               DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                               // -- unvalid/lock --
                               if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -437,7 +437,7 @@ class _TimesheetState extends State<Timesheet> {
                                     Builder(
                                       builder: (context) {
                                         // -- check tanggal relock sudah exp belum
-                                        DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
+                                        DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
                                         DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                         // -- unvalid --
                                         if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -829,7 +829,7 @@ class _TimesheetState extends State<Timesheet> {
                                                       }
                                                     }else{
                                                       // -- check tanggal relock sudah exp belum
-                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
                                                       DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                                       // -- unvalid --
                                                       if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -927,7 +927,7 @@ class _TimesheetState extends State<Timesheet> {
                                                       }
                                                     }else{
                                                       // -- check tanggal relock sudah exp belum
-                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
+                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
                                                       DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                                       // -- unvalid --
                                                       if(forRelockDate.compareTo(forTodayDate) < 0){
@@ -1370,7 +1370,7 @@ class _TimesheetState extends State<Timesheet> {
                           }
                           }else{
                             // -- check tanggal relock sudah exp belum
-                            DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date} 23:00:00");
+                            DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
                             DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                             // -- unvalid --
                             if(forRelockDate.compareTo(forTodayDate) < 0){
