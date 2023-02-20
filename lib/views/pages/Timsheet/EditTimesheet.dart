@@ -526,11 +526,12 @@ class _EditTimesheetState extends State<EditTimesheet> {
                     controller: description,
                     decoration: InputDecoration(
                       label: Text("Description"),
+                      alignLabelWithHint: true
                       // border: OutlineInputBorder(
                       //   borderSide: BorderSide(color: Config().line,)
                       // )
                     ),
-                    maxLines: 4,
+                    maxLines: 8,
                   ),
                   SizedBox(height: 20,),
                   Text("Mode", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
