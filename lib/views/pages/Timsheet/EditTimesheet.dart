@@ -551,6 +551,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                     _showChildBT = false;
                                     _showChildDev = false;
                                     _showChildOA = false;
+                                    _showEmployees = false;
+                                    _showTraining = false;
+                                    _showProject = false;
                                   });
                                 },
                                 readOnly: true,
@@ -832,6 +835,9 @@ class _EditTimesheetState extends State<EditTimesheet> {
                                   _showChildCT = false;
                                   _showChildDev = false;
                                   _showChildOA = false;
+                                  _showEmployees = false;
+                                  _showTraining = false;
+                                  _showProject = false;
                                 });
                               },
                               readOnly: true,

@@ -647,6 +647,9 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showChildBT = false;
                                   _showChildDev = false;
                                   _showChildOA = false;
+                                  _showEmployees = false;
+                                  _showTraining = false;
+                                  _showProject = false;
                                 });
                               },
                               readOnly: true,
@@ -918,6 +921,9 @@ class _addTimsheetState extends State<addTimsheet> {
                                   _showChildCT = false;
                                   _showChildDev = false;
                                   _showChildOA = false;
+                                  _showEmployees = false;
+                                  _showTraining = false;
+                                  _showProject = false;
                                 });
                               },
                               readOnly: true,
