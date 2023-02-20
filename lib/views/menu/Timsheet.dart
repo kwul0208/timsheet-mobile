@@ -518,6 +518,8 @@ class _TimesheetState extends State<Timesheet> {
                                         Duration difference = lock_date.difference(today);
                                         int totalDays = difference.inDays;
                                         if(totalDays <= 5){
+                                          DateTime dt = DateTime.parse("${_timesheet![0].locked_date}");
+                                          String formattedDateMonth = DateFormat("dd MMMM yyyy").format(dt);
                                           return Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Container(
@@ -532,7 +534,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   children: [
                                                     Text("Your timesheet is incomplete.", style: TextStyle(color: Colors.white, fontSize: 15),),
                                                     Text("Complete it immediatelly before locked on", style: TextStyle(color: Colors.white, fontSize: 15),),
-                                                    Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                                    Text("${formattedDateMonth}", style: TextStyle(color: Colors.white, fontSize: 15),),
                                                   ],
                                                 ),
                                               ),
