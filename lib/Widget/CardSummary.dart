@@ -1,54 +1,27 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
-
-class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
-
-  @override
-  State<TestPage> createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
-  final chartData = [
-      Data(units: 1, color: const Color.fromRGBO(137, 69, 170, 1)),
-      Data(units: 2, color: const Color.fromRGBO(7, 84, 130, 1)),
-      Data(units: 4, color: const Color.fromRGBO(242, 154, 118, 1)),
-      Data(units: 3, color: const Color.fromRGBO(255, 204, 103, 1)),
-    ];
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-        var size, height, width;
-
-    // getting the size of the window
-    size = MediaQuery.of(context).size;
-    height = size.height;
-    width = size.width;
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: cardSummary(width: width, chartData: chartData),
-        ),
-      ),
-    );
-  }
-}
 
 class cardSummary extends StatelessWidget {
   const cardSummary({
     Key? key,
     required this.width,
     required this.chartData,
+    this.working_time,
+    this.over_time,
+    this.ishoma,
+    this.chargeable,
+    this.office_administration,
+    this.training
   }) : super(key: key);
 
   final width;
   final List<Data> chartData;
+  final String? working_time;
+  final String? over_time;
+  final String? ishoma;
+  final String? chargeable;
+  final String? office_administration;
+  final String? training;
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +52,14 @@ class cardSummary extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Working Time", style: TextStyle(color: Config().blue2, fontWeight: FontWeight.w700, fontSize: 16),),
-                    Text("10:00", style: TextStyle(fontSize: 16),)
+                    Text("${working_time.toString().substring(0,5)}", style: TextStyle(fontSize: 16),)
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Working Time", style: TextStyle(color: Config().blue2, fontWeight: FontWeight.w700, fontSize: 16),),
-                    Text("10:00", style: TextStyle(fontSize: 16),)
+                    Text("Over Time", style: TextStyle(color: Config().blue2, fontWeight: FontWeight.w700, fontSize: 16),),
+                    Text("${over_time.toString().substring(0,5)}", style: TextStyle(fontSize: 16),)
                   ],
                 )
               ],
@@ -126,7 +99,7 @@ class cardSummary extends StatelessWidget {
                       children: [
                         Icon(Icons.access_time, color: Colors.white, size: 20,),
                         SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+                        Text("${chargeable.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
                       ],
                     ),
                   ],
@@ -152,7 +125,7 @@ class cardSummary extends StatelessWidget {
                       children: [
                         Icon(Icons.access_time, color: Colors.white, size: 20,),
                         SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+                        Text("${ishoma.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
                       ],
                     ),
                   ],
@@ -178,7 +151,7 @@ class cardSummary extends StatelessWidget {
                       children: [
                         Icon(Icons.access_time, color: Colors.white, size: 20,),
                         SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+                        Text("${office_administration.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
                       ],
                     ),
                   ],
@@ -204,7 +177,7 @@ class cardSummary extends StatelessWidget {
                       children: [
                         Icon(Icons.access_time, color: Colors.white, size: 20,),
                         SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+                        Text("${training.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
                       ],
                     ),
                   ],

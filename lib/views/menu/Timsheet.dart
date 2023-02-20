@@ -12,6 +12,7 @@ import 'package:timsheet_mobile/Models/Timesheet/TimesheetApi.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
+import 'package:timsheet_mobile/Widget/CardSummary.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerCardTImeseet.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/pages/Timsheet/AddTimesheet.dart';
@@ -595,7 +596,7 @@ class _TimesheetState extends State<Timesheet> {
                       // forlockDate.compareTo(forTodayDate) > 0
                       if(_timesheet![0].status == "open" || forlockDate.compareTo(forTodayDate) > 0){
                         if (_timesheet![0].timesheet.length >= 1) {
-                          int hours = _timesheet![0].oa_duration;
+                          int hours = _timesheet![0].working_time!;
                           double check_hour = hours / 3600;
                           if(check_hour < 8.0){
                             DateTime dt = DateTime.parse("${_timesheet![0].locked_date}");
@@ -1272,133 +1273,24 @@ class _TimesheetState extends State<Timesheet> {
                   return Consumer<TimesheetState>(
                     builder: (context, data, _) {
                       if(_timesheet![0].timesheet.length >= 1){
-                        
-                          int seconds = _timesheet![0].oa_duration; // some number of seconds
-                          Duration duration = Duration(seconds: seconds);
-                          String formattedDurationTotalTime = duration.toString().split('.').first.padLeft(8, "0");
+
+                        double avg_chargeable = _timesheet![0].chargeable!.toDouble() / _timesheet![0].working_time!.toDouble();
+                        double avg_oa = _timesheet![0].office_administration!.toDouble() / _timesheet![0].working_time!.toDouble();
+                        double avg_training = _timesheet![0].training!.toDouble() / _timesheet![0].working_time!.toDouble();
+                        double avg_ishoma = _timesheet![0].ishoma!.toDouble() / _timesheet![0].working_time!.toDouble();
+
+                        print([avg_chargeable, avg_oa, avg_training, avg_ishoma]);
+
+                        final chartData = [
+                          Data(units: avg_chargeable == 0.0 ? 0.01 : avg_chargeable, color: const Color.fromRGBO(137, 69, 170, 1)),
+                          Data(units: avg_ishoma == 0.0 ? 0.01 : avg_ishoma, color: const Color.fromRGBO(7, 84, 130, 1)),
+                          Data(units: avg_oa == 0.0 ? 0.01 : avg_oa, color: const Color.fromRGBO(242, 154, 118, 1)),
+                          Data(units: avg_training == 0.0 ? 0.01 : avg_training, color: const Color.fromRGBO(255, 204, 103, 1)),
+                        ];
 
                         return Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: width,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width/1.6,
-                                        // height: 20,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("Chargeable Time", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width/3.8,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width/1.6,
-                                        // height: 20,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("Daily Routine", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width/3.8,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width/1.6,
-                                        // height: 20,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("Total Working Time", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width/3.8,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("${formattedDurationTotalTime.substring(0, 5)}", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width/1.6,
-                                        // height: 20,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("Total Over Time", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width/3.8,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.white)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text("5.00", style: TextStyle(color: Colors.white,),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          child: cardSummary(width: width, chartData: chartData, working_time: Helper().secondToHour(_timesheet![0].working_time), over_time: Helper().secondToHour(_timesheet![0].over_time), ishoma: Helper().secondToHour(_timesheet![0].ishoma), chargeable: Helper().secondToHour(_timesheet![0].chargeable), office_administration: Helper().secondToHour(_timesheet![0].office_administration), training: Helper().secondToHour(_timesheet![0].training),),
                         );
                       }else{
                         return SizedBox();

@@ -35,4 +35,10 @@ class Helper{
     return check_hour;
 
   }
+
+  secondToHour(val){
+    Duration duration = Duration(seconds: val);
+    String hour = duration.toString().split('.').first.padLeft(8, "0");
+    return hour;
+  }
 }
