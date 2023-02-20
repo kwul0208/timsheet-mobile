@@ -1669,7 +1669,7 @@ class _EditTimesheetState extends State<EditTimesheet> {
                           _load = false;
                         });
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 8),
+                          duration: Duration(seconds: 6),
                           content: Text("${value['message']}"),
                         ));
                         value['status'] == true ? {

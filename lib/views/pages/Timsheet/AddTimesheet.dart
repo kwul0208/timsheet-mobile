@@ -1753,7 +1753,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                       _load= false;
                                     });
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      duration: Duration(seconds: 8),
+                                      duration: Duration(seconds: 6),
                                       content: Text("${value['message']}"),
                                     ));
                                     value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
@@ -1786,7 +1786,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                           _load= false;
                                         });
                                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                          duration: Duration(seconds: 8),
+                                          duration: Duration(seconds: 6),
                                           content: Text("${value['message']}"),
                                         ));
                                         value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
@@ -1802,7 +1802,7 @@ class _addTimsheetState extends State<addTimsheet> {
                                         _load= false;
                                       });
                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                        duration: Duration(seconds: 8),
+                                        duration: Duration(seconds: 6),
                                         content: Text("${value['message']}"),
                                       ));
                                       value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
