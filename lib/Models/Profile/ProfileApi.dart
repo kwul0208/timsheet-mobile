@@ -36,7 +36,7 @@ class ProfileApi {
       return ProfileModel.ProfileModelFromSnapshot(data);
 
     } else {
-      print('false');
+      print('errorrrrrr');
       print(await response.stream.bytesToString());
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("${response.reasonPhrase}, failed get data profile"),

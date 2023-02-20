@@ -673,20 +673,76 @@ class _TimesheetState extends State<Timesheet> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "${_timesheet![0].timesheet[i]['tmode_name']}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            flex: 4,
+                                            child: Text(
+                                              "${_timesheet![0].timesheet[i]['tmode_name']}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
+                                                if(_timesheet![0].relocked_date == null){
+                                                  DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                                                  DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                  if(forlockDate.compareTo(forTodayDate) > 0){
+                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                  }else{
+                                                    _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                  }
+                                                }else{
+                                                  // -- check tanggal relock sudah exp belum
+                                                  DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                                  DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                  // -- unvalid --
+                                                  if(forRelockDate.compareTo(forTodayDate) < 0){
+                                                    _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                                  }else{
+                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                  }
+                                                }
+                                              } else {
+                                                _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                              }
+                                              },
+                                              // child: Icon(
+                                              //   Icons.delete_forever,
+                                              //   color: Colors.red,
+                                              //   size: 30,
+                                              // )
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(right: 6),
+                                                child: Image.asset("assets/delete.png", scale: 2,),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(height: 10),
+                                      SizedBox(height: 16),
                                       // -- mode suport --
                                       _timesheet![0].timesheet[i]['tmode_id'] ==
                                               8
-                                          ? Text(
-                                              "to: ${_timesheet![0].timesheet[i]['support_to_employees_name']}",
-                                              style: TextStyle(
-                                                  color: Config().primary,
-                                                  fontWeight: FontWeight.w500))
+                                          ? Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Suport to: ", style: TextStyle(fontWeight: FontWeight.w700),),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8),
+                                                child: Text(
+                                                    "${_timesheet![0].timesheet[i]['support_to_employees_name']}",
+                                                    style: TextStyle(
+                                                        color: Config().primary,
+                                                        fontWeight: FontWeight.w700)),
+                                              ),
+                                            ],
+                                          )
                                           : SizedBox(),
                                       // -- end --
 
@@ -733,7 +789,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   style: TextStyle(
                                                       color: Config().primary,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                          FontWeight.w700),
                                                 ),
                                                 Text(
                                                   "${_timesheet![0].timesheet[i]['service_name']}",
@@ -750,24 +806,42 @@ class _TimesheetState extends State<Timesheet> {
                                       // -- mode project --
                                       _timesheet![0].timesheet[i]['tmode_id'] ==
                                               14
-                                          ? Text(
-                                              "${_timesheet![0].timesheet[i]['project_name']}",
-                                              style: TextStyle(
-                                                  color: Config().primary,
-                                                  fontWeight: FontWeight.w500),
-                                            )
+                                          ? Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Project name: ", style: TextStyle(fontWeight: FontWeight.w700),),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8),
+                                                child: Text(
+                                                    "${_timesheet![0].timesheet[i]['project_name']}",
+                                                    style: TextStyle(
+                                                        color: Config().primary,
+                                                        fontWeight: FontWeight.w700),
+                                                  ),
+                                              ),
+                                            ],
+                                          )
                                           : SizedBox(),
                                       // -- end --
 
                                       // -- mode training --
                                       _timesheet![0].timesheet[i]['tmode_id'] ==
                                               9
-                                          ? Text(
-                                              "${_timesheet![0].timesheet[i]['training_name']}",
-                                              style: TextStyle(
-                                                  color: Config().primary,
-                                                  fontWeight: FontWeight.w500),
-                                            )
+                                          ? Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Training name: ", style: TextStyle(fontWeight: FontWeight.w700),),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8),
+                                                child: Text(
+                                                    "${_timesheet![0].timesheet[i]['training_name']}",
+                                                    style: TextStyle(
+                                                        color: Config().primary,
+                                                        fontWeight: FontWeight.w700),
+                                                  ),
+                                              ),
+                                            ],
+                                          )
                                           : SizedBox(),
                                       // -- end --
 
@@ -780,11 +854,18 @@ class _TimesheetState extends State<Timesheet> {
                                       //       fontSize: 13),
                                       // ),
                                       // _name.length > 10 ? _name.substring(0, 10)+'...' : _name,
-                                      Text("Description:"),
+                                      _timesheet![0].timesheet[i]['tmode_id'] != 13 ? SizedBox(height: 10,) : SizedBox(),
+                                      // _timesheet![0].timesheet[i]['tmode_id'] != 28 ? SizedBox(height: 10,) : SizedBox(),
+
+                                      Text("Description:", style: TextStyle(fontWeight: FontWeight.w700),),
                                       indexDetail != i ? 
-                                        Html(data: "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }") 
+                                        Html(data: "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }", style: {
+                                          '*': Style(margin: EdgeInsets.only(top: 0, left: 5))
+                                        },) 
                                         : 
-                                        Html(data: "${_timesheet![0].timesheet[i]['description']}"),
+                                        Html(data: "${_timesheet![0].timesheet[i]['description']}", style: {
+                                          '*': Style(margin: EdgeInsets.only(top: 0, left: 5))
+                                        },),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -818,42 +899,42 @@ class _TimesheetState extends State<Timesheet> {
                                           ),
                                           Row(
                                             children: [
-                                              GestureDetector(
-                                                  onTap: () {
-                                                    if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
-                                                    if(_timesheet![0].relocked_date == null){
-                                                      DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
-                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
-                                                      if(forlockDate.compareTo(forTodayDate) > 0){
-                                                        _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
-                                                      }else{
-                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
-                                                      }
-                                                    }else{
-                                                      // -- check tanggal relock sudah exp belum
-                                                      DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
-                                                      DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
-                                                      // -- unvalid --
-                                                      if(forRelockDate.compareTo(forTodayDate) < 0){
-                                                        _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
-                                                      }else{
-                                                        _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
-                                                      }
-                                                    }
-                                                  } else {
-                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
-                                                  }
-                                                  },
-                                                  // child: Icon(
-                                                  //   Icons.delete_forever,
-                                                  //   color: Colors.red,
-                                                  //   size: 30,
-                                                  // )
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(right: 6),
-                                                    child: Image.asset("assets/delete.png", scale: 2,),
-                                                  ),
-                                                ),
+                                              // GestureDetector(
+                                              //     onTap: () {
+                                              //       if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
+                                              //       if(_timesheet![0].relocked_date == null){
+                                              //         DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                                              //         DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                              //         if(forlockDate.compareTo(forTodayDate) > 0){
+                                              //           _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                              //         }else{
+                                              //           _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                              //         }
+                                              //       }else{
+                                              //         // -- check tanggal relock sudah exp belum
+                                              //         DateTime forRelockDate = DateTime.parse("${_timesheet![0].relocked_date}");
+                                              //         DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                              //         // -- unvalid --
+                                              //         if(forRelockDate.compareTo(forTodayDate) < 0){
+                                              //           _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
+                                              //         }else{
+                                              //           _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                              //         }
+                                              //       }
+                                              //     } else {
+                                              //       _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                              //     }
+                                              //     },
+                                              //     // child: Icon(
+                                              //     //   Icons.delete_forever,
+                                              //     //   color: Colors.red,
+                                              //     //   size: 30,
+                                              //     // )
+                                              //     child: Padding(
+                                              //       padding: const EdgeInsets.only(right: 6),
+                                              //       child: Image.asset("assets/delete.png", scale: 2,),
+                                              //     ),
+                                              //   ),
                                               GestureDetector(
                                                 onTap: () {
                                                   if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
@@ -1069,7 +1150,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   }
                                                 },
                                                 child: Padding(
-                                                  padding: const EdgeInsets.only(left: 4, right: 4),
+                                                  padding: const EdgeInsets.only(left: 4, right: 8),
                                                   child: Container(
                                                       decoration: BoxDecoration(
                                                           borderRadius:
@@ -1178,7 +1259,7 @@ class _TimesheetState extends State<Timesheet> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                                  Text("SUMMARY OF WORKING TIME", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),),
                                   SizedBox(height: 10),
                                   Row(
                                     children: [
