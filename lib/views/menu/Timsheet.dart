@@ -738,7 +738,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 child: Text(
                                                     "${_timesheet![0].timesheet[i]['support_to_employees_name']}",
                                                     style: TextStyle(
-                                                        color: Config().primary,
+                                                        color: Config().blue2,
                                                         fontWeight: FontWeight.w700)),
                                               ),
                                             ],
@@ -787,7 +787,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 Text(
                                                   "${_timesheet![0].timesheet[i]['companies_name']}",
                                                   style: TextStyle(
-                                                      color: Config().primary,
+                                                      color: Config().blue2,
                                                       fontWeight:
                                                           FontWeight.w700),
                                                 ),
@@ -815,7 +815,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 child: Text(
                                                     "${_timesheet![0].timesheet[i]['project_name']}",
                                                     style: TextStyle(
-                                                        color: Config().primary,
+                                                        color: Config().blue2,
                                                         fontWeight: FontWeight.w700),
                                                   ),
                                               ),
@@ -836,7 +836,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 child: Text(
                                                     "${_timesheet![0].timesheet[i]['training_name']}",
                                                     style: TextStyle(
-                                                        color: Config().primary,
+                                                        color: Config().blue2,
                                                         fontWeight: FontWeight.w700),
                                                   ),
                                               ),
@@ -887,13 +887,44 @@ class _TimesheetState extends State<Timesheet> {
                                         children: [
                                           Row(
                                             children: [
-                                              Image.asset('assets/time.png', scale: 2,),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                "${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: Config().blue2,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.access_time, color: Colors.white, size: 24,),
+                                                      SizedBox(width: 5),
+                                                      Text(
+                                                        "${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700, color: Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 3,),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Config().grey3,
+                                                  borderRadius: BorderRadius.circular(5)
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(7),
+                                                  child: Builder(
+                                                    builder: (context) {
+                                                      int seconds = _timesheet![0].timesheet[i]['timeduration']; // some number of seconds
+                                                      Duration duration = Duration(seconds: seconds);
+                                                      String total_time = duration.toString().split('.').first.padLeft(8, "0");
+                                                      return Text("${total_time.substring(0, 5)}", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white));
+                                                    }
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -1180,7 +1211,7 @@ class _TimesheetState extends State<Timesheet> {
                                                               20),
                                                       border: Border.all(
                                                           color:
-                                                              Config().primary,
+                                                              Config().blue2,
                                                           width: 2)),
                                                   child: GestureDetector(
                                                       onTap: () {
@@ -1201,14 +1232,14 @@ class _TimesheetState extends State<Timesheet> {
                                                               Icons
                                                                   .keyboard_arrow_up_rounded,
                                                               color: Config()
-                                                                  .primary,
+                                                                  .blue2,
                                                               size: 22,
                                                             )
                                                           : Icon(
                                                               Icons
                                                                   .keyboard_arrow_down_rounded,
                                                               color: Config()
-                                                                  .primary,
+                                                                  .blue2,
                                                               size: 22,
                                                             )))
                                             ],
