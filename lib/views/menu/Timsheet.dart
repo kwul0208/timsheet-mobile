@@ -799,12 +799,12 @@ class _TimesheetState extends State<Timesheet> {
                                                           FontWeight.w700),
                                                 ),
                                                 Text(
-                                                  "${_timesheet![0].timesheet[i]['service_name']}",
+                                                  "${_timesheet![0].timesheet[i]['service_name']} Tahun ${_timesheet![0].timesheet[i]['service_period']}",
                                                   style:
                                                       TextStyle(),
                                                 ),
-                                                SizedBox(height: 10),
-                                                Text("Service Periode : ${_timesheet![0].timesheet[i]['service_period']}")
+                                                // SizedBox(height: 10),
+                                                // Text("Service Periode : ${_timesheet![0].timesheet[i]['service_period']}")
                                               ],
                                             )
                                           : SizedBox(),

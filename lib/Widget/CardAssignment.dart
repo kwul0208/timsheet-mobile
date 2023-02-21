@@ -57,11 +57,11 @@ class CardAssignment extends StatelessWidget {
                     SizedBox(height: 6,),
                     name_service == '' ? 
                     Text(" -") :
-                    Text("${name_service}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Config().primary),),
+                    Text("${name_service} Tahun ${year}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Config().primary),),
                     SizedBox(height: 5),
                     SizedBox(height: 7),
-                    Text("Service Period:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                    Text("${year}"),
+                    // Text("Service Period:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                    // Text("${year}"),
                     SizedBox(height: 10,),
                     Text("Assignment Number:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                     Text("${assign_numbber}"),
