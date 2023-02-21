@@ -64,7 +64,7 @@ class _TimesheetState extends State<Timesheet> {
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
     dateForAdd = formattedDate;
     _futureTimesheet = getTimesheet(formattedDate, false);
-    // isConsultant();
+    isConsultant();
   }
 
   Future<void> isConsultant()async{
@@ -138,9 +138,9 @@ class _TimesheetState extends State<Timesheet> {
                         });
                         deleteTimesheet(timesheet_id).then((value) {
                           if (value['status'] == true) {
-                            setState(() {
-                              _isStatus = 'success';
-                            });
+                            // setState(() {
+                            //   _isStatus = 'success';
+                            // });
                             Timer(Duration(seconds: 1), () {
                               Navigator.pop(context);
                               _timesheet![0].timesheet.removeWhere((element) =>
@@ -152,6 +152,11 @@ class _TimesheetState extends State<Timesheet> {
                                 _isStatus = 'false';
                               });
                             });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Success"),
+                                  duration: Duration(seconds: 6)
+                            ));
                           } else {
                             setState(() {
                               _isLoading = false;
@@ -159,6 +164,7 @@ class _TimesheetState extends State<Timesheet> {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
                                   "Failed! try again later please."),
+                                  duration: Duration(seconds: 6),
                             ));
                           }
                         });
