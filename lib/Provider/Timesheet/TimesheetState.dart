@@ -109,4 +109,12 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  // -- summary
+  bool _showDS = true;
+  bool get showDS => _showDS;
+  void showDetailSummary(){
+    _showDS = !showDS;
+    notifyListeners();
+  }
+
 }
