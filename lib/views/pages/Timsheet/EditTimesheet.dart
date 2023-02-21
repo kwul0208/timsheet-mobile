@@ -261,15 +261,22 @@ class _EditTimesheetState extends State<EditTimesheet> {
       setState(() {
         _showProject = true;
         projectIdMode = widget.project_id;
+        _showChildDev = true;
       });
     // -- chargeable time --
-    }else if(mode_id == 23 || mode_id == 22 || mode_id == 19 || mode_id == 15 || mode_id == 17 ||mode_id == 16 || mode_id == 21 || mode_id == 20 || mode_id == 18){
-      Provider.of<TimesheetState>(context, listen: false).changeAssignment(widget.companies_name!, widget.service_name!);
+    }else if(mode_id == 23 || mode_id == 22 || mode_id == 19 || mode_id == 15 || mode_id == 17 ||mode_id == 16 || mode_id == 21 || mode_id == 20 || mode_id == 18 || mode_id == 24 || mode_id == 25){
+      Provider.of<TimesheetState>(context, listen: false).changeAssignment(widget.companies_name.toString(), widget.service_name.toString());
       setState(() {
         _showClient = true;
         proposalIdMode = widget.proposal_id;
         serviceIdMode = widget.services_id;
         serviceUserIdMode = widget.serviceused_id;
+
+        if(mode_id == 24 || mode_id == 25){
+          _showChildBT = true;
+        }else{
+          _showChildCT = true;
+        }
 
       });
     // -- training --
@@ -278,6 +285,15 @@ class _EditTimesheetState extends State<EditTimesheet> {
       setState(() {
         _showTraining = true;
         trainingIdMode = widget.training_id.toString();
+      });
+    }else if(mode_id == 13 || mode_id == 28 ){
+      // -- officce Ad
+      setState(() {
+        _showChildOA = true;
+      });
+    }else if(mode_id == 27){
+      setState(() {
+        _showChildDev = true;
       });
     }
   }
