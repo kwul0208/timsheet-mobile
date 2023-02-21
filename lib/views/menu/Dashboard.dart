@@ -130,14 +130,15 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Positioned(
                       right: 10,
-                      top: height/20,
+                      top: height/24,
                       child: GestureDetector(
                         onTap: ()async{
                           final storage = new FlutterSecureStorage();
                           await storage.deleteAll();
                           Provider.of<MainState>(context, listen: false).changeLogin(false);
                         },
-                        child: Icon(Icons.logout, color: Colors.red,)
+                        // child: Icon(Icons.logout, color: Colors.red,)
+                        child: Image.asset("assets/logout.png", scale: 2,),
                       )
                     ),
                     Positioned(
@@ -219,14 +220,14 @@ class _DashboardState extends State<Dashboard> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        CardWidget(title: "Unlock Request for Timesheet", total: 1, icon: Icons.meeting_room_outlined,),
-                        CardWidget(title: "Overtime Plan", total: 3, icon: Icons.work_history,),
-                        CardWidget(title: "Unlock for OT Plan", total: 5, icon: Icons.lock_clock_outlined ,),
-                        CardWidget(title: "Total Overtime", total: 5, icon: Icons.work_history,),
-                        CardWidget(title: "RWD", total: 5, icon: Icons.laptop,),
-                        CardWidget(title: "Leave", total: 5, icon: Icons.exit_to_app_outlined,),
-                        CardWidget(title: "Holiday", total: 5, icon: Icons.holiday_village_outlined,),
-                        CardWidget(title: "Other Summary", total: 5, icon: Icons.menu,),
+                        CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
+                        CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
+                        CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "ic_outline-lock-open.png",),
+                        CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
+                        CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
+                        CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
+                        CardWidget(title: "Holiday", total: 5, img: "material-symbols_holiday-village-outline.png",),
+                        CardWidget(title: "Other Summary", total: 5, img: "ic_baseline-menu.png",),
 
                       ],
                     ),

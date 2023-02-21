@@ -4,12 +4,12 @@ import 'package:timsheet_mobile/Config/Config.dart';
 class CardWidget extends StatelessWidget {
   const CardWidget({
     Key? key,
-    required this.title, required this.total, required this.icon
+    required this.title, required this.total, required this.img
   }) : super(key: key);
 
   final String title;
   final int total;
-  final IconData icon;
+  final String img;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,8 @@ class CardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, color: Config().primary, size: 30,),
+            // Icon(icon, color: Config().primary, size: 30,),
+            Image.asset('assets/$img', scale: 2,),
             Text("$total", style: TextStyle(color: Config().primary, fontSize: 44, fontWeight: FontWeight.w500),),
             Align(child: Text(title, style: TextStyle(color: Config().primary, fontSize: 14, fontWeight: FontWeight.w600), textAlign: TextAlign.center,))
           ],
