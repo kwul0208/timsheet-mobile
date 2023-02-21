@@ -123,7 +123,7 @@ class _EditWFHState extends State<EditWFH> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("Edit WFH",
+        title: Text("Edit RWD",
             style: TextStyle(color: Colors.black, fontSize: 18)),
         centerTitle: true,
       ),

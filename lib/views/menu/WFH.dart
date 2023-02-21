@@ -22,7 +22,7 @@ class WFH extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Config().primary,
-          title: Text("WFH"),
+          title: Text("RWD"),
           centerTitle: true,
           elevation: 0,
           bottom:  TabBar(

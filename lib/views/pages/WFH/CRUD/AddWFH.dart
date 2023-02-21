@@ -123,7 +123,7 @@ class _AddWFHState extends State<AddWFH> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("Add WFH",
+        title: Text("Add RWD",
             style: TextStyle(color: Colors.black, fontSize: 18)),
         centerTitle: true,
       ),
