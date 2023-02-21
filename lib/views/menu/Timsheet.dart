@@ -613,7 +613,7 @@ class _TimesheetState extends State<Timesheet> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     children: [
-                                      Text("Your timesheet is incomplete.", style: TextStyle(color: Colors.white, fontSize: 15),),
+                                      Text("Your timesheet just filled ${Helper().secondToHour(_timesheet![0].working_time).toString().substring(0,5)} hours.", style: TextStyle(color: Colors.white, fontSize: 15),),
                                       Text("Complete it immediatelly before locked on", style: TextStyle(color: Colors.white, fontSize: 15),),
                                       Text("${formattedDate}", style: TextStyle(color: Colors.white, fontSize: 15),),
                                     ],
