@@ -7,6 +7,7 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
+import 'package:timsheet_mobile/views/menu/Cuti.dart';
 import 'package:timsheet_mobile/views/menu/Dashboard.dart';
 import 'package:timsheet_mobile/views/menu/Overtime.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
@@ -102,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime()];
+  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime(), Cuti()];
 
   @override
   void initState(){
@@ -122,8 +123,12 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
               icon: Container(child: _curentIndex == 1 ? Image.asset("assets/rwd_active.png", scale: 2,) : Image.asset("assets/rwd_inactive.png", scale: 2,)), label: ""),
           BottomNavigationBarItem(
-              icon: Container(child: Icon(Icons.edit_calendar, size: 26, color: _curentIndex == 2 ? Config().primary : Colors.black,)), label: ""),
+              icon: Container(child: Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Container(child: _curentIndex == 2 ? Image.asset("assets/timesheet_active.png", scale: 2,) : Image.asset("assets/timesheet_inactive.png", scale: 2,)),
+              )), label: ""),
           BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: ""),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 4 ? Image.asset("assets/cuti_active.png", scale: 2.2,) : Image.asset("assets/cuti_inactive.png", scale: 2.2,)), label: ""),
         ],
         onTap: onTapBar,
         currentIndex: _curentIndex,
