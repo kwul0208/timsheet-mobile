@@ -859,17 +859,30 @@ class _TimesheetState extends State<Timesheet> {
                                       // _timesheet![0].timesheet[i]['tmode_id'] != 28 ? SizedBox(height: 10,) : SizedBox(),
 
                                       Text("Description:", style: TextStyle(fontWeight: FontWeight.w700),),
-                                      indexDetail != i ? 
-                                        Html(data: "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }", style: {
+                                      _timesheet![0].timesheet[i]['input_from'] == 'Meeting and Discussion System' ?
+                                        indexDetail != i ? 
+                                          Html(data: "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }", style: {
+                                            '*': Style(margin: EdgeInsets.only(top: 0, left: 5))
+                                          },) 
+                                          : 
+                                          Html(data: "${_timesheet![0].timesheet[i]['description']}", style: {
                                           '*': Style(margin: EdgeInsets.only(top: 0, left: 5))
-                                        },) 
+                                          },)
                                         : 
-                                        Html(data: "${_timesheet![0].timesheet[i]['description']}", style: {
-                                          '*': Style(margin: EdgeInsets.only(top: 0, left: 5))
-                                        },),
+                                        indexDetail != i ? 
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: Text( "${_timesheet![0].timesheet[i]['description'].length > 100 ? _timesheet![0].timesheet[i]['description'].substring(0, 90)+'...' : _timesheet![0].timesheet[i]['description'] }"),
+                                          ) 
+                                          : 
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: Text( "${_timesheet![0].timesheet[i]['description']}"),
+                                          ),
                                       SizedBox(
                                         height: 20,
                                       ),
+                                      // Text("${_timesheet![0].timesheet[i]['description']}"),
                                       indexDetail == i
                                           ? Column(
                                               crossAxisAlignment:
