@@ -48,10 +48,18 @@ dependencies:
   flutter_html: ^2.2.1
   shimmer: ^2.0.0
   draggable_fab: ^0.1.4
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#icon apps
+#run flutter pub run flutter_launcher_icons:main when you want to change icon apps
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
