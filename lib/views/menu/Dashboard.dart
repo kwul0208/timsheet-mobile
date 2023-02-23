@@ -74,9 +74,14 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Container(
                       width: width,
-                      height: height/3,
+                      height: height/3.6,
                       decoration: BoxDecoration(
-                        color: Config().primary,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)],
+                        ),
+                        // color: Config().primary,
                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50))
                       ),
                       child: Padding(
@@ -87,7 +92,7 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(height: 20),
                             Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
                             SizedBox(width: 10),
-                            SizedBox(height: 10,),
+                            SizedBox(height: 20,),
                             FutureBuilder(
                               future: _futureProfile,
                               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -155,7 +160,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
                 Container(
-                  height: 100,
+                  height: 55,
                   // color: Colors.red,
                 ),
                 Container(
@@ -163,39 +168,445 @@ class _DashboardState extends State<Dashboard> {
                   height: 10,
                   color: Config().line,
                 ),
-                
-                // Linkify(
-                //   onOpen: (link) async {
-                //     if (await canLaunch('https://cretezy.com')) {
-                //         await launch('https://cretezy.com');
-                //       } else {
-                //         throw 'Could not launch $link';
-                //       }
-                //   },
-                //   text: "Made by https://cretezy.com",
-                //   style: TextStyle(color: Colors.yellow),
-                //   linkStyle: TextStyle(color: Colors.red),
-                // ),
-                // ElevatedButton(
-                //   onPressed: _launchUrl,
-                //   child: Text('external'),
-                // ),
+                SizedBox(height: 10,),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10),
-                  child: Text("Announcement", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromARGB(221, 32, 32, 32)),),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/timesheet_inactive.png", scale: 2,),
+                      SizedBox(width: 10,),
+                      Text("Empty Timesheet", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                    ],
+                  ),
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Config().redPallet,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.lock_open_outlined, color: Colors.white,),
+                              Text("11\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 6,),
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Config().bgLock,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.lock_open_outlined, color: Colors.white,),
+                              Text("21\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 6,),
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Config().bgLock,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.lock_open_outlined, color: Colors.white,),
+                              Text("22\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: width,
+                  height: 10,
+                  color: Config().line,
+                ),
+
+                // -- HC Announcement --
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/mdi_announcement.png", scale: 2,),
+                      SizedBox(width: 10,),
+                      Text("HC Announcement", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ListView(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      CardArticle(width: width), 
-                      CardArticle(width: width), 
-                      CardArticle(width: width), 
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                            ] 
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: AssetImage("assets/ahmad.png"),
+                            ),
+                            title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: -10),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Approve your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                                Text("")
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                              offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage("assets/ahmad.png"),
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Reject your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                              SizedBox(height: 8,),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(
+                                      width: 2,
+                                      color: Color.fromARGB(255, 199, 199, 199)
+                                    )
+                                  )
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
+                                )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                )
+                ),
+
+                SizedBox(height: 30,),
+
+                // -- OT --
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/OT_inactive.png", scale: 2,),
+                      SizedBox(width: 10,),
+                      Text("Overtime", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                            ] 
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: AssetImage("assets/ahmad.png"),
+                            ),
+                            title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Approve your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                                Text("")
+                                // SizedBox(height: 8,),
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     border: Border(
+                                //       left: BorderSide(
+                                //         width: 2,
+                                //         color: Color.fromARGB(255, 199, 199, 199)
+                                //       )
+                                //     )
+                                //   ),
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(left: 4),
+                                //     child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
+                                //   )
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                              offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage("assets/ahmad.png"),
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Reject your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                              SizedBox(height: 8,),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(
+                                      width: 2,
+                                      color: Color.fromARGB(255, 199, 199, 199)
+                                    )
+                                  )
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
+                                )
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 30),
+
+                // -- RWD --
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/OT_inactive.png", scale: 2,),
+                      SizedBox(width: 10,),
+                      Text("RWD", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                                offset: Offset(0, 4))
+                            ] 
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: AssetImage("assets/ahmad.png"),
+                            ),
+                            title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            subtitle: Text("Approve your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                              offset: Offset(0, 4))
+                          ] 
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage("assets/ahmad.png"),
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                            ],
+                          ),
+                          // trailing: Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          subtitle: Text("Reject your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 10,)
+
+
+
+
+
+
+
+
+
+
+
+
+                // ---- end ----
+                
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 20, top: 10),
+                //   child: Text("Announcement", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromARGB(221, 32, 32, 32)),),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                //   child: ListView(
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     children: [
+                //       CardArticle(width: width), 
+                //       CardArticle(width: width), 
+                //       CardArticle(width: width), 
+                //     ],
+                //   ),
+                // )
               ],
             ),
             Container(
@@ -203,7 +614,7 @@ class _DashboardState extends State<Dashboard> {
               height: height,
             ),
             Positioned(
-              top: height/5.5,
+              top: height/5.6,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -211,23 +622,23 @@ class _DashboardState extends State<Dashboard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, bottom: 10),
-                    child: Text('Today Summary',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
+                    padding: const EdgeInsets.only(left: 20, bottom: 5),
+                    child: Text('Quick Access',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
                   ),
                   Container(
-                    height: 140,
+                    height: 90,
                     child: ListView(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
-                        CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
+                        // CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
                         CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "ic_outline-lock-open.png",),
-                        CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
-                        CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
-                        CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
-                        CardWidget(title: "Holiday", total: 5, img: "material-symbols_holiday-village-outline.png",),
-                        CardWidget(title: "Other Summary", total: 5, img: "ic_baseline-menu.png",),
+                        CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
+                        // CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
+                        // CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
+                        // CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
+                        CardWidget(title: "Check\nHoliday", total: 5, img: "material-symbols_holiday-village-outline.png",),
+                        CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
 
                       ],
                     ),
