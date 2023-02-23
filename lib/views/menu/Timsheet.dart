@@ -138,9 +138,9 @@ class _TimesheetState extends State<Timesheet> {
                         });
                         deleteTimesheet(timesheet_id).then((value) {
                           if (value['status'] == true) {
-                            // setState(() {
-                            //   _isStatus = 'success';
-                            // });
+                            setState(() {
+                              _isStatus = 'success';
+                            });
                             Timer(Duration(seconds: 1), () {
                               Navigator.pop(context);
                               _timesheet![0].timesheet.removeWhere((element) =>
@@ -151,12 +151,12 @@ class _TimesheetState extends State<Timesheet> {
                               setState(() {
                                 _isStatus = 'false';
                               });
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "Success"),
+                                    duration: Duration(seconds: 4)
+                              ));
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "Success"),
-                                  duration: Duration(seconds: 6)
-                            ));
                           } else {
                             setState(() {
                               _isLoading = false;
@@ -164,7 +164,7 @@ class _TimesheetState extends State<Timesheet> {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
                                   "Failed! try again later please."),
-                                  duration: Duration(seconds: 6),
+                                  duration: Duration(seconds: 4),
                             ));
                           }
                         });
@@ -799,10 +799,11 @@ class _TimesheetState extends State<Timesheet> {
                                                           FontWeight.w700),
                                                 ),
                                                 Text(
-                                                  "${_timesheet![0].timesheet[i]['service_name']} Tahun ${_timesheet![0].timesheet[i]['service_period']}",
+                                                  "${_timesheet![0].timesheet[i]['service_name']}\nTahun ${_timesheet![0].timesheet[i]['service_period']}",
                                                   style:
                                                       TextStyle(),
                                                 ),
+                                                Text("data")
                                                 // SizedBox(height: 10),
                                                 // Text("Service Periode : ${_timesheet![0].timesheet[i]['service_period']}")
                                               ],
@@ -894,9 +895,25 @@ class _TimesheetState extends State<Timesheet> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text("Inputed Date   : ${_timesheet![0].timesheet[i]['date_input']}",),
+                                                Builder( 
+                                                  builder: (context) {
+                                                    DateTime dt = DateTime.parse("${_timesheet![0].timesheet[i]['date_input']}");
+                                                    String formattedDate = DateFormat("dd-mm-yyyy HH:mm:s").format(dt);
+                                                    return Text("Inputed Date   : ${_timesheet![0].timesheet[i]['date_input']}",);
+                                                  }
+                                                ),
+                                                SizedBox(height: 3,),
                                                 Text("Inputed From  : ${_timesheet![0].timesheet[i]['input_from']}"),
-                                                Text("Updated Date  : ${_timesheet![0].timesheet[i]['date_update']}"),
+                                                SizedBox(height: 3,),
+                                                _timesheet![0].timesheet[i]['date_update'] == "" || _timesheet![0].timesheet[i]['date_update'] == null ?
+                                                Text("Updated Date  : -") :
+                                                Builder(
+                                                  builder: (context) {
+                                                    DateTime dt = DateTime.parse("${_timesheet![0].timesheet[i]['date_update']}");
+                                                    String formattedDate = DateFormat("dd-mm-yyyy HH:mm:s").format(dt);
+                                                    return Text("Updated Date  : ${formattedDate}");
+                                                  }
+                                                ),
                                               ],
                                             )
                                           : SizedBox(),
@@ -1297,6 +1314,11 @@ class _TimesheetState extends State<Timesheet> {
                         double avg_oa = _timesheet![0].office_administration!.toDouble() / _timesheet![0].working_time!.toDouble();
                         double avg_training = _timesheet![0].training!.toDouble() / _timesheet![0].working_time!.toDouble();
                         double avg_ishoma = _timesheet![0].ishoma!.toDouble() / _timesheet![0].working_time!.toDouble();
+
+                        // List<Data> dataCart = [];
+                        // for (var i = 0; i < _timesheet![0].summary['details']; i++) {
+                        //   dataCart.add(Data(units: _timesheet![0].summary['details'][i], color: const Color.fromRGBO(137, 69, 170, 1)));
+                        // }
 
                         print([avg_chargeable, avg_oa, avg_training, avg_ishoma]);
 

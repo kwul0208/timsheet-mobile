@@ -66,7 +66,7 @@ class cardSummary extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 20,),
+          SizedBox(height: 20,),
 
             SizedBox(
               height: 20,
