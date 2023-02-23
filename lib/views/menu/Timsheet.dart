@@ -97,19 +97,32 @@ class _TimesheetState extends State<Timesheet> {
     }
   }
 
-  _showConfirm(int timesheet_id) {
+  _showConfirm(int timesheet_id, String time) {
     showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title: Text("Delete"),
+            // title: Text("Delete"),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.delete_outline),
+                      Text(
+                        "Delete",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(height: 10,),
                   _isStatus == 'false'
-                      ? Text("Are You Sure?")
+                      ? Text("Are you sure want to delete your timesheet on $time?",style: TextStyle(fontSize: 16),)
                       : _isStatus == 'load'
                           ? Center(child: CircularProgressIndicator())
                           : _isStatus == 'success'
@@ -124,61 +137,72 @@ class _TimesheetState extends State<Timesheet> {
                                     Text('Success')
                                   ],
                                 ))
-                              : SizedBox()
+                              : SizedBox(),
                 ],
               ),
             ),
             actions: <Widget>[
-              _isStatus == 'false'
-                  ? TextButton(
-                      child: const Text('ok'),
-                      onPressed: () {
-                        setState(() {
-                          _isStatus = 'load';
-                        });
-                        deleteTimesheet(timesheet_id).then((value) {
-                          if (value['status'] == true) {
-                            setState(() {
-                              _isStatus = 'success';
-                            });
-                            Timer(Duration(seconds: 1), () {
-                              Navigator.pop(context);
-                              _timesheet![0].timesheet.removeWhere((element) =>
-                                  element['timesheet_id'] == timesheet_id);
-                              Provider.of<TimesheetState>(context,
-                                      listen: false)
-                                  .changeRefresh();
+              Column(
+                children: [
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _isStatus == 'false'
+                        ? TextButton(
+                            child: const Text('ok', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),),
+                            onPressed: () {
                               setState(() {
-                                _isStatus = 'false';
+                                _isStatus = 'load';
                               });
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    "Success"),
-                                    duration: Duration(seconds: 4)
-                              ));
-                            });
-                          } else {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "Failed! try again later please."),
-                                  duration: Duration(seconds: 4),
-                            ));
-                          }
-                        });
-                      },
-                    )
-                  : SizedBox(),
-              _isStatus == 'false'
-                  ? TextButton(
-                      child: const Text('cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  : SizedBox(),
+                              deleteTimesheet(timesheet_id).then((value) {
+                                if (value['status'] == true) {
+                                  setState(() {
+                                    _isStatus = 'success';
+                                  });
+                                  Timer(Duration(seconds: 1), () {
+                                    Navigator.pop(context);
+                                    _timesheet![0].timesheet.removeWhere((element) =>
+                                        element['timesheet_id'] == timesheet_id);
+                                    Provider.of<TimesheetState>(context,
+                                            listen: false)
+                                        .changeRefresh();
+                                    setState(() {
+                                      _isStatus = 'false';
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Success"),
+                                          duration: Duration(seconds: 4)
+                                    ));
+                                  });
+                                } else {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Failed! try again later please."),
+                                        duration: Duration(seconds: 4),
+                                  ));
+                                }
+                              });
+                            },
+                          )
+                        : SizedBox(),
+                    _isStatus == 'false'
+                        ? TextButton(
+                            child: const Text('cancel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        : SizedBox(),
+                    ],
+                  )
+                ],
+              ),
+              
             ],
           );
         });
@@ -203,7 +227,7 @@ class _TimesheetState extends State<Timesheet> {
                       Text(
                         "Locked",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                            fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -218,7 +242,7 @@ class _TimesheetState extends State<Timesheet> {
                       child: Text(
                         "OK",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                            fontSize: 20, fontWeight: FontWeight.w600),
                       ))
                 ],
               ),
@@ -324,7 +348,7 @@ class _TimesheetState extends State<Timesheet> {
                                           "Locked",
                                           style: TextStyle(
                                               fontSize: 18,
-                                              fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w600),
                                         )
                                       ],
                                     ),
@@ -357,7 +381,7 @@ class _TimesheetState extends State<Timesheet> {
                                             "Locked",
                                             style: TextStyle(
                                                 fontSize: 18,
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w600),
                                           )
                                         ],
                                       ),
@@ -388,7 +412,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   color: Colors.white,
                                                 ),
                                                 SizedBox(width: 5,),
-                                                Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),)
+                                                Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.white),)
                                               ],
                                             ),
                                             Text("Will be locked at $formattedDate", style: TextStyle(color: Colors.white, fontSize: 15),)
@@ -433,7 +457,7 @@ class _TimesheetState extends State<Timesheet> {
                                               "Locked",
                                               style: TextStyle(
                                                   fontSize: 18,
-                                                  fontWeight: FontWeight.w500),
+                                                  fontWeight: FontWeight.w600),
                                             )
                                           ],
                                         ),
@@ -467,7 +491,7 @@ class _TimesheetState extends State<Timesheet> {
                                                       "Locked",
                                                       style: TextStyle(
                                                           fontSize: 18,
-                                                          fontWeight: FontWeight.w500),
+                                                          fontWeight: FontWeight.w600),
                                                     )
                                                   ],
                                                 ),
@@ -498,7 +522,7 @@ class _TimesheetState extends State<Timesheet> {
                                                             color: Colors.white,
                                                           ),
                                                           SizedBox(width: 5,),
-                                                          Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Colors.white),)
+                                                          Text("Unlocked", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.white),)
                                                         ],
                                                       ),
                                                       Text("Will be locked at $formattedDate", style: TextStyle(color: Colors.white, fontSize: 15),)
@@ -695,12 +719,15 @@ class _TimesheetState extends State<Timesheet> {
                                             flex: 1,
                                             child: GestureDetector(
                                               onTap: () {
+                                                DateTime dt = DateTime.parse("${_timesheet![0].timesheet[i]['date']}");
+                                                String formattedDateMonth = DateFormat("MMMM, dd yyyy").format(dt);
+
                                                 if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
                                                 if(_timesheet![0].relocked_date == null){
                                                   DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
                                                   DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
                                                   if(forlockDate.compareTo(forTodayDate) > 0){
-                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id'], "$formattedDateMonth at ${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}");
                                                   }else{
                                                     _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
                                                   }
@@ -712,11 +739,11 @@ class _TimesheetState extends State<Timesheet> {
                                                   if(forRelockDate.compareTo(forTodayDate) < 0){
                                                     _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
                                                   }else{
-                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                    _showConfirm(_timesheet![0].timesheet[i]['timesheet_id'], "$formattedDateMonth at ${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}");
                                                   }
                                                 }
                                               } else {
-                                                _showConfirm(_timesheet![0].timesheet[i]['timesheet_id']);
+                                                _showConfirm(_timesheet![0].timesheet[i]['timesheet_id'], "$formattedDateMonth at ${_timesheet![0].timesheet[i]['timestart'].toString().substring(0, 5)} - ${_timesheet![0].timesheet[i]['timefinish'].toString().substring(0, 5)}");
                                               }
                                               },
                                               // child: Icon(
