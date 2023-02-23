@@ -192,8 +192,8 @@ class _PlanState extends State<Plan> {
                   children: [
                     Text("IT Departement",
                         style: TextStyle(
-                            color: Config().primary, fontWeight: FontWeight.w500)),
-                    SizedBox(height: 20,),
+                            color: Config().primary, fontWeight: FontWeight.w700, fontSize: 14)),
+                    SizedBox(height: 10,),
                     Container(
                       width: width,
                       height: 60,
@@ -230,29 +230,27 @@ class _PlanState extends State<Plan> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Danti Iswandhari", style: TextStyle(fontWeight: FontWeight.w500),),
+                                Text("Danti Iswandhari", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
                                 Row(
                                   children: [
                                     Icon(Icons.access_time, size: 20,),
-                                    Text("10:00 - 11:00"),
+                                    SizedBox(width: 4,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("10:00 - 11:00", style: TextStyle(fontSize: 13),),
+                                        Text("Lembur", style: TextStyle(fontSize: 13))
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                Text("Lembur", style: TextStyle(color: Colors.black54, fontSize: 12))
                               ],
                             ),
                             Row(
                               children: [
-                                Icon(Icons.delete_forever, color: Colors.red, size: 30,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.orange, width: 2)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Icon(Icons.edit, color: Colors.orange, size: 16,),
-                                  )
-                                ),
+                                Image.asset('assets/delete.png', scale: 2,),
+                                SizedBox(width: 10),
+                                Image.asset('assets/edit_active.png', scale: 2,),
                               ],
                             )
                           ],
