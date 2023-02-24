@@ -3,7 +3,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Models/Dashboard/EmptyTimesheetApi.dart';
+import 'package:timsheet_mobile/Models/Dashboard/EmptyTimesheetModel.dart';
 import 'package:timsheet_mobile/Models/Profile/ProfileApi.dart';
 import 'package:timsheet_mobile/Models/Profile/ProfileModel.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
@@ -12,6 +15,7 @@ import 'package:timsheet_mobile/Widget/CardWidget.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/TestPage.dart';
 import 'package:timsheet_mobile/views/menu/AppCheckExample.dart';
+import 'package:intl/intl.dart';
 // import 'package:flutter_linkify/flutter_linkify.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
@@ -31,6 +35,11 @@ class _DashboardState extends State<Dashboard> {
   // -- profile --
   List<ProfileModel>? _profile;
   Future<dynamic>? _futureProfile;
+
+  // -- empty timesheet
+  List<EmptyTimesheetModel>? _emptyTimesheet;
+  Future<dynamic>? _futureEmptyTimesheet;
+  
   
   Future getDataEmployee()async{
     final storage = new FlutterSecureStorage();
@@ -43,6 +52,7 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     _futureFullname = getDataEmployee();
     _futureProfile = getProfile();
+    _futureEmptyTimesheet = getEmptyTimesheet();
   }
 
   @override
@@ -74,12 +84,15 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Container(
                       width: width,
-                      height: height/3.6,
+                      // height: height/3.6,
+                      height: 211,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)],
+                          // colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)],
+                          stops: [0.001, 0.7, 1],
+                          colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)]
                         ),
                         // color: Config().primary,
                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50))
@@ -104,7 +117,10 @@ class _DashboardState extends State<Dashboard> {
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("${_profile![0].fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),),
+                                          Container(
+                                            width: width/1.8,
+                                            // color: Colors.red,
+                                            child: Text("${_profile![0].fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),)),
                                           Text("${_profile![0].position} ${_profile![0].departement}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
                                         ],
                                       ),
@@ -147,8 +163,8 @@ class _DashboardState extends State<Dashboard> {
                       )
                     ),
                     Positioned(
-                      right: 10,
-                      top: height/10,
+                      right: 40,
+                      top: height/9,
                       child: GestureDetector(
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
@@ -181,86 +197,156 @@ class _DashboardState extends State<Dashboard> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          color: Config().redPallet,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: FutureBuilder(
+                    future: _futureEmptyTimesheet,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5,
+                            childAspectRatio: 1,
+                          ), 
+                          itemCount: _emptyTimesheet!.length,
+                          itemBuilder: (BuildContext context, i){
+                            DateTime dt = DateTime.parse(_emptyTimesheet![i].date);
+                            String formattedDate = DateFormat("dd \n MMMM").format(dt);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                              child: Container(
+                                  width: 64,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                    color: _emptyTimesheet![i].status == "open" ? Config().bgLock : Config().redPallet,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 5,
+                                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                                          offset: Offset(0, 4))
+                                    ] 
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _emptyTimesheet![i].status == "open" ? Icon(Icons.lock_open_outlined, color: Colors.white,) : Icon(Icons.lock_outline, color: Colors.white,),
+                                        Text("$formattedDate", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            );
+                          }
+                        );
+                      }else{
+                        return GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5,
+                            childAspectRatio: 1,
+                          ), 
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, i){
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                              child: Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                  ),
+                            );
+                          }
+                        );
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                          child: Row(
                             children: [
-                              Icon(Icons.lock_open_outlined, color: Colors.white,),
-                              Text("11\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                              Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                ),
+                              SizedBox(width: 6,),
+                              Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                ),
+                              SizedBox(width: 6,),
+                              Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                ),
+                              SizedBox(width: 6,),
+                              Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                ),
+                              SizedBox(width: 6,),
+                              Shimmer.fromColors(
+                                baseColor: Color.fromARGB(255, 235, 235, 235),
+                                highlightColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 235, 235, 235),
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  )
+                                ),
                             ],
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 6,),
-                      Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          color: Config().bgLock,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.lock_open_outlined, color: Colors.white,),
-                              Text("21\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6,),
-                      Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          color: Config().bgLock,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.lock_open_outlined, color: Colors.white,),
-                              Text("22\nJanuary", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                        );
+                      }
+                    }
                   ),
                 ),
+                SizedBox(height: 20,),
+
+                
                 Container(
                   width: width,
                   height: 10,
@@ -501,7 +587,7 @@ class _DashboardState extends State<Dashboard> {
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Row(
                     children: [
-                      Image.asset("assets/OT_inactive.png", scale: 2,),
+                      Image.asset("assets/rwd_inactive.png", scale: 2,),
                       SizedBox(width: 10,),
                       Text("RWD", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
                     ],
@@ -614,7 +700,7 @@ class _DashboardState extends State<Dashboard> {
               height: height,
             ),
             Positioned(
-              top: height/5.6,
+              top: 135,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -656,6 +742,13 @@ class _DashboardState extends State<Dashboard> {
   Future getProfile()async{
     _profile = await ProfileApi.getDataAssignment(context);
     print(_profile);
+  }
+
+  // -- get Empty timesheet --
+  Future<void> getEmptyTimesheet()async{
+    _emptyTimesheet = await EmptyTimesheetApi.getDataApi(context, 575);
+    print("empty timesheet");
+    print(_emptyTimesheet);
   }
 }
 
