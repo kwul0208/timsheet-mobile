@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EmployeeList.dart';
 
 class AddOT extends StatefulWidget {
@@ -23,6 +26,8 @@ class _AddOTState extends State<AddOT> {
   TextEditingController timeStart = TextEditingController();
   TextEditingController timeEnd = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController employeeNameC = TextEditingController();
+
   late int employeeId ;
  
   // Group Value for Radio Button.
@@ -116,25 +121,34 @@ class _AddOTState extends State<AddOT> {
                 ),
 
               // --- EMPLOYEE ---
+              id == 2 ?
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: TextField(
-                  // enabled: true,
-                  controller: dateinput, //editing controller of this TextField
-                  decoration: InputDecoration(
-                    labelText: "Employee", //label text of field
-                    suffixIcon: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeeList()));
-                      },
-                      child: Image.asset("assets/arrow_left_circle.png", scale: 1.6,)
-                    )
-                  ),
-                  readOnly:true, //set it true, so that user will not able to edit text
-                  onTap: null
+                child: Consumer<TimesheetState>(
+                  builder: (context, data, _) {
+                    if(data.indexSelectedEmployee != null){
+                      employeeId = data.indexSelectedEmployee!;
+                    }
+                    return TextField(
+                      // enabled: true,
+                      controller: employeeNameC..text = data.employeeName, //editing controller of this TextField
+                      decoration: InputDecoration(
+                        labelText: "Employee", //label text of field
+                        suffixIcon: GestureDetector(
+                          onTap: (){
+                            
+                            Navigator.push(context, SlideRightRoute(page: EmployeeList()));
+                          },
+                          child: Image.asset("assets/arrow_left_circle.png", scale: 1.6,)
+                        )
+                      ),
+                      readOnly:true, //set it true, so that user will not able to edit text
+                      onTap: null
+                    );
+                  }
                 ),
-              ),
-              
+              )
+              : SizedBox(),
               // --- DATE ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

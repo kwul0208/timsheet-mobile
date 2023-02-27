@@ -62,9 +62,13 @@ class _EmployeeListState extends State<EmployeeList> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: Icon(Icons.arrow_back, size: 30, color: Colors.black,),
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back, size: 30, color: Colors.black,)),
         title: TextFormField(
-          // onChanged: (value) => _runFilter(value),
+          onChanged: (value) => _runFilter(value),
           decoration: const InputDecoration(
             isDense: true, 
             contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -76,47 +80,60 @@ class _EmployeeListState extends State<EmployeeList> {
           ),
         ),
       ),
-      // body: Consumer<TimesheetState>(
-      //   builder: (context, data, _){
-      //     return _foundUsers.isNotEmpty
-      //       ? ListView.builder(
-      //           itemCount: _foundUsers.length,
-      //           itemBuilder: (context, index) => Card(
-      //             // key: ValueKey(_foundUsers[index].id),
-      //             // elevation: 1,
-      //             // margin: const EdgeInsets.symmetric(vertical: 10),
-      //             child: Consumer<TimesheetState>(
-      //               builder: (context, data, _) {
-      //                 return ListTile(
-      //                   leading: CircleAvatar(
-      //                     backgroundImage: NetworkImage(_foundUsers[index].url_photo!),
-      //                     backgroundColor: Colors.grey,
-      //                   ),
-      //                   title: Text(_foundUsers[index].fullname),
-      //                   trailing: data.indexSelectedEmployee == _foundUsers[index].id ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
-      //                   onTap: (){
-      //                     // employeeIdMode = _foundUsers[index].id;
-      //                     // Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
-      //                     // Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(_foundUsers[index].id);
-      //                     Navigator.pop(context);
-      //                   },
-      //                 );
-      //               }
-      //             ),
-      //           ),
-      //         )
-      //       : const Text(
-      //           'No results found',
-      //           style: TextStyle(fontSize: 24),
-      //         );
-      //   }
-      // ),
+      body: FutureBuilder(
+        future: _futureEmployees,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Consumer<TimesheetState>(
+              builder: (context, data, _){
+                return _foundUsers.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _foundUsers.length,
+                      itemBuilder: (context, index) => Card(
+                        // key: ValueKey(_foundUsers[index].id),
+                        // elevation: 1,
+                        // margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Consumer<TimesheetState>(
+                          builder: (context, data, _) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(_foundUsers[index].url_photo!),
+                                backgroundColor: Colors.grey,
+                              ),
+                              title: Text(_foundUsers[index].fullname),
+                              trailing: data.indexSelectedEmployee == _foundUsers[index].id ? Icon(Icons.check, color: Config().primary,) : SizedBox(),
+                              onTap: (){
+                                // employeeIdMode = _foundUsers[index].id;
+                                Provider.of<TimesheetState>(context, listen: false).changeemployeeName(_foundUsers[index].fullname);
+                                Provider.of<TimesheetState>(context, listen: false).changeIndexSelectedEmployee(_foundUsers[index].id);
+                                Navigator.pop(context);
+                              },
+                            );
+                          }
+                        ),
+                      ),
+                    )
+                  : const Text(
+                      'No results found',
+                      style: TextStyle(fontSize: 24),
+                    );
+              }
+            );
+          }else{
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }
+      ),
     );
   }
 
   getEmployees()async{
     _employees = await EmployeesApi.getEmployees(context);
     _foundUsers = _employees!;
+    print(_foundUsers);
+    Provider.of<TimesheetState>(context, listen: false).changeRefresh();
     // selectedUser=_employees![0];
   }
 }

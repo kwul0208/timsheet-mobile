@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/AddOT.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/menu/Check.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/menu/Plan.dart';
@@ -122,6 +123,7 @@ class Overtime extends StatelessWidget {
         backgroundColor: Config().primary,
         child: Icon(Icons.add),
         onPressed: (){
+          Provider.of<TimesheetState>(context, listen: false).reset();
           Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
         },
             ),

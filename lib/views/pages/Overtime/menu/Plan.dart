@@ -5,6 +5,7 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Overtime/Dropdown/InputForModel.dart';
 import 'package:timsheet_mobile/Models/Overtime/Dropdown/StatusModel.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EditOT.dart';
 
 class Plan extends StatefulWidget {
   const Plan({super.key});
@@ -250,7 +251,12 @@ class _PlanState extends State<Plan> {
                               children: [
                                 Image.asset('assets/delete.png', scale: 2,),
                                 SizedBox(width: 10),
-                                Image.asset('assets/edit_active.png', scale: 2,),
+                                GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditOT()));
+                                  },
+                                  child: Image.asset('assets/edit_active.png', scale: 2,)
+                                ),
                               ],
                             )
                           ],

@@ -2,9 +2,13 @@ import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EmployeeList.dart';
 
 class EditOT extends StatefulWidget {
   const EditOT({super.key});
@@ -22,9 +26,12 @@ class _EditOTState extends State<EditOT> {
   TextEditingController timeStart = TextEditingController();
   TextEditingController timeEnd = TextEditingController();
   TextEditingController desc = TextEditingController();
+  TextEditingController employeeNameC = TextEditingController();
+
   late int employeeId ;
-
-
+ 
+  // Group Value for Radio Button.
+  int id = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -37,296 +44,253 @@ class _EditOTState extends State<EditOT> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Image.asset("assets/x.png", scale: 1.8,)),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("Edit Overtime",
-            style: TextStyle(color: Colors.black, fontSize: 18)),
-        centerTitle: true,
-        elevation: .5,
+        title: Text("Edit Overtime Plan",
+            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+        elevation: 0,
+        actions: [
+          Image.asset("assets/check.png", scale: 1.8,)
+        ],
       ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- DATE ---
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text("Date: ", style: TextStyle(color: Config().subText)),
-                    TextFormField(
-                      controller:
-                          dateinput, //editing controller of this TextField
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.calendar_today), //icon of text field
-                          hintText: 'Enter Date', //label text of field
-                          border: InputBorder.none),
-                      readOnly: true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(
-                                2022), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2024));
-        
-                        if (pickedDate != null) {
-                          print(
-                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2021-03-16
-                          //you can implement different kind of Date Format here according to your requirement
-        
-                          setState(() {
-                            dateinput.text =
-                                formattedDate; //set output date to TextField value.
-                          });
-                        } else {
-                          print("Date is not selected");
-                        }
-                      },
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "required";
-                        }
-                        return null;
+                padding: const EdgeInsets.only(left: 20, top: 10),
+                child: Text("For", style: TextStyle(fontSize: 13, color: Color.fromRGBO(0, 0, 0, 0.64)),),
+              ),
+              Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: id,
+                      onChanged: (val) {
+                        setState(() {
+                          id = 1;
+                        });
                       },
                     ),
-                  ],
-                ),
-              ),
-
-              //--- employee ---
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                child: DropdownSearch<dynamic>(
-                  selectedItem: {"fullname": "asdasd", "id": "ddd"},
-                  showSelectedItems: false,
-                  showClearButton: true,
-                  dropdownSearchDecoration: InputDecoration(
-                    labelText: "Select Employee",
-                    hintText: "Select Employee",
-                    icon: Icon(Icons.person_add_sharp), //icon of text field
-                      border: InputBorder.none,
-                  ),
-                  mode: Mode.DIALOG,
-                  showSearchBox: true,
-                  onFind: (text) async {
-                    var response = await http.get(Uri.parse(
-                        "http://103.115.28.155:1444/back_digital_signature/get-employees"));
+                    Text(
+                      'My Self',
+                      style: new TextStyle(fontSize: 13.0),
+                    ),
         
-                    if (response.statusCode == 200) {
-                      final data = jsonDecode(response.body);
-        
-                      setState(() {
-                        _get = data['data'];
-                      });
-                    }else{
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Error!"),
-                      ));
-                    }
-        
-                    return _get as List<dynamic>;
-                  },
-        
-                  //what do you want anfter item clicked
-                  onChanged: (value) {
-                    if (value != null) {
-                      print(value['fullname']);
-                      print(value['id']);
-                      print(value['signature']);
-                    }
-                  },
-        
-                  //this data appear in dropdown after clicked
-                  itemAsString: (item) => item['fullname'],
-
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return "required!";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-        
-              // --- Timer ---
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  children: [
-                    Flexible(
-                        child: TextFormField(
-                      controller: timeStart, //editing controller of this TextField
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.timer), //icon of text field
-                          labelText: "Start Time" //label text of field
-                          ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          initialTime: TimeOfDay.now(),
-                          context: context,
-                        );
-
-                        if (pickedTime != null) {
-                        // _timeOfDayStart = pickedTime;
-
-                        // formating dateime
-                        var inputFormat = DateFormat('HH:mm');
-                        var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
-
-                        var outputFormat = DateFormat('hh:mm a');
-                        var outputDate = outputFormat.format(inputDate);
-                        print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
-
-                        DateTime x = DateFormat.jm()
-                              .parse(outputDate).add(Duration(minutes: 1));
-                              print(x);
-
-                          //output 14:59
-                          String formattedTime = pickedTime.format(context);
-                          String v_f_time = DateFormat('HH:mm').format(x);
-                          print(formattedTime);
-                          print(v_f_time);
-                          // end formating datetime
-
-                          setState(() {
-                            // timeStart.text = pickedTime.format(context); //set the value of text field.
-                            timeStart.text = formattedTime; //set the value of text field.
-                          });
-                            
-                          }
-                        },
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "required!";
-                        }
-                        return null;
+                    Radio(
+                      value: 2,
+                      groupValue: id,
+                      onChanged: (val) {
+                        setState(() {
+                          id = 2;
+                        });
                       },
-                    )),
-                    SizedBox(
-                      width: 10,
+                    ),
+                    Text(
+                      'Other',
+                      style: new TextStyle(
+                        fontSize: 13.0,
+                      ),
+                    ),
+                    
+                    Radio(
+                      value: 3,
+                      groupValue: id,
+                      onChanged: (val) {
+                        setState(() {
+                          id = 3;
+                        });
+                      },
                     ),
                     Flexible(
-                        child: TextFormField(
-                      controller: timeEnd, //editing controller of this TextField
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.timer), //icon of text field
-                          labelText: "End Time" //label text of field
-                          ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          initialTime: TimeOfDay.now(),
-                          context: context,
-                        );
-
-                        if (pickedTime != null) {
-                          // _timeOfDayStart = pickedTime;
-
-                          // formating dateime
-                          var inputFormat = DateFormat('HH:mm');
-                          var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
-
-                          var outputFormat = DateFormat('hh:mm a');
-                          var outputDate = outputFormat.format(inputDate);
-                          print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
-
-                          DateTime x = DateFormat.jm()
-                              .parse(outputDate).add(Duration(minutes: 1));
-                              print(x);
-
-                          //output 14:59
-                          String formattedTime = pickedTime.format(context);
-                          String v_f_time = DateFormat('HH:mm').format(x);
-                          print(formattedTime);
-                          print(v_f_time);
-                          // end formating datetime
-
-                          setState(() {
-                            // timeStart.text = pickedTime.format(context); //set the value of text field.
-                            timeEnd.text = formattedTime; //set the value of text field.
-                          });
-
-                        }
-                      },
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "required";
-                        }
-                        return null;
-                      },
-                    )),
-                  ],
-                ),
-              ),
-              // ---- Reason ----
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.description_outlined, color: Colors.grey,),
-                    SizedBox(width: 10,),
-                    Flexible(
-                      child: TextFormField(
-                        maxLines: 5,
-                        controller: desc, //editing controller of this TextField
-                        decoration: InputDecoration(
-                          // icon: Icon(Icons.description_outlined), //icon of text field
-                          hintText: 'Description', //label text of field
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color: Colors.grey[400]!,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                              width: 1.0,
-                            ),
-                          ),
-                        ),
-                        validator: (value){
-                          if(value == null || value.isEmpty){
-                            return "required";
-                          }
-                          return null;
-                        },
+                      child: Text(
+                        'Internship Employee',
+                        style: new TextStyle(fontSize: 13.0),
                       ),
                     ),
                   ],
                 ),
+
+              // --- EMPLOYEE ---
+              id == 2 ?
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Consumer<TimesheetState>(
+                  builder: (context, data, _) {
+                    if(data.indexSelectedEmployee != null){
+                      employeeId = data.indexSelectedEmployee!;
+                    }
+                    return TextField(
+                      // enabled: true,
+                      controller: employeeNameC..text = data.employeeName, //editing controller of this TextField
+                      decoration: InputDecoration(
+                        labelText: "Employee", //label text of field
+                        suffixIcon: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, SlideRightRoute(page: EmployeeList()));
+                          },
+                          child: Image.asset("assets/arrow_left_circle.png", scale: 1.6,)
+                        )
+                      ),
+                      readOnly:true, //set it true, so that user will not able to edit text
+                      onTap: null
+                    );
+                  }
+                ),
+              )
+              : SizedBox(),
+              // --- DATE ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextField(
+                  controller: dateinput, //editing controller of this TextField
+                  decoration: InputDecoration(
+                      labelText: "Date" //label text of field
+                      ),
+                  readOnly:
+                      true, //set it true, so that user will not able to edit text
+                  onTap: () async {
+                    DateTime? date = await showDatePicker(context: context,
+                      initialDate: new DateTime.now(),
+                      firstDate: new DateTime(2016),
+                      lastDate: new DateTime(2024),
+                    );
+                      if(date != null) print(date);
+                  }
+                ),
               ),
-              SizedBox(height: height/4),
+
+              // --- TIME START ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextField(
+                  controller: timeStart, //editing controller of this TextField
+                  decoration: InputDecoration(
+                      labelText: "Time Start" //label text of field
+                      ),
+                  readOnly:
+                      true, //set it true, so that user will not able to edit text
+                  onTap: () async {
+                        TimeOfDay? pickedTime = await showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                          initialEntryMode: TimePickerEntryMode.input,
+                      builder: (context, child){
+                        return Theme(
+                          data: ThemeData.light().copyWith(
+                            
+                            colorScheme: ColorScheme.light(
+                              // change the border color
+                              primary: Config().primary,
+                              // change the text color
+                              onSurface: Config().primary,
+                              
+                            ),
+                            
+                            // button colors 
+                            buttonTheme: ButtonThemeData(
+                              colorScheme: ColorScheme.light(
+                                primary: Colors.green,
+                              ),
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      }
+                        );
+
+                        if (pickedTime != null) {
+                          String formattedTime = pickedTime.format(context);
+
+                          setState(() {
+                            timeStart.text = formattedTime; //set the value of text field.
+                            // _Tstart = pickedTime;
+                          });
+                        } else {
+                          print("Time is not selected");
+                        }
+                      },
+                ),
+              ),
+
+              // --- TIME END ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextField(
+                  controller: timeEnd, //editing controller of this TextField
+                  decoration: InputDecoration(
+                      labelText: "Time Start" //label text of field
+                      ),
+                  readOnly:
+                      true, //set it true, so that user will not able to edit text
+                  onTap: () async {
+                        TimeOfDay? pickedTime = await showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                          initialEntryMode: TimePickerEntryMode.input,
+                      builder: (context, child){
+                        return Theme(
+                          data: ThemeData.light().copyWith(
+                            
+                            colorScheme: ColorScheme.light(
+                              // change the border color
+                              primary: Config().primary,
+                              // change the text color
+                              onSurface: Config().primary,
+                              
+                            ),
+                            
+                            // button colors 
+                            buttonTheme: ButtonThemeData(
+                              colorScheme: ColorScheme.light(
+                                primary: Colors.green,
+                              ),
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      }
+                        );
+
+                        if (pickedTime != null) {
+                          String formattedTime = pickedTime.format(context);
+
+                          setState(() {
+                            timeEnd.text = formattedTime; //set the value of text field.
+                            // _Tstart = pickedTime;
+                          });
+                        } else {
+                          print("Time is not selected");
+                        }
+                      },
+                ),
+              ),
+
+              // --- DESCRIPTION ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: desc,
+                  decoration: InputDecoration(
+                    label: Text("Description"),
+                    alignLabelWithHint: true
+                    // border: OutlineInputBorder(
+                    //   borderSide: BorderSide(color: Config().line,)
+                    // )
+                  ),
+                  maxLines: 8,
+                ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: ElevatedButton(
