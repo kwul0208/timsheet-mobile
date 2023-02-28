@@ -3,6 +3,7 @@ import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/Widget/Badge.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/DetailWFH.dart';
+import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 
 class CardRWD extends StatelessWidget {
   const CardRWD({
@@ -58,7 +59,11 @@ class CardRWD extends StatelessWidget {
                   children: [
                     Image.asset("assets/delete.png", scale: 2.3,),
                     SizedBox(width: 4,),
-                    Image.asset("assets/edit_active.png", scale: 2.3,),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
+                      },
+                      child: Image.asset("assets/edit_active.png", scale: 2.3,)),
                     SizedBox(width: 4,),
                     Image.asset("assets/check_rounded.png", scale: 2,),
                     SizedBox(width: 8,),

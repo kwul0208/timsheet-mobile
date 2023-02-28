@@ -31,6 +31,9 @@ class _EditWFHState extends State<EditWFH> {
   TextEditingController reason = TextEditingController();
   TextEditingController desc = TextEditingController();
 
+  int id = 0;
+  int conditionId= 0;
+
 
 
   int _stackIndex = 0;
@@ -47,6 +50,8 @@ class _EditWFHState extends State<EditWFH> {
     AppInfo(appName: "Facebook", packageName: "fb://"),
     AppInfo(appName: "Whatsapp", packageName: "whatsapp://"),
   ];
+
+  // String duration = "";
 
   @override
   void initState(){
@@ -121,11 +126,20 @@ class _EditWFHState extends State<EditWFH> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Image.asset("assets/x.png", scale: 1.8,)),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text("Edit RWD",
-            style: TextStyle(color: Colors.black, fontSize: 18)),
-        centerTitle: true,
+            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+        elevation: 0,
+        actions: [
+          Image.asset("assets/check.png", scale: 1.8,)
+        ],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -138,242 +152,219 @@ class _EditWFHState extends State<EditWFH> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Date: ", style: TextStyle(color: Config().subText)),
-                    TextFormField(
-                      controller:
-                          dateinput, //editing controller of this TextField
+                    TextField(
+                      controller: dateinput, //editing controller of this TextField
                       decoration: InputDecoration(
-                          icon: Icon(Icons.calendar_today), //icon of text field
-                          hintText: 'Enter Date', //label text of field
-                          border: InputBorder.none),
+                          labelText: "Date" //label text of field
+                          ),
                       readOnly:
                           true, //set it true, so that user will not able to edit text
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(
-                                2022), //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime(2024));
-        
-                        if (pickedDate != null) {
-                          print(
-                              pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          print(
-                              formattedDate); //formatted date output using intl package =>  2021-03-16
-                          //you can implement different kind of Date Format here according to your requirement
-        
-                          setState(() {
-                            dateinput.text =
-                                formattedDate; //set output date to TextField value.
-                          });
-                        } else {
-                          print("Date is not selected");
-                        }
-                      },
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "required!";
-                        }
-                        return null;
-                      },
+                        DateTime? date = await showDatePicker(context: context,
+                          initialDate: new DateTime.now(),
+                          firstDate: new DateTime(2016),
+                          lastDate: new DateTime(2024),
+                        );
+                          if(date != null) print(date);
+                      }
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              // --- Duration ---
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Duration: ", style: TextStyle(color: Config().subText)),
-                    SizedBox(
-                      height: 50.0,
-                      child: RadioGroup<String>.builder(
-                        direction: Axis.horizontal,
-                        groupValue: duration,
-                        horizontalAlignment: MainAxisAlignment.spaceAround,
-                        onChanged: (value) => setState(() {
-                          duration = value ?? '';
-                        }),
-                        items: _status,
-                        textStyle: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                        itemBuilder: (item) => RadioButtonBuilder(
-                          item,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ]
                 ),
               ),
               
-              // ---- Timmer ---
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
+              // --- Duration ---
+              SizedBox(height: 16,),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: Text("Duration", style: TextStyle(fontSize: 15, color: Color.fromRGBO(0, 0, 0, .64)),),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.only(left: 4),
                 child: Row(
-                  children: [
-                    Flexible(
-                        child: TextFormField(
-                      controller: timeStart, //editing controller of this TextField
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.timer), //icon of text field
-                          labelText: "Start Time" //label text of field
-                          ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                            initialTime: TimeOfDay.now(),
-                            context: context,
-                          );
-        
-                          if (pickedTime != null) {
-                          // _timeOfDayStart = pickedTime;
-        
-                          // formating dateime
-                          var inputFormat = DateFormat('HH:mm');
-                          var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
-        
-                          var outputFormat = DateFormat('hh:mm a');
-                          var outputDate = outputFormat.format(inputDate);
-                          print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
-        
-                          DateTime x = DateFormat.jm()
-                                .parse(outputDate).add(Duration(minutes: 1));
-                                print(x);
-        
-                            //output 14:59
-                            String formattedTime = pickedTime.format(context);
-                            String v_f_time = DateFormat('HH:mm').format(x);
-                            print(formattedTime);
-                            print(v_f_time);
-                            // end formating datetime
-        
-                            setState(() {
-                              // timeStart.text = pickedTime.format(context); //set the value of text field.
-                              timeStart.text = formattedTime; //set the value of text field.
-                            });
-                              
-                            }
-                          },
-                          validator: (value){
-                            if(value == null || value.isEmpty){
-                              return "required!";
-                            }
-                            return null;
-                          },
-                    )),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                        child: TextFormField(
-                      controller: timeEnd, //editing controller of this TextField
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.timer), //icon of text field
-                          labelText: "End Time" //label text of field
-                          ),
-                      readOnly:
-                          true, //set it true, so that user will not able to edit text
-                      onTap: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                            initialTime: TimeOfDay.now(),
-                            context: context,
-                          );
-        
-                          if (pickedTime != null) {
-                          // _timeOfDayStart = pickedTime;
-        
-                          // formating dateime
-                          var inputFormat = DateFormat('HH:mm');
-                          var inputDate = inputFormat.parse(pickedTime.format(context)); // <-- dd/MM 24H format
-        
-                          var outputFormat = DateFormat('hh:mm a');
-                          var outputDate = outputFormat.format(inputDate);
-                          print(outputDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
-        
-                          DateTime x = DateFormat.jm()
-                                .parse(outputDate).add(Duration(minutes: 1));
-                                print(x);
-        
-                            //output 14:59
-                            String formattedTime = pickedTime.format(context);
-                            String v_f_time = DateFormat('HH:mm').format(x);
-                            print(formattedTime);
-                            print(v_f_time);
-                            // end formating datetime
-        
-                            setState(() {
-                              // timeStart.text = pickedTime.format(context); //set the value of text field.
-                              timeEnd.text = formattedTime; //set the value of text field.
-                            });
-                              
-                            }
-                          },
-                          validator: (value){
-                          if(value == null || value.isEmpty){
-                            return "required!";
-                          }
-                          return null;
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio(
+                      value: 1,
+                      groupValue: id,
+                      onChanged: (val) {
+                        setState(() {
+                          id = 1;
+                        });
                       },
-                    )),
+                    ),
+                    Text(
+                      'Fullday',
+                      style: new TextStyle(fontSize: 15.0),
+                    ),
+        
+                    Radio(
+                      value: 2,
+                      groupValue: id,
+                      onChanged: (val) {
+                        setState(() {
+                          id = 2;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Half Day',
+                      style: new TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // ---- Planner Link
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
+
+              // --- TIME START ---
+              id == 2 ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextField(
+                  controller: timeStart, //editing controller of this TextField
+                  decoration: InputDecoration(
+                      labelText: "Time Start" //label text of field
+                      ),
+                  readOnly:
+                      true, //set it true, so that user will not able to edit text
+                  onTap: () async {
+                        TimeOfDay? pickedTime = await showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                          initialEntryMode: TimePickerEntryMode.input,
+                      builder: (context, child){
+                        return Theme(
+                          data: ThemeData.light().copyWith(
+                            
+                            colorScheme: ColorScheme.light(
+                              // change the border color
+                              primary: Config().primary,
+                              // change the text color
+                              onSurface: Config().primary,
+                              
+                            ),
+                            
+                            // button colors 
+                            buttonTheme: ButtonThemeData(
+                              colorScheme: ColorScheme.light(
+                                primary: Colors.green,
+                              ),
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      }
+                        );
+
+                        if (pickedTime != null) {
+                          String formattedTime = pickedTime.format(context);
+
+                          setState(() {
+                            timeStart.text = formattedTime; //set the value of text field.
+                            // _Tstart = pickedTime;
+                          });
+                        } else {
+                          print("Time is not selected");
+                        }
+                      },
+                ),
+              ) : SizedBox(),
+
+              // --- TIME END ---
+              id == 2 ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextField(
+                  controller: timeEnd, //editing controller of this TextField
+                  decoration: InputDecoration(
+                      labelText: "Time Start" //label text of field
+                      ),
+                  readOnly:
+                      true, //set it true, so that user will not able to edit text
+                  onTap: () async {
+                        TimeOfDay? pickedTime = await showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                          initialEntryMode: TimePickerEntryMode.input,
+                      builder: (context, child){
+                        return Theme(
+                          data: ThemeData.light().copyWith(
+                            
+                            colorScheme: ColorScheme.light(
+                              // change the border color
+                              primary: Config().primary,
+                              // change the text color
+                              onSurface: Config().primary,
+                              
+                            ),
+                            
+                            // button colors 
+                            buttonTheme: ButtonThemeData(
+                              colorScheme: ColorScheme.light(
+                                primary: Colors.green,
+                              ),
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      }
+                        );
+
+                        if (pickedTime != null) {
+                          String formattedTime = pickedTime.format(context);
+
+                          setState(() {
+                            timeEnd.text = formattedTime; //set the value of text field.
+                            // _Tstart = pickedTime;
+                          });
+                        } else {
+                          print("Time is not selected");
+                        }
+                      },
+                ),
+              ) : SizedBox(),
+
+              
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.only(left: 20, top: 10, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Planner Link: ", style: TextStyle(color: Config().subText)),
                       SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Image.asset("assets/Microsoft_Planner.png", width: 50,),
-                          SizedBox(width: 10,),
-                          TextButton(
-                            onPressed: (){
-                              getApps().then((value)async{
-                                if (value == true) {
-                                  _launchUrl();
-                                }else{
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text("planner Apps is not installed in your device. Download please!."),
-                                  ));
-                                  await Future.delayed(
-                                      const Duration(seconds: 2));
-                                  _launchUrlPlaystore();
-                                }
-                              });
-                            },
-                            child: Text("Click here!"),
-                          )
-                          
-                        ],
+                      Container(
+                        height: 30,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(172, 172, 172, 0.24),
+                          borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Row(
+                            children: [
+                              Image.asset("assets/Microsoft_Planner.png", width: 12,),
+                              SizedBox(width: 2,),
+                              TextButton(
+                                onPressed: (){
+                                  getApps().then((value)async{
+                                    if (value == true) {
+                                      _launchUrl();
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text("planner Apps is not installed in your device. Download please!."),
+                                      ));
+                                      await Future.delayed(
+                                          const Duration(seconds: 2));
+                                      _launchUrlPlaystore();
+                                    }
+                                  });
+                                },
+                                child: Text("Open Ms. Planner", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.58), fontSize: 10, fontWeight: FontWeight.w400),),
+                              )
+                              
+                            ],
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 10,),
+                      // SizedBox(height: 10,),
                       ListView.builder(
                         shrinkWrap: true,
                         itemCount: linksController.length,
@@ -384,8 +375,13 @@ class _EditWFHState extends State<EditWFH> {
                                 child: TextFormField(
                                   controller: linksController[i], //editing controller of this TextField
                                   decoration: InputDecoration(
-                                    icon: Icon(Icons.add_link), //icon of text field
-                                    hintText: 'Copy your link here', //label text of field
+                                    suffixIcon: i != 0 ? GestureDetector(
+                                      onTap: (){
+                                        linksController.removeAt(i);
+                                  setState(() {});
+                                      },
+                                      child: Image.asset("assets/delete.png", scale: 2.3,)) : null,
+                                    labelText: 'Links', //label text of field
                                     // border: InputBorder.none
                                   ),
                                   validator: (value){
@@ -394,17 +390,18 @@ class _EditWFHState extends State<EditWFH> {
                                     }
                                     return null;
                                   },
+                                  
                                 ),
                               ),
-                              i != 0 ?
-                              GestureDetector(
-                                onTap: (){
-                                  linksController.removeAt(i);
-                                  setState(() {});
-                                },
-                                child: Icon(Icons.highlight_remove_sharp, color: Config().redAccent,)
-                              ) 
-                              : SizedBox()
+                              // i != 0 ?
+                              // GestureDetector(
+                              //   onTap: (){
+                              //     linksController.removeAt(i);
+                              //     setState(() {});
+                              //   },
+                              //   child: Icon(Icons.highlight_remove_sharp, color: Config().redAccent,)
+                              // ) 
+                              // : SizedBox()
                             ],
                           );
                         }
@@ -415,124 +412,110 @@ class _EditWFHState extends State<EditWFH> {
                             linksController.add(TextEditingController());
                           });
                         }, 
-                        child: Text("+ Add Link")
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Config().orangePallet,
+                            borderRadius: BorderRadius.circular(8)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.add, color: Colors.white, size: 20,),
+                                Text("Add More Link", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 10),),
+                              ],
+                            ),
+                          ),
+                        )
                       )
                     ],
                   ),
               ),
               // ---- Condition ----
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Condition", style: TextStyle(color: Config().subText)),
-                    SizedBox(
-                      height: 50.0,
-                      child: RadioGroup<String>.builder(
-                        direction: Axis.horizontal,
-                        groupValue: condition,
-                        horizontalAlignment: MainAxisAlignment.spaceAround,
-                        onChanged: (value) => setState(() {
-                          condition = value ?? '';
-                        }),
-                        items: _condition,
-                        textStyle: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text("Condition", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.64), fontSize: 15)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: conditionId,
+                          onChanged: (val) {
+                            setState(() {
+                              conditionId = 1;
+                            });
+                          },
                         ),
-                        itemBuilder: (item) => RadioButtonBuilder(
-                          item,
+                        Text(
+                          'Normal',
+                          style: new TextStyle(fontSize: 15.0),
                         ),
-                      ),
+              
+                        Radio(
+                          value: 2,
+                          groupValue: conditionId,
+                          onChanged: (val) {
+                            setState(() {
+                              conditionId = 2;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Same Day',
+                          style: new TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+
+                        Radio(
+                          value: 3,
+                          groupValue: conditionId,
+                          onChanged: (val) {
+                            setState(() {
+                              conditionId = 3;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Overtime',
+                          style: new TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               
-              // ---- Reason ----
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: TextFormField(
-                  maxLines: 1,
-                  controller: reason, //editing controller of this TextField
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.description_outlined), //icon of text field
-                    hintText: 'Reason', //label text of field
-                    border: InputBorder.none
+              // ---- Desc ----
+             Padding(
+               padding: EdgeInsets.symmetric(horizontal: 20),
+               child: TextFormField(
+                decoration: InputDecoration(
+                  alignLabelWithHint: true,
+                  labelText: 'Description', //label text of field
+                    // border: InputBorder.none
                   ),
                   validator: (value){
                     if(value == null || value.isEmpty){
-                      return "required";
+                      return "required!";
                     }
                     return null;
                   },
+                  maxLines: 3,
                 ),
-              ),
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: TextFormField(
-                  maxLines: 1,
-                  controller: desc, //editing controller of this TextField
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.description_outlined), //icon of text field
-                    hintText: 'Description', //label text of field
-                    border: InputBorder.none
-                  ),
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return "required";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                height: 10,
-                width: width,
-                color: Config().line,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Config().primary,
-                    minimumSize: const Size.fromHeight(50), // NEW
-                  ),
-                  onPressed: (){
-                    if(_formKey.currentState!.validate()){
-                      if (duration == '' || condition == '') {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Your form is not complete!"),
-                        ));
-                      }
-                      for (var e in linksController) {
-                        print(e.text);
-                      }
-                      print([dateinput.text, timeStart.text, timeEnd.text, reason.text, desc.text, reason.text, duration, condition ]);
-                    }
-                  },
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-              ),
+             ), 
+             
             ],
           ),
         ),
