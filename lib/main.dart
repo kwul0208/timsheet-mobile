@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/views/menu/Cuti.dart';
 import 'package:timsheet_mobile/views/menu/Dashboard.dart';
@@ -35,6 +36,7 @@ void main() {
       ChangeNotifierProvider(create: ((context) => TimesheetState())),
       ChangeNotifierProvider(create: ((context) => MainState())),
       ChangeNotifierProvider(create: ((context) => OvertimeState())),
+      ChangeNotifierProvider(create: ((context) => WFHState())),
     ],
     child: MyApp(),
   ));
