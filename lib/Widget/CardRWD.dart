@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/Widget/Badge.dart';
+import 'package:timsheet_mobile/views/pages/WFH/CRUD/DetailWFH.dart';
 
 class CardRWD extends StatelessWidget {
   const CardRWD({
@@ -60,7 +62,11 @@ class CardRWD extends StatelessWidget {
                     SizedBox(width: 4,),
                     Image.asset("assets/check_rounded.png", scale: 2,),
                     SizedBox(width: 8,),
-                    Image.asset("assets/arrow_right.png", scale: 1.9,),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, SlideRightRoute(page: DetailWFH()));
+                      },
+                      child: Image.asset("assets/arrow_right.png", scale: 1.9,)),
                   ],
                 ),
               ],

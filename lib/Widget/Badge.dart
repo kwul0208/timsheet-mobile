@@ -18,7 +18,7 @@ class Badge extends StatelessWidget {
           borderRadius: BorderRadius.circular(5)
         ),
         child: Padding(
-          padding: EdgeInsets.all(3),
+          padding: EdgeInsets.all(5),
           child: Text("$title", style: TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),),
         ),
       ),

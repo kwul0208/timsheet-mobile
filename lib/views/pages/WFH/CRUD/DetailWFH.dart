@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
+import 'package:timsheet_mobile/Widget/Badge.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 
 class DetailWFH extends StatefulWidget {
@@ -22,160 +23,71 @@ class _DetailWFHState extends State<DetailWFH> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text("Datail WFH",
-            style: TextStyle(color: Colors.black, fontSize: 18)),
-        centerTitle: true,
-        // actions:  [
-        //   GestureDetector(
-        //     onTap: (){
-        //       // _showConfirm();
-        //     },
-        //     child: Padding(
-        //       padding: const EdgeInsets.only(right: 10),
-        //       child: TextButton(
-        //         child: Text("Edit"),
-        //       )
-        //     ),
-        //   )
-        // ],
+        title: const Text("RWD Detail",
+            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+        centerTitle: false,
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Image.asset("assets/x.png", scale: 2,)),
+        actions:  [
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: Row(
+              children: [
+                Image.asset("assets/delete.png", scale: 2,),
+                SizedBox(width: 4,),
+                Image.asset("assets/edit_active.png", scale: 2,),
+                SizedBox(width: 4,),
+                Image.asset("assets/check_rounded.png", scale: 1.7,),
+                SizedBox(width: 8,),
+              ],
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- Status ---
-              Row(
-                children: [
-                  Text("Status", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 70,),
-                  Container(
-                    width: 60,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Center(
-                      child: Text("Pending", style: TextStyle(color: Colors.white, fontSize: 11),),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Name ---
-              Row(
-                children: [
-                  Text("Name", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 70,),
-                  Flexible(child: Text("Ahmad Wahyu Awaludin", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Condition ---
-              Row(
-                children: [
-                  Text("Condition", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 45,),
-                  Flexible(child: Text("Same Day", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Date ---
-              Row(
-                children: [
-                  Text("Date", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 83,),
-                  Flexible(child: Text("30 January 2023", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Last Update ---
-              Row(
-                children: [
-                  Text("Last Updated", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 18,),
-                  Flexible(child: Text("30 January 2023", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Duration ---
-              Row(
-                children: [
-                  Text("Duration", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 57,),
-                  Flexible(child: Text("Full Day", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-
-              // --- Reason ---
-              Row(
-                children: [
-                  Text("Reason", style: TextStyle(fontSize: 17),),
-                  SizedBox(width: 63,),
-                  Flexible(child: Text("Wfh", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),))
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(height: height/4),
-
-              // --- Button ---
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  minimumSize: const Size.fromHeight(50), // NEW
+              Text("17 February 2023", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Config().orangePallet),),
+              SizedBox(height: 10,),
+              Badge(title: "Overtime", color: Config().blue2),
+              SizedBox(height: 3,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Config().blue2
                 ),
-                onPressed: (){
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                     Text(
-                      'Done',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    Icon(Icons.check, size: 30,)
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.only(left: 8, top: 8, right: 40, bottom: 8),
+                  child: Text("Approved\nby Rizky Mutiara Aini\nat 20 February 2023", style: TextStyle(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),),
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Config().primary,
-                  minimumSize: const Size.fromHeight(50), // NEW
-                ),
-                onPressed: (){
-                  Navigator.push(context, SlideRightRoute(page: EditWFH()));
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                     Text(
-                      'Edit',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    Icon(Icons.navigate_next_outlined, size: 30,)
-                  ],
-                ),
-              ),
+              SizedBox(height: 16,),
+              Text("Duration              Time", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+              Text("Half Day              -", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+              SizedBox(height: 16,),
+              Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+              Text("Lembur", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+              SizedBox(height: 16,),
+              Text("links", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+              SizedBox(height: 6,),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset("assets/mdi_link-variant.png", scale: 2,),
+                  SizedBox(width: 10,),
+                  Flexible(child: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),
+                ],
+              )
             ],
           ),
         ),
