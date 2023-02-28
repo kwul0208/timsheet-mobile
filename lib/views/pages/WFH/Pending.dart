@@ -1,12 +1,6 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
-import 'package:timsheet_mobile/Widget/Badge.dart';
 import 'package:timsheet_mobile/Widget/CardRWD.dart';
-import 'package:timsheet_mobile/views/pages/WFH/CRUD/DetailWFH.dart';
-import 'package:date_format/date_format.dart';
 
 
 class Pending extends StatefulWidget {
@@ -20,6 +14,12 @@ class _PendingState extends State<Pending> {
 
   @override
   Widget build(BuildContext context) {
+        var size, height, width;
+
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -116,6 +116,21 @@ class _PendingState extends State<Pending> {
               )
             ],
           ),
+          SizedBox(height: 16,),
+          // Container(
+          //   width: width,
+          //   height: 20,
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+          //   ),
+          // ),
+          Container(
+            width: width,
+            height: 10,
+            color: Config().line,
+          ),
+          
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

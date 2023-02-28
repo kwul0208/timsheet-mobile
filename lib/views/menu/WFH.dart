@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
-import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/views/pages/WFH/Approved.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/AddWFH.dart';
@@ -13,8 +10,23 @@ import 'package:timsheet_mobile/views/pages/WFH/Reject.dart';
 import 'package:timsheet_mobile/views/pages/WFH/Verification.dart';
 import 'package:timsheet_mobile/views/pages/WFH/Verified.dart';
 
-class WFH extends StatelessWidget {
+class WFH extends StatefulWidget {
   const WFH({super.key});
+
+  @override
+  State<WFH> createState() => _WFHState();
+}
+
+class _WFHState extends State<WFH> {
+
+  @override
+  void initState(){
+    super.initState();
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<WFHState>(context, listen: false).changeIndexO(0);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

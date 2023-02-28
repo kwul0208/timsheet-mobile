@@ -15,6 +15,12 @@ class Verification extends StatefulWidget {
 class _VerificationState extends State<Verification> {
   @override
   Widget build(BuildContext context) {
+            var size, height, width;
+
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -111,6 +117,14 @@ class _VerificationState extends State<Verification> {
               )
             ],
           ),
+          
+          SizedBox(height: 16,),
+          Container(
+            width: width,
+            height: 10,
+            color: Config().line,
+          ),
+          
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
