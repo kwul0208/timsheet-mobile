@@ -9,4 +9,8 @@ class WFHState extends ChangeNotifier{
     _indexO = val;
     notifyListeners();
   }
+
+  void changeRefresh(){
+    notifyListeners();
+  }
 }

@@ -100,7 +100,7 @@ class _TimesheetState extends State<Timesheet> {
   _showConfirm(int timesheet_id, String time) {
     showDialog<void>(
       context: context,
-      barrierDismissible: true, // user must tap button!
+      barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
@@ -162,11 +162,14 @@ class _TimesheetState extends State<Timesheet> {
                                   });
                                   Timer(Duration(seconds: 1), () {
                                     Navigator.pop(context);
+
                                     _timesheet![0].timesheet.removeWhere((element) =>
                                         element['timesheet_id'] == timesheet_id);
+
                                     Provider.of<TimesheetState>(context,
                                             listen: false)
                                         .changeRefresh();
+
                                     setState(() {
                                       _isStatus = 'false';
                                     });
@@ -176,10 +179,13 @@ class _TimesheetState extends State<Timesheet> {
                                           duration: Duration(seconds: 4)
                                     ));
                                   });
+
                                 } else {
                                   setState(() {
                                     _isLoading = false;
+                                    _isStatus = 'false';
                                   });
+                                  Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                         "Failed! try again later please."),
@@ -1519,7 +1525,7 @@ class _TimesheetState extends State<Timesheet> {
       print('x');
       print(await response.stream.bytesToString());
       print(response.reasonPhrase);
-      return {"status": true, "message": "${response.reasonPhrase}"};
+      return {"status": false, "message": "${response.reasonPhrase}"};
     }
   }
 }
