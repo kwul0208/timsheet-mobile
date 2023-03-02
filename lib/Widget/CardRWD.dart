@@ -103,7 +103,7 @@ class CardRWD extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    is_overtime == 1 ? Badge(title: "Ovetime", color: Config().blue2,) : SizedBox(),
+                    condition == 'overtime' ? Badge(title: "Ovetime", color: Config().blue2,) : SizedBox(),
                      Builder(
                        builder: (context) {
                         if(status_id == 1){
@@ -143,11 +143,12 @@ class CardRWD extends StatelessWidget {
                       },
                       child: Image.asset("assets/delete.png", scale: 2.3,)) : SizedBox(),
                     SizedBox(width: 4,),
+                    status_id == 1 || status_id == 2 || status_id == 4 ?
                     GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
                       },
-                      child: Image.asset("assets/edit_active.png", scale: 2.3,)),
+                      child: Image.asset("assets/edit_active.png", scale: 2.3,)) : SizedBox(),
                     SizedBox(width: 4,),
                     status_id == 2 ?
                      Image.asset("assets/check_rounded.png", scale: 2,) : SizedBox(),

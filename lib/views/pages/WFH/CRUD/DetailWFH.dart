@@ -62,11 +62,14 @@ class _DetailWFHState extends State<DetailWFH> {
             padding: const EdgeInsets.only(right: 5),
             child: Row(
               children: [
-                Image.asset("assets/delete.png", scale: 2,),
+                widget.status_id == 1 ?
+                Image.asset("assets/delete.png", scale: 2,) : SizedBox(),
                 SizedBox(width: 4,),
-                Image.asset("assets/edit_active.png", scale: 2,),
+                widget.status_id == 1 || widget.status_id == 2 || widget.status_id == 4 ?
+                Image.asset("assets/edit_active.png", scale: 2,) : SizedBox(),
                 SizedBox(width: 4,),
-                Image.asset("assets/check_rounded.png", scale: 1.7,),
+                widget.status_id == 2 ?
+                Image.asset("assets/check_rounded.png", scale: 1.7,) : SizedBox(),
                 SizedBox(width: 8,),
               ],
             ),
