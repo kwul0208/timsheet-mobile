@@ -10,8 +10,23 @@ import 'package:timsheet_mobile/views/pages/Overtime/CRUD/AddOT.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/menu/Check.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/menu/Plan.dart';
 
-class Overtime extends StatelessWidget {
+class Overtime extends StatefulWidget {
   const Overtime({super.key});
+
+  @override
+  State<Overtime> createState() => _OvertimeState();
+}
+
+class _OvertimeState extends State<Overtime> {
+
+
+  @override
+  void initState(){
+    super.initState();
+    Future.delayed(Duration.zero).then((value){
+      Provider.of<OvertimeState>(context, listen: false).changeIndexO(0);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

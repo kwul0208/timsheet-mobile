@@ -224,9 +224,9 @@ class _WFHState extends State<WFH> {
           children: [
             Pending(),
             Approved(),
-            Reject(),
             Verification(),
             Verified(),
+            Reject(),
             Cancle()
           ],
         ),

@@ -50,10 +50,17 @@ dependencies:
   draggable_fab: ^0.1.4
   flutter_launcher_icons: ^0.10.0
   date_format: ^2.0.7
+  flutter_native_splash:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#spash screen
+#run flutter pub run flutter_native_splash:create when you want to change splachscreen
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo.png
 
 #icon apps
 #run flutter pub run flutter_launcher_icons:main when you want to change icon apps
