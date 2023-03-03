@@ -54,6 +54,7 @@ class _WFHState extends State<WFH> {
               labelPadding: EdgeInsets.symmetric(horizontal: 2),
               onTap: (val){
                   Provider.of<WFHState>(context, listen: false).changeIndexO(val);
+                  Provider.of<WFHState>(context, listen: false).changeError(false, '');
                 },
               tabs: [
                 Consumer<WFHState>(

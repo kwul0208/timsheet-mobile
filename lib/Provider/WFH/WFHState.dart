@@ -13,4 +13,15 @@ class WFHState extends ChangeNotifier{
   void changeRefresh(){
     notifyListeners();
   }
+
+  // -- error --
+  bool _error = false;
+  bool get error => _error;
+  String _message = '';
+  String get message => _message;
+  void changeError(bool val, String msg){
+    _error = val;
+    _message = msg;
+    notifyListeners();
+  }
 }

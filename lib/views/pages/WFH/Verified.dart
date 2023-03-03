@@ -1,9 +1,11 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHApi.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHModel.dart';
+import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Widget/CardRWD.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerRWDList.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/DetailWFH.dart';
@@ -138,26 +140,44 @@ class _VerifiedState extends State<Verified> {
             color: Config().line,
           ),
 
-          FutureBuilder(
-            future: _futureWFH,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if(snapshot.connectionState == ConnectionState.done){
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _wfh!.length,
-                  itemBuilder: (context, i){
-                    return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!,);
+          Consumer<WFHState>(
+            builder: (context, data, _) {
+              if (data.error == false) {
+                return FutureBuilder(
+                  future: _futureWFH,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if(snapshot.connectionState == ConnectionState.done){
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: _wfh!.length,
+                        itemBuilder: (context, i){
+                          return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!,);
+                        }
+                    );
+                    }else{
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return ShimmerRWDList(width: width);
+                        },
+                      );
+                    }
                   }
-              );
+                );
               }else{
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return ShimmerRWDList(width: width);
-                  },
+                return Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Image.asset("assets/500.png"),
+                    SizedBox(height: 30,),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text("${data.message}. Please check your connection or contact IT Programmer", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                    )
+                  ],
                 );
               }
             }

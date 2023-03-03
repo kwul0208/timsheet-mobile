@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHModel.dart';
+import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 
 class WFHApi {
   static Future<List<WFHModel>> getData(BuildContext context, int status ) async {
+    // await Future.delayed(Duration(seconds: 2));
     try {
       final storage = new FlutterSecureStorage();
       var employees_id = await storage.read(key: 'employees_id');
@@ -37,7 +40,8 @@ class WFHApi {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("${data['message']}"),
           ));
-          return WFHModel.WFHModelFromSnapshot([]);
+            Provider.of<WFHState>(context, listen: false).changeError(true, '${data['message']}');
+            return WFHModel.WFHModelFromSnapshot([]);
         }
         // return [];
 
@@ -46,12 +50,15 @@ class WFHApi {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("${response.reasonPhrase}"),
         ));
+        Provider.of<WFHState>(context, listen: false).changeError(true, '${response.reasonPhrase}');
         return WFHModel.WFHModelFromSnapshot([]);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("${e}"),
         ));
+      Provider.of<WFHState>(context, listen: false).changeError(true, '${e}');
+
       return WFHModel.WFHModelFromSnapshot([]);
     }
 
