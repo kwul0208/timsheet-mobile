@@ -277,7 +277,7 @@ class _CardRWDState extends State<CardRWD> {
                     widget.status_id == 1 || widget.status_id == 2 || widget.status_id == 4 ?
                     GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description,)));
                       },
                       child: Image.asset("assets/edit_active.png", scale: 2.3,)) : SizedBox(),
                     SizedBox(width: 4,),
