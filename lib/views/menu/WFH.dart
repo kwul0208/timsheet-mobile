@@ -230,12 +230,20 @@ class _WFHState extends State<WFH> {
             Cancle()
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Config().primary,
-          child: Icon(Icons.add),
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AddWFH()));
-          },
+        floatingActionButton: Consumer<WFHState>(
+          builder: (context, data, _) {
+            if (data.indexO == 0) {
+              return FloatingActionButton(
+                backgroundColor: Config().primary,
+                child: Icon(Icons.add),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddWFH()));
+                },
+              );
+            }else{
+              return SizedBox();
+            }
+          }
         ),
       ),
     );
