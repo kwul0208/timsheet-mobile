@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHApi.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHModel.dart';
+import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Widget/CardRWD.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerRWDList.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
@@ -24,6 +28,22 @@ class _ApprovedState extends State<Approved> {
   void initState(){
     super.initState();
     _futureWFH = getDataWFH();
+  }
+
+  Future<void> _displaySecondView(Widget view) async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => view));
+
+    if (!mounted) return;
+    print('result');
+    print(result);
+    if (result != null) {
+      Timer(Duration(milliseconds: 100), () async {
+        await getDataWFH();
+        print('reloaddd');
+          Provider.of<WFHState>(context, listen: false).changeRefresh();
+      });
+    }
   }
 
 
@@ -148,7 +168,7 @@ class _ApprovedState extends State<Approved> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: _wfh!.length,
                   itemBuilder: (context, i){
-                    return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!,);
+                    return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!, secondView: _displaySecondView,);
                   }
               );
               }else{

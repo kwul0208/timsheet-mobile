@@ -26,7 +26,8 @@ class CardRWD extends StatefulWidget {
     this.status_id,
     this.start_hour,
     this.finish_hour,
-    required this.wfh
+    required this.wfh,
+    this.secondView
   }) : super(key: key);
   
   final int ? id;
@@ -40,6 +41,7 @@ class CardRWD extends StatefulWidget {
   final String ? finish_hour;
   // data
   final List<WFHModel> wfh;
+  final dynamic secondView;
 
   @override
   State<CardRWD> createState() => _CardRWDState();
@@ -277,7 +279,8 @@ class _CardRWDState extends State<CardRWD> {
                     widget.status_id == 1 || widget.status_id == 2 || widget.status_id == 4 ?
                     GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description,)));
+                        widget.secondView(EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,)));
                       },
                       child: Image.asset("assets/edit_active.png", scale: 2.3,)) : SizedBox(),
                     SizedBox(width: 4,),
