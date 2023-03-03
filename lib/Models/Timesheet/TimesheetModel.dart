@@ -33,8 +33,8 @@ class TimesheetModel{
     );
   }
 
-  static List<TimesheetModel> TimesheetModelFromSnapshot(List snapshot){
-    return snapshot.map((e){
+  static List<TimesheetModel> TimesheetModelFromSnapshot(List ? snapshot){
+    return snapshot!.map((e){
       return TimesheetModel.fromJson(e);
     }).toList();
   }

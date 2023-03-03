@@ -2,13 +2,16 @@ import 'dart:convert';
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Dashboard/EmptyTimesheetModel.dart';
 import 'package:timsheet_mobile/Models/Timesheet/TimesheetModel.dart';
 
 class EmptyTimesheetApi {
-  static Future<List<EmptyTimesheetModel>> getDataApi(BuildContext context, int employees_id) async {
+  static Future<List<EmptyTimesheetModel>> getDataApi(BuildContext context) async {
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
     String baseUrl = Config().url;
     var headers = {
       'Content-Type': 'application/json',
