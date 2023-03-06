@@ -14,6 +14,28 @@ class WFHState extends ChangeNotifier{
     notifyListeners();
   }
 
+  int _IndexMonth = 3;
+  int get indexMonth => _IndexMonth;
+  void changeIndexMonth(val){
+    _IndexMonth = val;
+    notifyListeners();
+  }
+
+  int _IndexYear = 3;
+  int get indexYear => _IndexYear;
+  void changeIndexYear(val){
+    _IndexYear = val;
+    notifyListeners();
+  }
+
+  bool _isLoad = false;
+  bool get isLoad => _isLoad;
+  void changeIsLoad(val){
+    _isLoad = val;
+    notifyListeners();
+  }
+
+
   // -- error --
   bool _error = false;
   bool get error => _error;

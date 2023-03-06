@@ -10,7 +10,7 @@ import 'package:timsheet_mobile/Models/WFH/WFHModel.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 
 class WFHApi {
-  static Future<List<WFHModel>> getData(BuildContext context, int status ) async {
+  static Future<List<WFHModel>> getData(BuildContext context, int status, int month, int year ) async {
     // await Future.delayed(Duration(seconds: 2));
     try {
       final storage = new FlutterSecureStorage();
@@ -24,7 +24,7 @@ class WFHApi {
           'GET',
           Uri.parse(
               // 'http://103.115.28.155:1444/form_request/api/rwd/employees/575/get/status/$status'));
-              'http://103.115.28.155:1444/form_request/api/rwd/employees/$employees_id/get/status/$status?month=03&year=2023&orderBy=DESC'));
+              'http://103.115.28.155:1444/form_request/api/rwd/employees/$employees_id/get/status/$status?month=$month&year=$year&orderBy=DESC'));
 
       request.headers.addAll(headers);
 
