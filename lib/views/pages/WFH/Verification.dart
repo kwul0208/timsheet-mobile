@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +45,21 @@ class _VerificationState extends State<Verification> {
     month = indexMonth;
   }
 
+  Future<void> _displaySecondView(Widget view) async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => view));
+
+    if (!mounted) return;
+    print('result');
+    print(result);
+    if (result != null) {
+      Timer(Duration(milliseconds: 100), () async {
+        await getDataWFH(month, year);
+        print('reloaddd');
+          Provider.of<WFHState>(context, listen: false).changeRefresh();
+      });
+    }
+  }
 
 
   @override
@@ -300,7 +317,7 @@ class _VerificationState extends State<Verification> {
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: _wfh!.length,
                             itemBuilder: (context, i){
-                              return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!);
+                              return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!,  secondView: _displaySecondView);
                             }
                         );
                         }else{

@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:appcheck/appcheck.dart';
 
 class EditWFH extends StatefulWidget {
-  const EditWFH({super.key, this.id, this.date, this.duration, this.condition, this.description, this.startTime, this.finishTime});
+  const EditWFH({super.key, this.id, this.date, this.duration, this.condition, this.description, this.startTime, this.finishTime, this.fromEdit, this.status_id});
   final int ? id;
   final String ? date;
   final String ? duration;
@@ -27,6 +27,8 @@ class EditWFH extends StatefulWidget {
   final String ? description;
   final String ? startTime;
   final String ? finishTime;
+  final bool ? fromEdit;
+  final int ? status_id;
 
   @override
   State<EditWFH> createState() => _EditWFHState();
@@ -213,6 +215,7 @@ class _EditWFHState extends State<EditWFH> {
                                 content: Text("${value['message']}"),
                               ));
                               Navigator.pop(context, true);
+                              widget.fromEdit == true ? Navigator.pop(context, true) : null;
                             }else{
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 duration: Duration(seconds: 4),
@@ -615,6 +618,7 @@ class _EditWFHState extends State<EditWFH> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: TextFormField(
+                          readOnly: widget.status_id == 1 ? false : true,
                           controller: desc,
                           decoration: InputDecoration(
                             alignLabelWithHint: true,

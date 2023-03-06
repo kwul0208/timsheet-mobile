@@ -279,7 +279,7 @@ class _CardRWDState extends State<CardRWD> {
                     widget.status_id == 1 || widget.status_id == 2 || widget.status_id == 4 ?
                     GestureDetector(
                       onTap: (){
-                        widget.secondView(EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,));
+                        widget.secondView(EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour, status_id: widget.status_id,));
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,)));
                       },
                       child: Image.asset("assets/edit_active.png", scale: 2.3,)) : SizedBox(),
@@ -319,7 +319,7 @@ class _CardRWDState extends State<CardRWD> {
                     SizedBox(width: 8,),
                     GestureDetector(
                       onTap: (){
-                        Navigator.push(context, SlideRightRoute(page: DetailWFH(id: widget.id, start_hour: widget.start_hour, finish_hour: widget.finish_hour, duration: widget.duration, condition: widget.condition, status_id: widget.status_id, is_overtime: widget.is_overtime,)));
+                        Navigator.push(context, SlideRightRoute(page: DetailWFH(id: widget.id, description: widget.description, date: widget.date, start_hour: widget.start_hour, finish_hour: widget.finish_hour, duration: widget.duration, condition: widget.condition, status_id: widget.status_id, is_overtime: widget.is_overtime, wfh: widget.wfh, secondView: widget.secondView, )));
                       },
                       child: Image.asset("assets/arrow_right.png", scale: 1.9,)),
                   ],
