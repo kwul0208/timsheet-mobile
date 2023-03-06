@@ -201,9 +201,9 @@ class _CardRWDState extends State<CardRWD> {
                       children: [
                         Row(
                           children: [
-                            Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+                            Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
                             SizedBox(width: 30,),
-                            Text("Time", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+                            Text("Time", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
                           ],
                         ),
                         Row(
@@ -221,7 +221,7 @@ class _CardRWDState extends State<CardRWD> {
                             Builder(
                               builder: (context) {
                                 if (widget.duration == "full_day") {
-                                  return Text("-", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
+                                  return Text("  -", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
                                 }else{
                                   return Text("${widget.start_hour.toString().substring(0,5)} - ${widget.finish_hour.toString().substring(0,5)}");
                                 }
@@ -237,31 +237,31 @@ class _CardRWDState extends State<CardRWD> {
                 Column(
                   children: [
                     widget.condition == 'overtime' ? Badge(title: "Ovetime", color: Config().blue2,) : SizedBox(),
-                     Builder(
-                       builder: (context) {
-                        if(widget.status_id == 1){
-                          return Badge(title: "Pending", color: Config().orangePallet,);
-                        }else if (widget.status_id == 2) {
-                          return Badge(title: "Approved", color: Config().blue2,);
-                        } else if(widget.status_id == 3) {
-                          return Badge(title: "Rejected", color: Config().redPallet,);
-                        }else if(widget.status_id == 4){
-                          return Badge(title: "Need Verification", color: Config().orangePallet,);
-                        }else if(widget.status_id == 5){
-                          return Badge(title: "Verified", color: Config().bgLock,);
-                        }else if(widget.status_id == 6){
-                          return Badge(title: "Cancel", color: Color.fromRGBO(172, 172, 172, 1),);
-                        }{
-                          return SizedBox();
-                        }
-                       }
-                     ),
+                    //  Builder(
+                    //    builder: (context) {
+                    //     if(widget.status_id == 1){
+                    //       return Badge(title: "Pending", color: Config().orangePallet,);
+                    //     }else if (widget.status_id == 2) {
+                    //       return Badge(title: "Approved", color: Config().blue2,);
+                    //     } else if(widget.status_id == 3) {
+                    //       return Badge(title: "Rejected", color: Config().redPallet,);
+                    //     }else if(widget.status_id == 4){
+                    //       return Badge(title: "Need Verification", color: Config().orangePallet,);
+                    //     }else if(widget.status_id == 5){
+                    //       return Badge(title: "Verified", color: Config().bgLock,);
+                    //     }else if(widget.status_id == 6){
+                    //       return Badge(title: "Cancel", color: Color.fromRGBO(172, 172, 172, 1),);
+                    //     }{
+                    //       return SizedBox();
+                    //     }
+                    //    }
+                    //  ),
                   ],
                 )
               ],
             ),
             SizedBox(height: 10,),
-            Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(0, 0, 0, 64)),),
+            Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
             Text("${widget.description}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
