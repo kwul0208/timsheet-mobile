@@ -11,6 +11,7 @@ import 'package:timsheet_mobile/Models/WFH/detail/DetailWFHModel.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Routing/SlideRightRoute.dart';
 import 'package:timsheet_mobile/Widget/Badge.dart';
+import 'package:timsheet_mobile/views/pages/WFH/CRUD/CancelWFHForm.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -241,6 +242,13 @@ class _DetailWFHState extends State<DetailWFH> {
                                     Navigator.pop(context);
                             },
                           child: Image.asset("assets/check_rounded.png", scale: 1.7,)) : SizedBox(),
+                        SizedBox(width: 4,),
+                        widget.status_id == 2 ?
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CancelWFHForm(id: widget.id, wfh: widget.wfh,)));
+                          },
+                          child: Icon(Icons.do_not_disturb_on_total_silence_outlined, size: 30, color: Config().redPallet,)) : SizedBox(),
                         SizedBox(width: 8,),
                       ],
                     ),
