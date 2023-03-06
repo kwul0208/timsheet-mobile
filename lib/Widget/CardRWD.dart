@@ -285,7 +285,37 @@ class _CardRWDState extends State<CardRWD> {
                       child: Image.asset("assets/edit_active.png", scale: 2.3,)) : SizedBox(),
                     SizedBox(width: 4,),
                     widget.status_id == 2 ?
-                     Image.asset("assets/check_rounded.png", scale: 2,) : SizedBox(),
+                     Consumer<WFHState>(
+                       builder: (context, data, _) {
+                         return GestureDetector(
+                          onTap: ()async{
+                            Provider.of<WFHState>(context, listen: false).changeLoadDone(true);
+                            await doneRWD(widget.id).then((value) {
+                              if (value['status'] == true) {
+                               
+                                Timer(Duration(seconds: 1), () {
+                                  widget.wfh.removeWhere((e) => e.id == widget.id);
+                                  Provider.of<WFHState>(context,listen: false).changeRefresh();
+                                  
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Success"),
+                                        duration: Duration(seconds: 4)
+                                  ));
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Failed! try again later please."),
+                                      duration: Duration(seconds: 4),
+                                ));
+                              }
+                            });
+                            Provider.of<WFHState>(context, listen: false).changeLoadDone(false);
+                          },
+                          child: Image.asset("assets/check_rounded.png", scale: 2,));
+                       }
+                     ) : SizedBox(),
                     SizedBox(width: 8,),
                     GestureDetector(
                       onTap: (){
@@ -308,6 +338,41 @@ class _CardRWDState extends State<CardRWD> {
       var employees_id = await storage.read(key: 'employees_id');
       
       var request = http.Request('DELETE', Uri.parse('http://103.115.28.155:1444/form_request/api/rwd/employees/$employees_id/destroy/$id'));
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        var x = await response.stream.bytesToString();
+        Map data = jsonDecode(x);
+        if (data['code'] == 200) {
+          print('20000');
+          return {"status": true, "message": "success"};
+        }else{
+          print('30000');
+          return {"status": false, "message": "${data['code']}"};
+        }
+      }
+      else {
+          print('40000');
+        return {"status": false, "message": "${response.reasonPhrase}"};
+      }
+    } catch (e) {
+      print(e);
+      print('50000');
+      return {"status": false, "message": "${e}"};
+    }
+    
+  }
+
+
+  Future doneRWD(id)async{
+    // await Future.delayed(Duration(seconds: 3));
+    // return {"status": true, "message": "success"};
+
+    try {
+      final storage = new FlutterSecureStorage();
+      var employees_id = await storage.read(key: 'employees_id');
+      
+      var request = http.Request('PUT', Uri.parse('http://103.115.28.155:1444/form_request/api/rwd/employees/$employees_id/done/$id'));
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {

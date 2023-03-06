@@ -34,6 +34,13 @@ class WFHState extends ChangeNotifier{
     _isLoad = val;
     notifyListeners();
   }
+  
+  bool _loadDone = false;
+  bool get loadDone => _loadDone;
+  void changeLoadDone(val){
+    _loadDone = val;
+    notifyListeners();
+  }
 
 
   // -- error --
