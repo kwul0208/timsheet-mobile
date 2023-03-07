@@ -47,7 +47,6 @@ class _UnlockRequestTimesheetState extends State<UnlockRequestTimesheet> {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            elevation: .5,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             iconTheme: IconThemeData(color: Colors.black),
@@ -55,15 +54,16 @@ class _UnlockRequestTimesheetState extends State<UnlockRequestTimesheet> {
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Icon(Icons.close_outlined )),
+              child: Image.asset("assets/x.png", scale: 1.8,)),
             title: Text("Unlock Request Timesheet",
-                style: TextStyle(color: Colors.black, fontSize: 18)),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600)),
+            elevation: 0,
             // centerTitle: true,
             actions: [
               GestureDetector(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Icon(Icons.check, size: 25, color: Config().primary,),
+                  padding: const EdgeInsets.only(right: 0),
+                  child: Image.asset("assets/check.png", scale: 1.8,),
                 ),
                 onTap: () async{
                    if(_formKey.currentState!.validate()){

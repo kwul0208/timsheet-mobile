@@ -230,12 +230,95 @@ class _addTimsheetState extends State<addTimsheet> {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
+            leading: GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Image.asset("assets/x.png", scale: 1.8,)),
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),
             title: Text("Add Timesheet",
-                style: TextStyle(color: Colors.black, fontSize: 18)),
-            centerTitle: true,
-            
+                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+            elevation: 0,
+            actions: [
+              GestureDetector(
+                child: Image.asset("assets/check.png", scale: 1.8,),
+                onTap: () async{
+                  // return null;
+                                
+
+                  // -- try
+                  //  cek first isi 
+                  if (_timeX.isEmpty) {
+                    setState(() {
+                      _load = true;
+                    });
+                    postTimesheet().then((value) {
+                      setState(() {
+                        _load= false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 4),
+                        content: Text("${value['message']}"),
+                      ));
+                      value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                    });
+                  }else{
+                    print('ada');
+                    String last_timeX = _timeX.last;
+                    int idx = last_timeX.indexOf(":");
+                    List parts = [last_timeX.substring(0,idx).trim(), last_timeX.substring(idx+1).trim()];
+                    var V_end_time = TimeOfDay(hour: int.parse("${parts[0]}"), minute: int.parse("${parts[1]}"));
+
+                    // check start time nya kurang dari time akhir input ga, kalo kurang dicek dulu biar  input end time nya ga lebih dari V_end_time(inputan terakhir)
+                    bool check_start_time = Helper().isValidTimeRange(_timeOfDayStart, V_end_time);
+                    if(check_start_time == true){
+                      // check end time nya kalo lebih ya ga valid
+                      bool check_end_time = Helper().isValidTimeRange(_timeOfDayEnd, V_end_time);
+                      print(check_end_time);
+                      print([_timeOfDayEnd, V_end_time]);
+                      if (check_end_time == false ) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Time Not Valid!"),
+                        ));
+                      }else{
+                        setState(() {
+                          _load = true;
+                        });
+                        print('valid1');
+                        postTimesheet().then((value) {
+                          setState(() {
+                            _load= false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 4),
+                            content: Text("${value['message']}"),
+                          ));
+                          value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                        });
+                      }
+                    }else{
+                      print('valid2');
+                      setState(() {
+                        _load = true;
+                      });
+                      postTimesheet().then((value) {
+                        setState(() {
+                          _load= false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 4),
+                          content: Text("${value['message']}"),
+                        ));
+                        value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                      });
+                    }
+                  }                    
+                                            // -- end  
+                },
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -1733,89 +1816,89 @@ class _addTimsheetState extends State<addTimsheet> {
 
 
                             SizedBox(height: 20),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Config().primary,
-                                minimumSize: const Size.fromHeight(50), // NEW
-                              ),
-                              onPressed: (){
-                                // return null;
+                            // ElevatedButton(
+                            //   style: ElevatedButton.styleFrom(
+                            //     primary: Config().primary,
+                            //     minimumSize: const Size.fromHeight(50), // NEW
+                            //   ),
+                            //   onPressed: (){
+                            //     // return null;
                                 
 
-                                // -- try
-                                //  cek first isi 
-                                if (_timeX.isEmpty) {
-                                  setState(() {
-                                    _load = true;
-                                  });
-                                  postTimesheet().then((value) {
-                                    setState(() {
-                                      _load= false;
-                                    });
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      duration: Duration(seconds: 4),
-                                      content: Text("${value['message']}"),
-                                    ));
-                                    value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
-                                  });
-                                }else{
-                                  print('ada');
-                                  String last_timeX = _timeX.last;
-                                  int idx = last_timeX.indexOf(":");
-                                  List parts = [last_timeX.substring(0,idx).trim(), last_timeX.substring(idx+1).trim()];
-                                  var V_end_time = TimeOfDay(hour: int.parse("${parts[0]}"), minute: int.parse("${parts[1]}"));
+                            //     // -- try
+                            //     //  cek first isi 
+                            //     if (_timeX.isEmpty) {
+                            //       setState(() {
+                            //         _load = true;
+                            //       });
+                            //       postTimesheet().then((value) {
+                            //         setState(() {
+                            //           _load= false;
+                            //         });
+                            //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //           duration: Duration(seconds: 4),
+                            //           content: Text("${value['message']}"),
+                            //         ));
+                            //         value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                            //       });
+                            //     }else{
+                            //       print('ada');
+                            //       String last_timeX = _timeX.last;
+                            //       int idx = last_timeX.indexOf(":");
+                            //       List parts = [last_timeX.substring(0,idx).trim(), last_timeX.substring(idx+1).trim()];
+                            //       var V_end_time = TimeOfDay(hour: int.parse("${parts[0]}"), minute: int.parse("${parts[1]}"));
                                   
-                                  // check start time nya kurang dari time akhir input ga, kalo kurang dicek dulu biar  input end time nya ga lebih dari V_end_time(inputan terakhir)
-                                  bool check_start_time = Helper().isValidTimeRange(_timeOfDayStart, V_end_time);
-                                  if(check_start_time == true){
-                                    // check end time nya kalo lebih ya ga valid
-                                    bool check_end_time = Helper().isValidTimeRange(_timeOfDayEnd, V_end_time);
-                                    print(check_end_time);
-                                    print([_timeOfDayEnd, V_end_time]);
-                                    if (check_end_time == false ) {
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                          content: Text("Time Not Valid!"),
-                                      ));
-                                    }else{
-                                      setState(() {
-                                        _load = true;
-                                      });
-                                      print('valid1');
-                                      postTimesheet().then((value) {
-                                        setState(() {
-                                          _load= false;
-                                        });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                          duration: Duration(seconds: 4),
-                                          content: Text("${value['message']}"),
-                                        ));
-                                        value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
-                                      });
-                                    }
-                                  }else{
-                                    print('valid2');
-                                    setState(() {
-                                      _load = true;
-                                    });
-                                    postTimesheet().then((value) {
-                                      setState(() {
-                                        _load= false;
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                        duration: Duration(seconds: 4),
-                                        content: Text("${value['message']}"),
-                                      ));
-                                      value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
-                                    });
-                                  }
-                                }                    
-                                            // -- end  
-                              },
-                              child: const Text(
-                                'Save',
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
+                            //       // check start time nya kurang dari time akhir input ga, kalo kurang dicek dulu biar  input end time nya ga lebih dari V_end_time(inputan terakhir)
+                            //       bool check_start_time = Helper().isValidTimeRange(_timeOfDayStart, V_end_time);
+                            //       if(check_start_time == true){
+                            //         // check end time nya kalo lebih ya ga valid
+                            //         bool check_end_time = Helper().isValidTimeRange(_timeOfDayEnd, V_end_time);
+                            //         print(check_end_time);
+                            //         print([_timeOfDayEnd, V_end_time]);
+                            //         if (check_end_time == false ) {
+                            //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //               content: Text("Time Not Valid!"),
+                            //           ));
+                            //         }else{
+                            //           setState(() {
+                            //             _load = true;
+                            //           });
+                            //           print('valid1');
+                            //           postTimesheet().then((value) {
+                            //             setState(() {
+                            //               _load= false;
+                            //             });
+                            //             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //               duration: Duration(seconds: 4),
+                            //               content: Text("${value['message']}"),
+                            //             ));
+                            //             value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                            //           });
+                            //         }
+                            //       }else{
+                            //         print('valid2');
+                            //         setState(() {
+                            //           _load = true;
+                            //         });
+                            //         postTimesheet().then((value) {
+                            //           setState(() {
+                            //             _load= false;
+                            //           });
+                            //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //             duration: Duration(seconds: 4),
+                            //             content: Text("${value['message']}"),
+                            //           ));
+                            //           value['status'] == true ? Navigator.pop(context, dateinput.text) : null;
+                            //         });
+                            //       }
+                            //     }                    
+                            //                 // -- end  
+                            //   },
+                            //   child: const Text(
+                            //     'Save',
+                            //     style: TextStyle(fontSize: 24),
+                            //   ),
+                            // ),
                           ],
                         );
                       }else{

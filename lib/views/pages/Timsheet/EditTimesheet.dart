@@ -316,11 +316,40 @@ class _EditTimesheetState extends State<EditTimesheet> {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
+            leading: GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Image.asset("assets/x.png", scale: 1.8,)),
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),
-            title: Text("Edit Timesheet",
-                style: TextStyle(color: Colors.black, fontSize: 18)),
-            centerTitle: true,
+            title: Text("Add Timesheet",
+                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
+            elevation: 0,
+            actions: [
+              GestureDetector(
+                child: Image.asset("assets/check.png", scale: 1.8,),
+                onTap: () async{
+                  setState(() {
+                    _load = true;
+                  });
+                  updateTimesheet().then((value){
+                    setState(() {
+                      _load = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 4),
+                      content: Text("${value['message']}"),
+                    ));
+                    value['status'] == true ? {
+                      Navigator.pop(context, dateinput.text),
+                      // Navigator.pop(context, dateinput.text)
+                    } : null;
+                  });
+                },
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -1671,34 +1700,34 @@ class _EditTimesheetState extends State<EditTimesheet> {
                     }
                   ),
                   SizedBox(height: 50),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Config().primary,
-                      minimumSize: const Size.fromHeight(50), // NEW
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _load = true;
-                      });
-                      updateTimesheet().then((value){
-                        setState(() {
-                          _load = false;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 4),
-                          content: Text("${value['message']}"),
-                        ));
-                        value['status'] == true ? {
-                          Navigator.pop(context, dateinput.text),
-                          // Navigator.pop(context, dateinput.text)
-                        } : null;
-                      });
-                    },
-                    child: const Text(
-                      'Update',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     primary: Config().primary,
+                  //     minimumSize: const Size.fromHeight(50), // NEW
+                  //   ),
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       _load = true;
+                  //     });
+                  //     updateTimesheet().then((value){
+                  //       setState(() {
+                  //         _load = false;
+                  //       });
+                  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //         duration: Duration(seconds: 4),
+                  //         content: Text("${value['message']}"),
+                  //       ));
+                  //       value['status'] == true ? {
+                  //         Navigator.pop(context, dateinput.text),
+                  //         // Navigator.pop(context, dateinput.text)
+                  //       } : null;
+                  //     });
+                  //   },
+                  //   child: const Text(
+                  //     'Update',
+                  //     style: TextStyle(fontSize: 24),
+                  //   ),
+                  // ),
   
                 ],
               ),
