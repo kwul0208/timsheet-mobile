@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+// import 'dart:html';
 
+import 'package:appcheck/appcheck.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,11 @@ import 'package:timsheet_mobile/views/pages/WFH/CRUD/CancelWFHForm.dart';
 import 'package:timsheet_mobile/views/pages/WFH/CRUD/EditWFH.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
+
+import 'package:url_launcher/url_launcher_string.dart';
+
 
 class DetailWFH extends StatefulWidget {
   const DetailWFH({super.key, this.id, this.description, this.date, this.start_hour, this.finish_hour, this.duration, this.condition, this.status_id, this.is_overtime, this.wfh, this.secondView,});
@@ -41,6 +48,14 @@ class _DetailWFHState extends State<DetailWFH> {
   bool _isLoading = false;
   String _isStatus = 'false';
   // endStatus loading
+
+  
+  List<AppInfo>? installedApps;
+  List<AppInfo> iOSApps = [
+    AppInfo(appName: "Calendar", packageName: "calshow://"),
+    AppInfo(appName: "Facebook", packageName: "fb://"),
+    AppInfo(appName: "Whatsapp", packageName: "whatsapp://"),
+  ];
   
   List<DetailWFHModel>? _wfh;
   Future<dynamic>? _futureWfh;
@@ -48,6 +63,7 @@ class _DetailWFHState extends State<DetailWFH> {
   @override
   void initState(){
     super.initState();
+    getApps();
 
     _futureWfh = getDataWfh();
   }
@@ -166,6 +182,55 @@ class _DetailWFHState extends State<DetailWFH> {
     );
   }
 
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future getApps() async {
+    if (Platform.isAndroid) {
+      const package = "com.microsoft.planner";
+      try {
+        await AppCheck.checkAvailability(package).then(
+          (app) {
+            print('gada');
+            debugPrint(app.toString());
+          } 
+        );
+        print('ada');
+        return true;
+      } catch (e) {
+        print('gada');
+        return false;
+      }
+
+    } else if (Platform.isIOS) {
+      // iOS doesn't allow to get installed apps.
+      installedApps = iOSApps;
+
+      await AppCheck.checkAvailability("calshow://").then(
+        (app) => debugPrint(app.toString()),
+      );
+    }
+
+    setState(() {
+      installedApps = installedApps;
+    });
+  }
+
+  // -- launch planner ---
+  // final Uri _url = Uri.parse('https://tasks.office.com/muc.co.id/en-US/Home/Planner/#/mytasks');
+  Future<void> _launchUrl(_url) async {
+      if (!await launchUrl(Uri.parse(_url), mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_url');
+      }
+    }
+
+  // --- launch playstore(download planner)
+  final Uri _urlPlaystore = Uri.parse('https://play.google.com/store/apps/details?id=com.microsoft.planner');
+  Future<void> _launchUrlPlaystore() async {
+      if (!await launchUrl(_urlPlaystore, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_urlPlaystore');
+      }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var size, height, width;
@@ -259,8 +324,6 @@ class _DetailWFHState extends State<DetailWFH> {
                 future: _futureWfh,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-
-
                     return SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -378,7 +441,22 @@ class _DetailWFHState extends State<DetailWFH> {
                                   children: [
                                     Image.asset("assets/mdi_link-variant.png", scale: 2,),
                                     SizedBox(width: 10,),
-                                    Flexible(child: Text("${_wfh![0].request_link![i]['link']}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),
+                                    Flexible(child: GestureDetector(
+                                      onTap: (){
+                                          getApps().then((value)async{
+                                            if (value == true) {
+                                              _launchUrl("${_wfh![0].request_link![i]['link']}");
+                                            }else{
+                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                content: Text("planner Apps is not installed in your device. Download please!."),
+                                              ));
+                                              await Future.delayed(
+                                                  const Duration(seconds: 2));
+                                              _launchUrlPlaystore();
+                                            }
+                                          });
+                                      },
+                                      child: Text("${_wfh![0].request_link![i]['link']}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)))),
                                   ],
                                 );
                               }
