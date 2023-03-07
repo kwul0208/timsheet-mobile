@@ -382,7 +382,7 @@ class _DashboardState extends State<Dashboard> {
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: _announcement!.length,
+                          itemCount: _announcement!.length > 5 ? 5 : _announcement!.length,
                           itemBuilder: (context, i) {
                             return CardArticle(width: width, date: _announcement![i].date, sender: _announcement![i].sender, message: _announcement![i].message, url_photo: _announcement![i].url_photo, index: i,);
                           }
