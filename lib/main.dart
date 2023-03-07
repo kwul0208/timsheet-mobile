@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Provider/Dashboard/DashboardState.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
@@ -37,6 +38,7 @@ void main() {
       ChangeNotifierProvider(create: ((context) => MainState())),
       ChangeNotifierProvider(create: ((context) => OvertimeState())),
       ChangeNotifierProvider(create: ((context) => WFHState())),
+      ChangeNotifierProvider(create: ((context) => DashboardState())),
     ],
     child: MyApp(),
   ));

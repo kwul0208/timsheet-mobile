@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Models/Dashboard/Announcement/AnnouncementApi.dart';
+import 'package:timsheet_mobile/Models/Dashboard/Announcement/AnnouncementModel.dart';
 import 'package:timsheet_mobile/Models/Dashboard/EmptyTimesheetApi.dart';
 import 'package:timsheet_mobile/Models/Dashboard/EmptyTimesheetModel.dart';
 import 'package:timsheet_mobile/Models/Profile/ProfileApi.dart';
@@ -12,6 +14,7 @@ import 'package:timsheet_mobile/Models/Profile/ProfileModel.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
 import 'package:timsheet_mobile/Widget/CardArticle.dart';
 import 'package:timsheet_mobile/Widget/CardWidget.dart';
+import 'package:timsheet_mobile/Widget/Shimmer/ShimmerAnnouncement.dart';
 import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/TestPage.dart';
 import 'package:timsheet_mobile/views/menu/AppCheckExample.dart';
@@ -39,6 +42,10 @@ class _DashboardState extends State<Dashboard> {
   // -- empty timesheet
   List<EmptyTimesheetModel>? _emptyTimesheet;
   Future<dynamic>? _futureEmptyTimesheet;
+
+  // -- Announcement
+  List<AnnouncementModel>? _announcement;
+  Future<dynamic>? _futureAnnouncement;
   
   
   Future getDataEmployee()async{
@@ -53,6 +60,7 @@ class _DashboardState extends State<Dashboard> {
     _futureFullname = getDataEmployee();
     _futureProfile = getProfile();
     _futureEmptyTimesheet = getEmptyTimesheet();
+    _futureAnnouncement = getAnnouncement();
   }
 
   @override
@@ -360,101 +368,30 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Image.asset("assets/mdi_announcement.png", scale: 2,),
                       SizedBox(width: 10,),
-                      Text("HC Announcement", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                      Text("Announcement", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
                     ],
                   ),
                 ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                            ] 
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: AssetImage("assets/ahmad.png"),
-                            ),
-                            title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: -10),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Approve your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                                Text("")
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 5,
-                              color: Color.fromRGBO(0, 0, 0, 0.25),
-                              offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/ahmad.png"),
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Reject your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                              SizedBox(height: 8,),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                      width: 2,
-                                      color: Color.fromARGB(255, 199, 199, 199)
-                                    )
-                                  )
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
-                                )
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: FutureBuilder(
+                    future: _futureAnnouncement,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _announcement!.length,
+                          itemBuilder: (context, i) {
+                            return CardArticle(width: width, date: _announcement![i].date, sender: _announcement![i].sender, message: _announcement![i].message, url_photo: _announcement![i].url_photo, index: i,);
+                          }
+                        );
+                      }else{
+                        return ShimmerAnnouncement(width: width);
+                      }
+                      
+                    }
                   ),
                 ),
 
@@ -741,14 +678,20 @@ class _DashboardState extends State<Dashboard> {
   // -- API --
   Future getProfile()async{
     _profile = await ProfileApi.getDataAssignment(context);
-    print(_profile);
   }
 
   // -- get Empty timesheet --
   Future<void> getEmptyTimesheet()async{
     _emptyTimesheet = await EmptyTimesheetApi.getDataApi(context);
-    print("empty timesheet");
-    print(_emptyTimesheet);
+
+  }
+
+  // get Announcement
+  Future<void> getAnnouncement()async{
+    _announcement = await AnnouncementApi.getDataApi(context);
+    print("-- Announcement --");
+    print(_announcement);
   }
 }
+
 
