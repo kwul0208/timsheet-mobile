@@ -311,7 +311,7 @@ class _DetailWFHState extends State<DetailWFH> {
                         widget.status_id == 2 ?
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CancelWFHForm(id: widget.id, wfh: widget.wfh,)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CancelWFHForm(id: widget.id, wfh: widget.wfh, date: widget.date,)));
                           },
                           child: Icon(Icons.do_not_disturb_on_total_silence_outlined, size: 30, color: Config().redPallet,)) : SizedBox(),
                         SizedBox(width: 8,),

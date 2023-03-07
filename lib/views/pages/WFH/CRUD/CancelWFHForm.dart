@@ -9,11 +9,13 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Models/WFH/WFHModel.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
+import 'package:intl/intl.dart';
 
 class CancelWFHForm extends StatefulWidget {
-  const CancelWFHForm({super.key, this.id, this.wfh});
+  const CancelWFHForm({super.key, this.id, this.wfh, this.date});
   final int? id;
   final List<WFHModel> ? wfh;
+  final String ? date;
 
 
   @override
@@ -112,7 +114,13 @@ class _CancelWFHFormState extends State<CancelWFHForm> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text("12 Nov 2023", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                    child: Builder(
+                      builder: (context) {
+                        DateTime dt = DateTime.parse("${widget.date}");
+                        String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                        return Text("$formattedDate", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),);
+                      }
+                    ),
                   ),
                 ),
                 SizedBox(height: 20,),

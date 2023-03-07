@@ -644,10 +644,11 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, bottom: 5),
-                    child: Text('Quick Access',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 20, bottom: 5),
+                  //   child: Text('Quick Access',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+                  // ),
+                  SizedBox(height: 20,),
                   Container(
                     height: 90,
                     child: ListView(

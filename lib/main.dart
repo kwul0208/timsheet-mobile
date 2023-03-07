@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime(), Cuti()];
+  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime()];
 
   @override
   void initState(){
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Container(child: _curentIndex == 2 ? Image.asset("assets/timesheet_active.png", scale: 2,) : Image.asset("assets/timesheet_inactive.png", scale: 2,)),
               )), label: ""),
           BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: ""),
-          BottomNavigationBarItem(icon: Container(child: _curentIndex == 4 ? Image.asset("assets/cuti_active.png", scale: 2.2,) : Image.asset("assets/cuti_inactive.png", scale: 2.2,)), label: ""),
+          // BottomNavigationBarItem(icon: Container(child: _curentIndex == 4 ? Image.asset("assets/cuti_active.png", scale: 2.2,) : Image.asset("assets/cuti_inactive.png", scale: 2.2,)), label: ""),
         ],
         onTap: onTapBar,
         currentIndex: _curentIndex,
