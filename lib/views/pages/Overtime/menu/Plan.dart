@@ -173,100 +173,163 @@ class _PlanState extends State<Plan> {
           //     );
           //   },
           // ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 5,
-                        color: Color.fromARGB(255, 221, 221, 221),
-                        offset: Offset(0, 5))
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("IT Departement",
-                        style: TextStyle(
-                            color: Config().primary, fontWeight: FontWeight.w700, fontSize: 14)),
-                    SizedBox(height: 10,),
-                    Container(
-                      width: width,
-                      height: 60,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3,
-                        itemBuilder: (context, i) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: CircleAvatar(
-                              backgroundColor: i == 1 ? Config().primary : Colors.white,
-                              radius: 26.0,
-                              child: CircleAvatar(
-                                backgroundImage: AssetImage("assets/ahmad.png"),
-                                radius: 23.0,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: Config().grey2,
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Danti Iswandhari", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
-                                Row(
-                                  children: [
-                                    Icon(Icons.access_time, size: 20,),
-                                    SizedBox(width: 4,),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("10:00 - 11:00", style: TextStyle(fontSize: 13),),
-                                        Text("Lembur", style: TextStyle(fontSize: 13))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Image.asset('assets/delete.png', scale: 2,),
-                                SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditOT()));
-                                  },
-                                  child: Image.asset('assets/edit_active.png', scale: 2,)
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+          // Padding(
+          //   padding: const EdgeInsets.all(10.0),
+          //   child: Container(
+          //     width: width,
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(10),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               blurRadius: 5,
+          //               color: Color.fromARGB(255, 221, 221, 221),
+          //               offset: Offset(0, 5))
+          //         ]),
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(10.0),
+          //       child: Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Text("IT Departement",
+          //               style: TextStyle(
+          //                   color: Config().primary, fontWeight: FontWeight.w700, fontSize: 14)),
+          //           SizedBox(height: 10,),
+          //           Container(
+          //             width: width,
+          //             height: 60,
+          //             child: ListView.builder(
+          //               shrinkWrap: true,
+          //               scrollDirection: Axis.horizontal,
+          //               itemCount: 3,
+          //               itemBuilder: (context, i) {
+          //                 return Padding(
+          //                   padding: const EdgeInsets.only(right: 5),
+          //                   child: CircleAvatar(
+          //                     backgroundColor: i == 1 ? Config().primary : Colors.white,
+          //                     radius: 26.0,
+          //                     child: CircleAvatar(
+          //                       backgroundImage: AssetImage("assets/ahmad.png"),
+          //                       radius: 23.0,
+          //                     ),
+          //                   ),
+          //                 );
+          //               },
+          //             ),
+          //           ),
+          //           Container(
+          //             width: width,
+          //             decoration: BoxDecoration(
+          //               color: Config().grey2,
+          //               borderRadius: BorderRadius.circular(8)
+          //             ),
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(5.0),
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 children: [
+          //                   Column(
+          //                     crossAxisAlignment: CrossAxisAlignment.start,
+          //                     children: [
+          //                       Text("Danti Iswandhari", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),),
+          //                       Row(
+          //                         children: [
+          //                           Icon(Icons.access_time, size: 20,),
+          //                           SizedBox(width: 4,),
+          //                           Column(
+          //                             crossAxisAlignment: CrossAxisAlignment.start,
+          //                             children: [
+          //                               Text("10:00 - 11:00", style: TextStyle(fontSize: 13),),
+          //                               Text("Lembur", style: TextStyle(fontSize: 13))
+          //                             ],
+          //                           ),
+          //                         ],
+          //                       ),
+          //                     ],
+          //                   ),
+          //                   Row(
+          //                     children: [
+          //                       Image.asset('assets/delete.png', scale: 2,),
+          //                       SizedBox(width: 10),
+          //                       GestureDetector(
+          //                         onTap: (){
+          //                           Navigator.push(context, MaterialPageRoute(builder: (context) => EditOT()));
+          //                         },
+          //                         child: Image.asset('assets/edit_active.png', scale: 2,)
+          //                       ),
+          //                     ],
+          //                   )
+          //                 ],
+          //               ),
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // )
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, i){
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Config().line, width: 2))
                 ),
-              ),
-            ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Tiara Alifa Anzania Putri", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),),
+                      SizedBox(height: 16,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: width/2,
+                                        child: Text("Filled by", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
+                                      ),
+                                      SizedBox(width: 30,),
+                                      Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: width/2,
+                                        child: Text("Franco Hardyan Dewayani Putra", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
+                                      SizedBox(width: 30,),
+                                      Text("05:00 - 06:00", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                         
+                                    ],
+                                  )
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16,),
+                      Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                      Text("TCD Asia Pacific", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))
+                    ],
+                  ),
+                ),
+              );
+            },
           )
         ],
       ),

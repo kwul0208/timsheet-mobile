@@ -8,7 +8,7 @@ class Config{
   Color blue2 = Color.fromRGBO(28, 119, 195, 1);
   Color primary2 = Color.fromRGBO(64, 188, 216, 1);
   Color primary = Color.fromRGBO(0, 176, 145, 1);
-  Color line  = Colors.grey[100]!;
+  Color line  = Color.fromRGBO(245, 245, 245, 1);
   Color subText = Colors.grey;
   Color redAccent = Colors.redAccent[100]!;
   Color orangePallet =Color.fromRGBO(243, 146, 55, 1);
