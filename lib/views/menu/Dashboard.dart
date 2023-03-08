@@ -159,7 +159,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Positioned(
                       right: 10,
-                      top: height/24,
+                      top: 36,
                       child: GestureDetector(
                         onTap: ()async{
                           final storage = new FlutterSecureStorage();
@@ -210,46 +210,61 @@ class _DashboardState extends State<Dashboard> {
                     future: _futureEmptyTimesheet,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
-                            childAspectRatio: 1,
-                          ), 
-                          itemCount: _emptyTimesheet!.length,
-                          itemBuilder: (BuildContext context, i){
-                            DateTime dt = DateTime.parse(_emptyTimesheet![i].date);
-                            String formattedDate = DateFormat("dd \n MMMM").format(dt);
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                              child: Container(
-                                  width: 64,
-                                  height: 64,
-                                  decoration: BoxDecoration(
-                                    color: _emptyTimesheet![i].status == "open" ? Config().bgLock : Config().redPallet,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 5,
-                                          color: Color.fromRGBO(0, 0, 0, 0.25),
-                                          offset: Offset(0, 4))
-                                    ] 
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        _emptyTimesheet![i].status == "open" ? Icon(Icons.lock_open_outlined, color: Colors.white,) : Icon(Icons.lock_outline, color: Colors.white,),
-                                        Text("$formattedDate", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
-                                      ],
+                        if (_emptyTimesheet!.isEmpty) {
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset("assets/no_empty.png", scale: 1.9,),
+                                SizedBox(height: 5,),
+                                Text("Congratulation!", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+                                Text("All your timesheets are filled", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: Color.fromRGBO(0, 0, 0, 1)),)
+                              ],
+                            ),
+                          );
+                        }else{
+                          return GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              childAspectRatio: 1,
+                            ), 
+                            itemCount: _emptyTimesheet!.length,
+                            itemBuilder: (BuildContext context, i){
+                              DateTime dt = DateTime.parse(_emptyTimesheet![i].date);
+                              String formattedDate = DateFormat("dd \n MMMM").format(dt);
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration: BoxDecoration(
+                                      color: _emptyTimesheet![i].status == "open" ? Config().bgLock : Config().redPallet,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            color: Color.fromRGBO(0, 0, 0, 0.25),
+                                            offset: Offset(0, 4))
+                                      ] 
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _emptyTimesheet![i].status == "open" ? Icon(Icons.lock_open_outlined, color: Colors.white,) : Icon(Icons.lock_outline, color: Colors.white,),
+                                          Text("$formattedDate", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                            );
-                          }
-                        );
+                              );
+                            }
+                          );
+                        }
                       }else{
                         return GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -656,13 +671,13 @@ class _DashboardState extends State<Dashboard> {
                       scrollDirection: Axis.horizontal,
                       children: const [
                         // CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
-                        CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "ic_outline-lock-open.png",),
+                        CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "mdi_clock-plus.png",),
                         CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
                         // CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
                         // CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
                         // CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
                         CardWidget(title: "Check\nHoliday", total: 5, img: "material-symbols_holiday-village-outline.png",),
-                        CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
+                        // CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
 
                       ],
                     ),

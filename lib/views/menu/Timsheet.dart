@@ -351,7 +351,7 @@ class _TimesheetState extends State<Timesheet> {
                                               width: width,
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                  color: Config().grey2,
+                                                  color: Config().primary,
                                                   borderRadius: BorderRadius.circular(10)),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -359,12 +359,13 @@ class _TimesheetState extends State<Timesheet> {
                                                   Icon(
                                                     Icons.lock_outline,
                                                     size: 26,
+                                                    color: Colors.white,
                                                   ),
                                                   Text(
                                                     "Locked",
                                                     style: TextStyle(
                                                         fontSize: 18,
-                                                        fontWeight: FontWeight.w600),
+                                                        fontWeight: FontWeight.w600, color: Colors.white),
                                                   )
                                                 ],
                                               ),
@@ -384,7 +385,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 width: width,
                                                 height: 50,
                                                 decoration: BoxDecoration(
-                                                    color: Config().grey2,
+                                                    color: Config().primary2,
                                                     borderRadius: BorderRadius.circular(10)),
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -392,12 +393,13 @@ class _TimesheetState extends State<Timesheet> {
                                                     Icon(
                                                       Icons.lock_outline,
                                                       size: 26,
+                                                      color: Colors.white,
                                                     ),
                                                     Text(
                                                       "Locked",
                                                       style: TextStyle(
                                                           fontSize: 18,
-                                                          fontWeight: FontWeight.w600),
+                                                          fontWeight: FontWeight.w600, color: Colors.white),
                                                     )
                                                   ],
                                                 ),
@@ -411,7 +413,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 width: width,
                                                 height: 80,
                                                 decoration: BoxDecoration(
-                                                  color: Config().bgLock,
+                                                  color: Config().primary2,
                                                   borderRadius: BorderRadius.circular(10)
                                                 ),
                                                 child: Padding(
@@ -460,7 +462,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   width: width,
                                                   height: 50,
                                                   decoration: BoxDecoration(
-                                                      color: Config().grey2,
+                                                      color: Config().primary2,
                                                       borderRadius: BorderRadius.circular(10)),
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -468,12 +470,13 @@ class _TimesheetState extends State<Timesheet> {
                                                       Icon(
                                                         Icons.lock_outline,
                                                         size: 26,
+                                                        color: Colors.white,
                                                       ),
                                                       Text(
                                                         "Locked",
                                                         style: TextStyle(
                                                             fontSize: 18,
-                                                            fontWeight: FontWeight.w600),
+                                                            fontWeight: FontWeight.w600, color: Colors.white),
                                                       )
                                                     ],
                                                   ),
@@ -494,7 +497,7 @@ class _TimesheetState extends State<Timesheet> {
                                                           width: width,
                                                           height: 50,
                                                           decoration: BoxDecoration(
-                                                              color: Config().grey2,
+                                                              color: Config().primary2,
                                                               borderRadius: BorderRadius.circular(10)),
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -502,12 +505,13 @@ class _TimesheetState extends State<Timesheet> {
                                                               Icon(
                                                                 Icons.lock_outline,
                                                                 size: 26,
+                                                                color: Colors.white,
                                                               ),
                                                               Text(
                                                                 "Locked",
                                                                 style: TextStyle(
                                                                     fontSize: 18,
-                                                                    fontWeight: FontWeight.w600),
+                                                                    fontWeight: FontWeight.w600, color: Colors.white),
                                                               )
                                                             ],
                                                           ),
@@ -521,7 +525,7 @@ class _TimesheetState extends State<Timesheet> {
                                                           width: width,
                                                           height: 80,
                                                           decoration: BoxDecoration(
-                                                            color: Config().bgLock,
+                                                            color: Config().primary2,
                                                             borderRadius: BorderRadius.circular(10)
                                                           ),
                                                           child: Padding(
@@ -1457,7 +1461,7 @@ class _TimesheetState extends State<Timesheet> {
                     SizedBox(height: 10),
                     FloatingActionButton(
                       heroTag: "btn2",
-                      backgroundColor: Config().primary,
+                      backgroundColor: Config().primary2,
                       child: Icon(Icons.add),
                       onPressed: () {
                         if (_timesheet![0].status == 'locked' || _timesheet![0].status == "unlock_request") {
