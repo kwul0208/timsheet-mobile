@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Provider/Dashboard/DashboardState.dart';
+import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
+import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Provider/auth/MainState.dart';
+import 'package:timsheet_mobile/views/menu/Cuti.dart';
 import 'package:timsheet_mobile/views/menu/Dashboard.dart';
 import 'package:timsheet_mobile/views/menu/Overtime.dart';
 import 'package:timsheet_mobile/views/menu/Timsheet.dart';
 import 'package:timsheet_mobile/views/menu/WFH.dart';
 import 'package:timsheet_mobile/views/pages/Auth/Login.dart';
+import 'package:flutter/services.dart';
+
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -23,10 +29,16 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: ((context) => TimesheetState())),
       ChangeNotifierProvider(create: ((context) => MainState())),
+      ChangeNotifierProvider(create: ((context) => OvertimeState())),
+      ChangeNotifierProvider(create: ((context) => WFHState())),
+      ChangeNotifierProvider(create: ((context) => DashboardState())),
     ],
     child: MyApp(),
   ));
@@ -63,6 +75,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Inter'
       ),
       home: Consumer<MainState>(
         builder: (context, data, _) {
@@ -94,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<Widget> _children = [Dashboard(), Timesheet(), Overtime(), WFH()];
+  List<Widget> _children = [Dashboard(), WFH(), Timesheet(), Overtime()];
 
   @override
   void initState(){
@@ -110,12 +123,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _children.elementAt(_curentIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Dashboard"),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 0 ? Image.asset("assets/dashboard_active.png", scale: 2,) : Image.asset("assets/dashboard_inactive.png", scale: 2,)), label: ""),
           BottomNavigationBarItem(
-              icon: Icon(Icons.task), label: "Timesheet"),
+              icon: Container(child: _curentIndex == 1 ? Image.asset("assets/rwd_active.png", scale: 2,) : Image.asset("assets/rwd_inactive.png", scale: 2,)), label: ""),
           BottomNavigationBarItem(
-              icon: Icon(Icons.work), label: "Overtime"),
-          BottomNavigationBarItem(icon: Icon(Icons.work_outline), label: "WFH"),
+              icon: Container(child: Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Container(child: _curentIndex == 2 ? Image.asset("assets/timesheet_active.png", scale: 2,) : Image.asset("assets/timesheet_inactive.png", scale: 2,)),
+              )), label: ""),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: ""),
+          // BottomNavigationBarItem(icon: Container(child: _curentIndex == 4 ? Image.asset("assets/cuti_active.png", scale: 2.2,) : Image.asset("assets/cuti_inactive.png", scale: 2.2,)), label: ""),
         ],
         onTap: onTapBar,
         currentIndex: _curentIndex,

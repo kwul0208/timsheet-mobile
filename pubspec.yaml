@@ -43,10 +43,31 @@ dependencies:
   dropdown_search: ^2.0.1
   flutter_secure_storage: ^5.0.2
   draggable_bottom_sheet: ^1.0.2
-  
+  group_radio_button: ^1.3.0
+  appcheck: ^1.0.6
+  flutter_html: ^2.2.1
+  shimmer: ^2.0.0
+  draggable_fab: ^0.1.4
+  flutter_launcher_icons: ^0.10.0
+  date_format: ^2.0.7
+  flutter_native_splash:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#spash screen
+#run flutter pub run flutter_native_splash:create when you want to change splachscreen
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo.png
+
+#icon apps
+#run flutter pub run flutter_launcher_icons:main when you want to change icon apps
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -83,10 +104,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets\fonts\Inter-Medium.ttf
+        - asset: assets\fonts\Inter-Bold.ttf
+        - asset: assets\fonts\Inter-ExtraBold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

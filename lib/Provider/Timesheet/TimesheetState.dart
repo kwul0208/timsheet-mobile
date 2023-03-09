@@ -11,6 +11,17 @@ class TimesheetState extends ChangeNotifier{
   }
 
 
+  // -- add loading
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  void changeIsLoading(bool val){
+    _isLoading = val;
+    notifyListeners();
+  }
+
+  
+
+
   //------- Assignment -------
   String _client = '';
   String get client => _client;
@@ -23,4 +34,98 @@ class TimesheetState extends ChangeNotifier{
     notifyListeners();
   }
 
+  List _assignmentIds= [];
+  List get assignmentIds => _assignmentIds;
+  void changeAssignmentIds(val){
+    _assignmentIds.addAll(val);
+    notifyListeners();
+  }
+
+  int? _indexA;
+  int? get indexA => _indexA;
+  void changeIndexA(val){
+    _indexA = val;
+    notifyListeners();
+  }
+
+  int? _indexS;
+  int? get indexS => _indexS;
+  void changeIndexS(val){
+    _indexS = val;
+    notifyListeners();
+  }
+ 
+
+  // ------- Project ----------
+  String _projetName = '';
+  String get projectName => _projetName;
+  void changeProjectName(String val){
+    _projetName = val;
+    notifyListeners();
+  }
+
+  int? _indexSelectedProject;
+  int? get indexSelectedProject => _indexSelectedProject;
+  void changeIndexSelectedProject(val){
+    _indexSelectedProject = val;
+    notifyListeners();
+  }
+
+  // ------ Training -------
+  String _trainingName = "";
+  String get trainingName => _trainingName;
+  void changeTrainingName(val){
+    _trainingName = val.toString();
+    notifyListeners();
+  }
+
+  // ------ employee -------
+  String _employeeName = "";
+  String get employeeName => _employeeName;
+  void changeemployeeName(val){
+    _employeeName = val.toString();
+    notifyListeners();
+  }
+
+  int? _indexSelectedEmployee;
+  int? get indexSelectedEmployee => _indexSelectedEmployee;
+  void changeIndexSelectedEmployee(val){
+    _indexSelectedEmployee = val;
+    notifyListeners();
+  }
+
+  void reset(){
+    _client = "";
+    _service = '';
+    _assignmentIds= [];
+    _projetName = '';
+    _trainingName = "";
+    _employeeName = "";
+
+    _indexA = null;
+    _indexS = null;
+    _indexSelectedProject = null;
+    _indexSelectedEmployee = null;
+    notifyListeners();
+  }
+
+  // -- summary
+  bool _showDS = true;
+  bool get showDS => _showDS;
+  void showDetailSummary(){
+    _showDS = !showDS;
+    notifyListeners();
+  }
+
+
+  // -- error --
+  bool _error = false;
+  bool get error => _error;
+  String _message = '';
+  String get message => _message;
+  void changeError(bool val, String msg){
+    _error = val;
+    _message = msg;
+    notifyListeners();
+  }
 }
