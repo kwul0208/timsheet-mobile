@@ -23,11 +23,13 @@ import 'package:timsheet_mobile/Provider/Timesheet/TimesheetState.dart';
 import 'package:timsheet_mobile/Widget/CardAssignment.dart';
 
 class addTimsheet extends StatefulWidget {
-  const addTimsheet({super.key, required this.date, this.is_consultant, this.work_from});
+  const addTimsheet({super.key, required this.date, this.is_consultant, this.work_from, this.wfo_start, this.wfo_end});
 
   final String date;
   final String? is_consultant;
   final String? work_from;
+  final String? wfo_start;
+  final String? wfo_end;
 
   @override
   State<addTimsheet> createState() => _addTimsheetState();
@@ -225,6 +227,13 @@ class _addTimsheetState extends State<addTimsheet> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
+      // time today
+    // DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+
+    
+    
+
     return Stack(
       children: [
         Scaffold(
@@ -1940,6 +1949,39 @@ class _addTimsheetState extends State<addTimsheet> {
       return {"status": false, "message": "Time duration maximum 3 hours"};
     }
 
+
+
+
+    // wfo == true ?
+    if(widget.work_from == "office"){
+      // -- validasi time absen wfo
+      String dateToday = DateFormat("dd-MM-yyyy").format(DateTime.parse("${DateTime.parse("${DateTime.now()}")}"));
+      String dateTimesheet = DateFormat("dd-MM-yyyy").format(DateTime.parse("${DateTime.parse("${widget.date}")}"));
+
+      DateTime dtx = DateTime.parse("${DateTime.parse("${DateTime.now()}")}");
+      String formatTimeEndToday = DateFormat("HH:mm").format(dtx);
+      String ApiTimeStart = widget.wfo_start!;
+      String ApiTimeEnd = widget.wfo_end!;
+      // today timesheet == today now  ?
+      if(dateTimesheet == dateToday){
+        print("same_day");
+        //   check selected_timeStart < api_timeStart  
+        if(timeStart.text.compareTo(ApiTimeStart) < 0){
+          return {"status": false, "message": "Time Not Valid!. Your start attendance is $ApiTimeStart"};
+        }
+
+      }else{
+        //   selected_timeStart < api_timeStart  
+        if(timeStart.text.compareTo(ApiTimeStart) < 0){
+          return {"status": false, "message": "Time Not Valid!. Your start attendance is $ApiTimeStart"};
+        }
+
+        //   selected_timeEnd > time_today
+        if(timeEnd.text.compareTo(ApiTimeEnd) > 0) {
+          return {"status": false, "message": "Time Not Valid!. Your finish attendance is $ApiTimeEnd"};
+        }
+      }
+    }
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
     

@@ -1512,7 +1512,7 @@ class _TimesheetState extends State<Timesheet> {
                           setState(() {
                             _scrollDate = dateForAdd;
                           });
-                          _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
+                          _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from, wfo_start: _timesheet![0].wfo_start, wfo_end: _timesheet![0].wfo_finish,));
                         }
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => addTimsheet(date: dateForAdd)));
                       },

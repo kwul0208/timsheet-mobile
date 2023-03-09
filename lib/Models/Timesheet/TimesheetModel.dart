@@ -12,10 +12,12 @@ class TimesheetModel{
   // final int? ishoma;
   // final int? chargeable;
   // final int? training;
+  final String ? wfo_start;
+  final String ? wfo_finish;
   List ? details;
 
   // TimesheetModel({required this.timesheet, this.working_time, this.office_administration, this.status, this.locked_date, this.unlocked_request_date, this.unlocked_date,   this.relocked_date, this.work_from, this.over_time, this.ishoma, this.chargeable, this.training});
-  TimesheetModel({required this.timesheet, this.working_time, this.status, this.locked_date, this.unlocked_request_date, this.unlocked_date,   this.relocked_date, this.work_from, this.over_time, this.details});
+  TimesheetModel({required this.timesheet, this.working_time, this.status, this.locked_date, this.unlocked_request_date, this.unlocked_date,   this.relocked_date, this.work_from, this.over_time, this.details, this.wfo_start, this.wfo_finish});
 
   factory TimesheetModel.fromJson(dynamic json){
     return TimesheetModel(
@@ -32,6 +34,8 @@ class TimesheetModel{
       // ishoma: json['summary']['ishoma'] ?? 0,
       // chargeable: json['summary']['chargeable'] ?? 0,
       // training: json['summary']['training'] ?? 0,
+      wfo_start: json['wfo_start'],
+      wfo_finish: json['wfo_finish'],
       details: json['summary']['details']
     );
   }
@@ -45,7 +49,7 @@ class TimesheetModel{
   @override
   String toString(){
     // return '{timesheet: $timesheet, working_time: $working_time, office_administration: $office_administration, status: $status, loacked_date: $locked_date, unlocked_request_date; $unlocked_request_date, unlocked_date: $unlocked_date, relocked_date: $relocked_date, work_from: $work_from, over_time: $over_time, ishoma: $ishoma, chargeable: $chargeable, training: $training}';
-    return '{timesheet: $timesheet, working_time: $working_time, status: $status, loacked_date: $locked_date, unlocked_request_date; $unlocked_request_date, unlocked_date: $unlocked_date, relocked_date: $relocked_date, work_from: $work_from, over_time: $over_time}';
+    return '{timesheet: $timesheet, working_time: $working_time, status: $status, loacked_date: $locked_date, unlocked_request_date; $unlocked_request_date, unlocked_date: $unlocked_date, relocked_date: $relocked_date, work_from: $work_from, over_time: $over_time, wfo_start: $wfo_start, wfo_finish: $wfo_finish}';
   }
   
 }
