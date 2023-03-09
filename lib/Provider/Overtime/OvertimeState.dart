@@ -43,4 +43,21 @@ class OvertimeState extends ChangeNotifier{
     _message = msg;
     notifyListeners();
   }
+
+
+  // --------- overtime ----------
+  int _IndexMonth = 3;
+  int get indexMonth => _IndexMonth;
+  void changeIndexMonth(val){
+    _IndexMonth = val;
+    notifyListeners();
+  }
+
+  bool _isLoad = false;
+  bool get isLoad => _isLoad;
+  void changeIsLoad(val){
+    _isLoad = val;
+    notifyListeners();
+  }
+  
 }

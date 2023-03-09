@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
+import 'package:timsheet_mobile/Helper/Helper.dart';
+import 'package:timsheet_mobile/Models/Overtime/OTCheck/OTCheckApi.dart';
+import 'package:timsheet_mobile/Models/Overtime/OTCheck/OTCheckModel.dart';
 import 'package:timsheet_mobile/Provider/Overtime/OvertimeState.dart';
 import 'package:timsheet_mobile/Provider/WFH/WFHState.dart';
 import 'package:timsheet_mobile/Widget/Badge.dart';
+import 'package:timsheet_mobile/Widget/Shimmer/ShimmerRWDList.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
+import 'package:intl/intl.dart';
 
 class Check extends StatefulWidget {
   const Check({super.key});
@@ -17,6 +22,20 @@ class _CheckState extends State<Check> {
 
   List<String> _month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   TextEditingController monthController = TextEditingController(); 
+
+  // -- data -- 
+  List<OTCheckModel>? _ot;
+  Future<dynamic>? _futureOt;
+
+  @override
+  void initState(){
+    super.initState();
+
+    DateTime dt = DateTime.parse("${DateTime.now()}");
+    String formattedDate = DateFormat("M").format(dt);
+      String formattedYear = DateFormat("yyyy").format(dt);
+    _futureOt = getDataOt(formattedDate, formattedYear);
+  }
 
 
   @override
@@ -32,7 +51,7 @@ class _CheckState extends State<Check> {
         children: [
           Container(
             height: 40,
-            child: Consumer<WFHState>(
+            child: Consumer<OvertimeState>(
               builder: (context, data, _) {
                 return ListView(
                   scrollDirection: Axis.horizontal,
@@ -40,10 +59,14 @@ class _CheckState extends State<Check> {
                   children: [
                     GestureDetector(
                       onTap: () async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(1);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(1, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(1);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("1", formattedYear);
+
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -52,10 +75,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(2);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(2, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(2);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("2", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -64,10 +89,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(3);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(3, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(3);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("3", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -76,10 +103,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(4);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(4, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(4);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("4", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -88,10 +117,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(5);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(5, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(5);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("5", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -100,10 +131,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(6);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(6, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(6);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("6", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -112,10 +145,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(7);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(7, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(7);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("7", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -124,10 +159,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(8);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(8, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(8);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("8", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -136,10 +173,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(9);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(9, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(9);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("9", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -148,10 +187,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(10);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(10, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(10);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("10", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -160,10 +201,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(11);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(11, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(11);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("11", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -172,10 +215,12 @@ class _CheckState extends State<Check> {
                     ),
                     GestureDetector(
                       onTap: ()async{
-                        // Provider.of<WFHState>(context, listen: false).changeIndexMonth(12);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(true);
-                        // await getDataWFH(12, year);
-                        // Provider.of<WFHState>(context, listen: false).changeIsLoad(false);
+                        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(12);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(true);
+                        DateTime dt = DateTime.parse("${DateTime.now()}");
+                        String formattedYear = DateFormat("yyyy").format(dt);
+                        await getDataOt("12", formattedYear);
+                        Provider.of<OvertimeState>(context, listen: false).changeIsLoad(false);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -262,79 +307,156 @@ class _CheckState extends State<Check> {
             height: 10,
             color: Config().line,
           ),
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 10,
-            itemBuilder: (context, i){
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Config().line, width: 2))
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("17 February 2023", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),),
-                      SizedBox(height: 16,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: width/3,
-                                        child: Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
-                                      ),
-                                      SizedBox(width: 30,),
-                                      Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                    ],
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: width/3,
-                                        child: Text("05:00", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
-                                      SizedBox(width: 30,),
-                                      Text("04:00", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
-                                         
-                                    ],
-                                  )
-                                ],
-                              ),
 
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16,),
-                      Text("Reason of Adjustment", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
-                      Text("-", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
-                      SizedBox(height: 6,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          Badge(title: "Pending", color: Config().orangePallet,),
-                        ],
+          Consumer<OvertimeState>(
+            builder: (context, data, _) {
+              if (data.isLoad == false) {
+                if (data.error == false) {
+                  return FutureBuilder(
+                    future: _futureOt,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: _ot!.length,
+                          itemBuilder: (context, i){
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Config().line, width: 2))
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Builder(
+                                      builder: (context) {
+                                        DateTime dt = DateTime.parse("${_ot![i].date}");
+                                        String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                                        return Text("$formattedDate", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),);
+                                      }
+                                    ),
+                                    SizedBox(height: 16,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: width/3,
+                                                      child: Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
+                                                    ),
+                                                    SizedBox(width: 30,),
+                                                    Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: width/3,
+                                                      child: Text("${Helper().secondToHour(_ot![i].duration).toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
+                                                    SizedBox(width: 30,),
+                                                    Builder(
+                                                      builder: (context) {
+                                                        if (_ot![i].adjustment == 0 || _ot![i].adjustment == null) {
+                                                          return Text("-", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
+                                                        }else{
+                                                          return Text("${Helper().secondToHour(_ot![i].adjustment).toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
+                                                        }
+                                                      }
+                                                    ),
+                                                      
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 16,),
+                                    Text("Reason of Adjustment", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                    Text("${_ot![i].adjustment_reason ?? "-"}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                    SizedBox(height: 6,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(),
+                                        Builder(
+                                          builder: (context) {
+                                            if (_ot![i].status == "pending") {
+                                              return Badge(title: "Pending", color: Config().orangePallet,);
+                                            }else if(_ot![i].status == "approve"){
+                                              return Badge(title: "Approved", color: Config().bgLock2,);
+                                            }else{
+                                              return Badge(title: "${_ot![i].status}", color: Config().redPallet,);
+                                            }
+                                          }
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }else{
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return ShimmerRWDList(width: width);
+                          },
+                        );
+                      }
+                    }
+                  );
+                }else{
+                  return Column(
+                    children: [
+                      SizedBox(height: 20),
+                      Image.asset("assets/500.png"),
+                      SizedBox(height: 30,),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text("${data.message}. Please check your connection or contact IT Programmer", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
                       )
                     ],
-                  ),
-                ),
-              );
-            },
+                  );
+                }
+              }else{
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return ShimmerRWDList(width: width);
+                  },
+                );
+              }
+            }
           )
         ],
       ),
     );
   }
+
+  Future<void> getDataOt(month, year)async{
+    _ot = await OTCheckApi.getDataApi(context, month, year);
+    print("--------");
+    print(_ot);
+  }
+
 }
