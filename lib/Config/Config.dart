@@ -6,8 +6,9 @@ class Config{
 
   // Color primary = Color.fromRGBO(91, 192, 248, 1);
   Color blue2 = Color.fromRGBO(28, 119, 195, 1);
-  Color primary = Color.fromRGBO(64, 188, 216, 1);
-  Color line  = Colors.grey[100]!;
+  Color primary2 = Color.fromRGBO(64, 188, 216, 1);
+  Color primary = Color.fromRGBO(0, 176, 145, 1);
+  Color line  = Color.fromRGBO(245, 245, 245, 1);
   Color subText = Colors.grey;
   Color redAccent = Colors.redAccent[100]!;
   Color orangePallet =Color.fromRGBO(243, 146, 55, 1);
@@ -18,5 +19,6 @@ class Config{
   Color redPallet = Color.fromRGBO(214, 50, 48, 1);
   Color grey2 = Color.fromARGB(255, 236, 240, 252);
   Color bgLoading = Color.fromARGB(78, 0, 0, 0);
-  Color bgLock = Color.fromRGBO(166, 182, 88, 1);
+  Color bgLock2 = Color.fromRGBO(166, 182, 88, 1);
+  Color bgLock = Color.fromRGBO(0, 176, 145, 1);
 }

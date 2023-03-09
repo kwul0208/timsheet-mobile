@@ -94,111 +94,145 @@ class cardSummary extends StatelessWidget {
                 if (data.showDS == false) {
                   return SizedBox();
                 }else{
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: chartData.length,
+                    itemBuilder: (context, i) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Container(
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: chartData[i].color,
+                            borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("${chartData[i].name}", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
+                                Row(
+                                  children: [
+                                    Icon(Icons.access_time, color: Colors.white, size: 20,),
+                                    SizedBox(width: 5,),
+                                    Text("${chartData[i].time!.substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  );
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // -- Chargeable
-                      Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(137, 69, 170, 1),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Chargeable", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
-                              Row(
-                                children: [
-                                  Icon(Icons.access_time, color: Colors.white, size: 20,),
-                                  SizedBox(width: 5,),
-                                  Text("${chargeable.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 6),
+                      // // -- Chargeable
+                      // Container(
+                      //   width: width,
+                      //   decoration: BoxDecoration(
+                      //     color: const Color.fromRGBO(137, 69, 170, 1),
+                      //     borderRadius: BorderRadius.circular(5)
+                      //   ),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text("Chargeable", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
+                      //         Row(
+                      //           children: [
+                      //             Icon(Icons.access_time, color: Colors.white, size: 20,),
+                      //             SizedBox(width: 5,),
+                      //             Text("${chargeable.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 6),
 
-                      // -- ISHOMA
-                      Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(7, 84, 130, 1),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("ISHOMA", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
-                              Row(
-                                children: [
-                                  Icon(Icons.access_time, color: Colors.white, size: 20,),
-                                  SizedBox(width: 5,),
-                                  Text("${ishoma.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 6),
+                      // // -- ISHOMA
+                      // Container(
+                      //   width: width,
+                      //   decoration: BoxDecoration(
+                      //     color: const Color.fromRGBO(7, 84, 130, 1),
+                      //     borderRadius: BorderRadius.circular(5)
+                      //   ),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text("ISHOMA", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
+                      //         Row(
+                      //           children: [
+                      //             Icon(Icons.access_time, color: Colors.white, size: 20,),
+                      //             SizedBox(width: 5,),
+                      //             Text("${ishoma.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 6),
 
-                      // -- Office AD
-                      Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(242, 154, 118, 1),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Office Administration", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
-                              Row(
-                                children: [
-                                  Icon(Icons.access_time, color: Colors.white, size: 20,),
-                                  SizedBox(width: 5,),
-                                  Text("${office_administration.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 6),
+                      // // -- Office AD
+                      // Container(
+                      //   width: width,
+                      //   decoration: BoxDecoration(
+                      //     color: const Color.fromRGBO(242, 154, 118, 1),
+                      //     borderRadius: BorderRadius.circular(5)
+                      //   ),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text("Office Administration", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
+                      //         Row(
+                      //           children: [
+                      //             Icon(Icons.access_time, color: Colors.white, size: 20,),
+                      //             SizedBox(width: 5,),
+                      //             Text("${office_administration.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 6),
 
-                      // -- Training
-                      Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(255, 204, 103, 1),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Training", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
-                              Row(
-                                children: [
-                                  Icon(Icons.access_time, color: Colors.white, size: 20,),
-                                  SizedBox(width: 5,),
-                                  Text("${training.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
+                      // // -- Training
+                      // Container(
+                      //   width: width,
+                      //   decoration: BoxDecoration(
+                      //     color: const Color.fromRGBO(255, 204, 103, 1),
+                      //     borderRadius: BorderRadius.circular(5)
+                      //   ),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text("Training", style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),),
+                      //         Row(
+                      //           children: [
+                      //             Icon(Icons.access_time, color: Colors.white, size: 20,),
+                      //             SizedBox(width: 5,),
+                      //             Text("${training.toString().substring(0,5)}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
+                    
                     ],
                   );
                 }
@@ -271,6 +305,8 @@ class HorizontalBarChart extends StatelessWidget {
 class Data {
   final double units;
   final Color color;
+  final String? name;
+  final String ? time;
 
-  Data({required this.units, required this.color});
+  Data({required this.units, required this.color, this.name, this.time});
 }
