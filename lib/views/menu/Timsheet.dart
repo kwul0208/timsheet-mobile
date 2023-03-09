@@ -344,6 +344,7 @@ class _TimesheetState extends State<Timesheet> {
                                           return SizedBox();
 
                                         // -- lock --
+                                        
                                         }else{
                                           return Padding(
                                             padding: const EdgeInsets.all(10.0),
@@ -351,7 +352,7 @@ class _TimesheetState extends State<Timesheet> {
                                               width: width,
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                  color: Config().primary,
+                                                  color: Config().redPallet,
                                                   borderRadius: BorderRadius.circular(10)),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -385,7 +386,7 @@ class _TimesheetState extends State<Timesheet> {
                                                 width: width,
                                                 height: 50,
                                                 decoration: BoxDecoration(
-                                                    color: Config().primary,
+                                                    color: Config().redPallet,
                                                     borderRadius: BorderRadius.circular(10)),
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -462,7 +463,7 @@ class _TimesheetState extends State<Timesheet> {
                                                   width: width,
                                                   height: 50,
                                                   decoration: BoxDecoration(
-                                                      color: Config().primary,
+                                                      color: Config().redPallet,
                                                       borderRadius: BorderRadius.circular(10)),
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -497,7 +498,7 @@ class _TimesheetState extends State<Timesheet> {
                                                           width: width,
                                                           height: 50,
                                                           decoration: BoxDecoration(
-                                                              color: Config().primary,
+                                                              color: Config().redPallet,
                                                               borderRadius: BorderRadius.circular(10)),
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -1357,45 +1358,36 @@ class _TimesheetState extends State<Timesheet> {
                               builder: (context, data, _) {
                                 if(_timesheet![0].timesheet.length >= 1){
 
-                                  // double avg_chargeable = _timesheet![0].chargeable!.toDouble() / _timesheet![0].working_time!.toDouble();
-                                  // double avg_oa = _timesheet![0].office_administration!.toDouble() / _timesheet![0].working_time!.toDouble();
-                                  // double avg_training = _timesheet![0].training!.toDouble() / _timesheet![0].working_time!.toDouble();
-                                  // double avg_ishoma = _timesheet![0].ishoma!.toDouble() / _timesheet![0].working_time!.toDouble();
-
+                                  List<Color> colors = [
+                                    Color.fromRGBO(28, 119, 195, 1),
+                                    Color.fromRGBO(166, 182, 88, 1),
+                                    Color.fromRGBO(255, 204, 103, 1),
+                                    Color.fromRGBO(64, 188, 216, 1),
+                                    Color.fromRGBO(28, 119, 195, 1),
+                                    Config().primary
+                                    
+                                  ];
                                   List<Data> dataCart = [];
                                   for (var i = 0; i < _timesheet![0].details!.length; i++) {
-                                     Map<String, dynamic> _datax = _timesheet![0].details![i];
-                                    _datax.forEach((e, val) { 
-                                      if (e == "office_administration") {
-                                        dataCart.add(Data(units: val.toDouble(), color: const Color.fromRGBO(28, 119, 195, 1), name: "Office Administration", time: Helper().secondToHour(val)));
-                                      }else if(e == "ishoma"){
-                                        dataCart.add(Data(units: val.toDouble(), color: const Color.fromRGBO(166, 182, 88, 1), name: "Ishoma", time: Helper().secondToHour(val)));
-                                      }else if(e == "training"){
-                                        dataCart.add(Data(units: val.toDouble(), color: const Color.fromRGBO(255, 204, 103, 1), name: "Training", time: Helper().secondToHour(val)));
-                                      }else if(e == "chargeable"){
-                                        dataCart.add(Data(units: val.toDouble(), color: const Color.fromRGBO(64, 188, 216, 1), name: "Chargeable", time: Helper().secondToHour(val)));
-                                      }
-                                    });
-                                    // print( _timesheet![0].details![i]);
-                                    // dataCart.add(Data(units: _timesheet![0].details![i]['office_administration'].toDouble() / 41600.toDouble() , color: const Color.fromRGBO(137, 69, 170, 1)));
-                                    
+                                    print(_timesheet![0].details![i]['name']);
+                                    if(_timesheet![0].details![i]['name'] == "Chargeable"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Color.fromRGBO(64, 188, 216, 1), name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }else if(_timesheet![0].details![i]['name'] == "ISHOMA"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Color.fromRGBO(166, 182, 88, 1), name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }else if(_timesheet![0].details![i]['name'] == "Office Administration"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Color.fromRGBO(28, 119, 195, 1), name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }else if(_timesheet![0].details![i]['name'] == "Prospecting"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Config().primary, name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }else if(_timesheet![0].details![i]['name'] == "Support"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Config().primary, name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }else if(_timesheet![0].details![i]['name'] == "Training"){
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Color.fromRGBO(255, 204, 103, 1), name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }
+                                    else{
+                                      dataCart.add(Data(units: _timesheet![0].details![i]['value'].toDouble(), color: Config().primary, name: _timesheet![0].details![i]['name'], time: Helper().secondToHour(_timesheet![0].details![i]['value'])));
+                                    }
                                   }
                                  
-                                  
-
-                                  // print([avg_chargeable, avg_oa, avg_training, avg_ishoma]);
-
-                                  // final chartData = [
-                                  //   Data(units: 0.01, color: const Color.fromRGBO(137, 69, 170, 1)),
-                                    // Data(units: 0.01, color: const Color.fromRGBO(7, 84, 130, 1)),
-                                    // Data(units: 0.01, color: const Color.fromRGBO(242, 154, 118, 1)),
-                                    // Data(units: 0.01 , color: const Color.fromRGBO(255, 204, 103, 1)),
-                                  // ];
-
-                                  // return Padding(
-                                  //   padding: const EdgeInsets.all(10.0),
-                                  //   child: cardSummary(width: width, chartData: chartData, working_time: Helper().secondToHour(_timesheet![0].working_time), over_time: Helper().secondToHour(_timesheet![0].over_time), ishoma: Helper().secondToHour(_timesheet![0].ishoma), chargeable: Helper().secondToHour(_timesheet![0].chargeable), office_administration: Helper().secondToHour(_timesheet![0].office_administration), training: Helper().secondToHour(_timesheet![0].training),),
-                                  // );
                                   return Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: cardSummary(width: width, chartData: dataCart, working_time: Helper().secondToHour(_timesheet![0].working_time), over_time: Helper().secondToHour(_timesheet![0].over_time),),
@@ -1409,7 +1401,8 @@ class _TimesheetState extends State<Timesheet> {
                             return SizedBox();
                           }
                         },
-                      )
+                      ),
+                      SizedBox(height: 100,)
                     ],
                   );
                 }else{
