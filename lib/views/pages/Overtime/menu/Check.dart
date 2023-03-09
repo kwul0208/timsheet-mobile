@@ -35,6 +35,9 @@ class _CheckState extends State<Check> {
     String formattedDate = DateFormat("M").format(dt);
       String formattedYear = DateFormat("yyyy").format(dt);
     _futureOt = getDataOt(formattedDate, formattedYear);
+    Future.delayed(Duration.zero).then((value) {
+        Provider.of<OvertimeState>(context, listen: false).changeIndexMonth(int.parse(formattedDate));
+      });
   }
 
 
@@ -70,7 +73,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("January", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 1 ? Config().orangePallet : null ),),
+                        child: Text("January", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 1 ? Config().orangePallet : null ),),
                       ),
                     ),
                     GestureDetector(
@@ -84,7 +87,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("February", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 2 ? Config().orangePallet : null )),
+                        child: Text("February", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 2 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -98,7 +101,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("March", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700 , color: data.indexMonth == 3 ? Config().orangePallet : null)),
+                        child: Text("March", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700 , color: data.indexMonth == 3 ? Config().orangePallet : null)),
                       ),
                     ),
                     GestureDetector(
@@ -112,7 +115,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("April", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 4 ? Config().orangePallet : null )),
+                        child: Text("April", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 4 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -126,7 +129,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("May", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 5 ? Config().orangePallet : null )),
+                        child: Text("May", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 5 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -140,7 +143,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("June", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 6 ? Config().orangePallet : null )),
+                        child: Text("June", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 6 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -154,7 +157,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("July", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 7 ? Config().orangePallet : null )),
+                        child: Text("July", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 7 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -168,7 +171,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("August", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 8 ? Config().orangePallet : null )),
+                        child: Text("August", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 8 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -182,7 +185,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("September", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 9 ? Config().orangePallet : null )),
+                        child: Text("September", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 9 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -196,7 +199,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("October", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 10 ? Config().orangePallet : null )),
+                        child: Text("October", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 10 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -210,7 +213,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("November", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 11 ? Config().orangePallet : null )),
+                        child: Text("November", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 11 ? Config().orangePallet : null )),
                       ),
                     ),
                     GestureDetector(
@@ -224,7 +227,7 @@ class _CheckState extends State<Check> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("December", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: data.indexMonth == 12 ? Config().orangePallet : null )),
+                        child: Text("December", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: data.indexMonth == 12 ? Config().orangePallet : null )),
                       ),
                     ),
                   ],

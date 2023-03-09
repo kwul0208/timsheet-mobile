@@ -134,14 +134,7 @@ class _OvertimeState extends State<Overtime> {
       //       );
       //     },
       //   ),
-        floatingActionButton: FloatingActionButton(
-        backgroundColor: Config().primary,
-        child: Icon(Icons.add),
-        onPressed: (){
-          Provider.of<TimesheetState>(context, listen: false).reset();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
-        },
-            ),
+        
       ),
     );
   }
