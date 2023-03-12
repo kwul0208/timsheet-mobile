@@ -296,7 +296,7 @@ class _CheckState extends State<Check> {
           //     );
           //   }
           // ),
-          SizedBox(height: 16,),
+          SizedBox(height: 4,),
           // Container(
           //   width: width,
           //   height: 20,
@@ -345,48 +345,47 @@ class _CheckState extends State<Check> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Row(
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      width: width/3,
-                                                      child: Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
-                                                    ),
-                                                    SizedBox(width: 30,),
-                                                    Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: width/3,
-                                                      child: Text("${Helper().secondToHour(_ot![i].duration).toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
-                                                    SizedBox(width: 30,),
-                                                    Builder(
-                                                      builder: (context) {
-                                                        if (_ot![i].adjustment == 0 || _ot![i].adjustment == null) {
-                                                          return Text("-", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
-                                                        }else{
-                                                          return Text("${Helper().secondToHour(_ot![i].adjustment).toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,));
-                                                        }
-                                                      }
-                                                    ),
-                                                      
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-
+                                            Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                            Text("data"),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                            Text("data"),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Periode Cut Off", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                            Container(
+                                              width: 130,
+                                              child: Text("${_ot![i].periode_cut_off}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),
                                           ],
                                         ),
                                       ],
                                     ),
+                                    _ot![i].status == "approve" ?
+                                      Builder(
+                                        builder: (context) {
+                                          DateTime dt = DateTime.parse("${_ot![i].status_date}");
+                                          String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height: 16,),
+                                              Text("Approved By", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                              Text("${_ot![i].status_by} On ${formattedDate}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                            ],
+                                          );
+                                        }
+                                      ) : SizedBox(),
+                                    
                                     SizedBox(height: 16,),
                                     Text("Reason of Adjustment", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
                                     Text("${_ot![i].adjustment_reason ?? "-"}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),

@@ -1,6 +1,7 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Overtime/Dropdown/InputForModel.dart';
@@ -40,10 +41,14 @@ class _PlanState extends State<Plan> {
   // -- data --
   List<OTPlanModel>? _ot;
   Future<dynamic>? _futureOt;
+  String? _fullname;
+  Future<dynamic>? _futureFullname;
+
 
   @override
   void initState() {
     super.initState();
+    _futureFullname = getDataEmployee();
         // time now
     DateTime dt = DateTime.parse(DateTime.now().toString());
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
@@ -52,6 +57,14 @@ class _PlanState extends State<Plan> {
     Future.delayed(Duration.zero).then((value){
       Provider.of<OvertimeState>(context, listen: false).changeError(false, '');
     });
+  }
+
+  
+  Future getDataEmployee()async{
+    final storage = new FlutterSecureStorage();
+    _fullname = await storage.read(key: 'fullname');
+    // _fullname = "Mohamad Trisna Indra";
+    print(_fullname);
   }
 
   @override
@@ -157,8 +170,26 @@ class _PlanState extends State<Plan> {
                                             ],
                                           ),
                                           SizedBox(height: 16,),
-                                          Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
-                                          Text("${_ot![i].description}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))
+                                          FutureBuilder(
+                                            future: _futureFullname,
+                                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                              if (snapshot.connectionState == ConnectionState.done) {
+                                                if (_ot![i].employees_name == _fullname) {
+                                                  return Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                                      Text("${_ot![i].description}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))
+                                                    ],
+                                                  );
+                                                }else{
+                                                  return SizedBox();
+                                                }
+                                              }else{
+                                                return SizedBox();
+                                              }
+                                            }
+                                          ),
                                         ],
                                       ),
                                     ),
