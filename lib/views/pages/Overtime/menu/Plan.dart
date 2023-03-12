@@ -115,87 +115,104 @@ class _PlanState extends State<Plan> {
                         return Consumer<OvertimeState>(
                           builder: (context, data, _) {
                             if(data.isLoading == false){
-                              return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: _ot!.length,
-                                itemBuilder: (context, i){
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(bottom: BorderSide(color: Config().line, width: 2))
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("${_ot![i].employees_name}", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),),
-                                          SizedBox(height: 16,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            width: width/2,
-                                                            child: Text("Filled by", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
-                                                          ),
-                                                          SizedBox(width: 30,),
-                                                          Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Container(
-                                                            width: width/2,
-                                                            child: Text("${_ot![i].inputted_by}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
-                                                          SizedBox(width: 30,),
-                                                          Text("${_ot![i].timestart.toString().substring(0,5)} - ${ _ot![i].timefinish.toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
-                                                            
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-    
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16,),
-                                          FutureBuilder(
-                                            future: _futureFullname,
-                                            builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.done) {
-                                                if (_ot![i].employees_name == _fullname) {
-                                                  return Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
-                                                      Text("${_ot![i].description}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))
-                                                    ],
-                                                  );
+                              if(_ot!.length >= 1){
+                                return ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: _ot!.length,
+                                  itemBuilder: (context, i){
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(bottom: BorderSide(color: Config().line, width: 2))
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${_ot![i].employees_name}", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),),
+                                            SizedBox(height: 16,),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              width: width/2,
+                                                              child: Text("Filled by", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),)
+                                                            ),
+                                                            SizedBox(width: 30,),
+                                                            Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Container(
+                                                              width: width/2,
+                                                              child: Text("${_ot![i].inputted_by}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),   
+                                                            SizedBox(width: 30,),
+                                                            Text("${_ot![i].timestart.toString().substring(0,5)} - ${ _ot![i].timefinish.toString().substring(0,5)}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                                              
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+      
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 16,),
+                                            FutureBuilder(
+                                              future: _futureFullname,
+                                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.done) {
+                                                  if (_ot![i].employees_name == _fullname) {
+                                                    return Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Description", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                                        Text("${_ot![i].description}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))
+                                                      ],
+                                                    );
+                                                  }else{
+                                                    return SizedBox();
+                                                  }
                                                 }else{
                                                   return SizedBox();
                                                 }
-                                              }else{
-                                                return SizedBox();
                                               }
-                                            }
-                                          ),
-                                        ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    );
+                                  },
+                                );
+                              }else{
+                                return Column(
+                                  children: [
+                                    SizedBox(height: 30,),
+                                    Image.asset('assets/empty2.jpg'),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Text(
+                                        "Overtime Plan for this date is empty.", 
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 16),
+                                      ) 
+                                    )
+                                  ],
+                                );
+                              }
                             }else{
                               return ListView.builder(
                                 shrinkWrap: true,

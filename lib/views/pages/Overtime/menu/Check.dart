@@ -319,100 +319,117 @@ class _CheckState extends State<Check> {
                     future: _futureOt,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: _ot!.length,
-                          itemBuilder: (context, i){
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border(bottom: BorderSide(color: Config().line, width: 2))
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Builder(
-                                      builder: (context) {
-                                        DateTime dt = DateTime.parse("${_ot![i].date}");
-                                        String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
-                                        return Text("$formattedDate", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),);
-                                      }
-                                    ),
-                                    SizedBox(height: 16,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                            Text("data"),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                            Text("data"),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Periode Cut Off", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
-                                            Container(
-                                              width: 130,
-                                              child: Text("${_ot![i].periode_cut_off}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    _ot![i].status == "approve" ?
+                        if (_ot!.length >= 1) {
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _ot!.length,
+                            itemBuilder: (context, i){
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Config().line, width: 2))
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
                                       Builder(
                                         builder: (context) {
-                                          DateTime dt = DateTime.parse("${_ot![i].status_date}");
+                                          DateTime dt = DateTime.parse("${_ot![i].date}");
                                           String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
-                                          return Column(
+                                          return Text("$formattedDate", style: TextStyle(color: Config().orangePallet, fontSize: 13, fontWeight: FontWeight.w600),);
+                                        }
+                                      ),
+                                      SizedBox(height: 16,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(height: 16,),
-                                              Text("Approved By", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
-                                              Text("${_ot![i].status_by} On ${formattedDate}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                              Text("Duration", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                              Text("data"),
                                             ],
-                                          );
-                                        }
-                                      ) : SizedBox(),
-                                    
-                                    SizedBox(height: 16,),
-                                    Text("Reason of Adjustment", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
-                                    Text("${_ot![i].adjustment_reason ?? "-"}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
-                                    SizedBox(height: 6,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Approved", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                              Text("data"),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Periode Cut Off", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568)),),
+                                              Container(
+                                                width: 130,
+                                                child: Text("${_ot![i].periode_cut_off}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,))),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      _ot![i].status == "approve" ?
                                         Builder(
                                           builder: (context) {
-                                            if (_ot![i].status == "pending") {
-                                              return Badge(title: "Pending", color: Config().orangePallet,);
-                                            }else if(_ot![i].status == "approve"){
-                                              return Badge(title: "Approved", color: Config().bgLock2,);
-                                            }else{
-                                              return Badge(title: "${_ot![i].status}", color: Config().redPallet,);
-                                            }
+                                            DateTime dt = DateTime.parse("${_ot![i].status_date}");
+                                            String formattedDate = DateFormat("dd MMMM yyyy").format(dt);
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: 16,),
+                                                Text("Approved By", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                                Text("${_ot![i].status_by} On ${formattedDate}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                              ],
+                                            );
                                           }
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ) : SizedBox(),
+                                      
+                                      SizedBox(height: 16,),
+                                      Text("Reason of Adjustment", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Color.fromRGBO(19, 19, 19, 0.568))),
+                                      Text("${_ot![i].adjustment_reason ?? "-"}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400,)),
+                                      SizedBox(height: 6,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(),
+                                          Builder(
+                                            builder: (context) {
+                                              if (_ot![i].status == "pending") {
+                                                return Badge(title: "Pending", color: Config().orangePallet,);
+                                              }else if(_ot![i].status == "approve"){
+                                                return Badge(title: "Approved", color: Config().bgLock2,);
+                                              }else{
+                                                return Badge(title: "${_ot![i].status}", color: Config().redPallet,);
+                                              }
+                                            }
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
+                              );
+                            },
+                          );
+                        }else{
+                          return Column(
+                            children: [
+                              SizedBox(height: 30,),
+                              Image.asset('assets/empty2.jpg'),
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  "Your overtime for this month is empty.", 
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ) 
+                              )
+                            ],
+                          );
+                        }
                       }else{
                         return ListView.builder(
                           shrinkWrap: true,
