@@ -63,6 +63,141 @@ class _DashboardState extends State<Dashboard> {
     _futureAnnouncement = getAnnouncement();
   }
 
+  _appBar(height) => PreferredSize(
+    preferredSize:  Size(MediaQuery.of(context).size.width, height+180 ),
+    child: Stack(
+      children: <Widget>[
+        Container(
+          height: height + 150,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              // colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)],
+              stops: [0.001, 0.7, 1],
+              colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)]
+            ),
+            // color: Config().primary,
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50))
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
+                SizedBox(width: 10),
+                SizedBox(height: 20,),
+                FutureBuilder(
+                  future: _futureProfile,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Row(
+                        children: [
+                          _profile![0].url_photo == null ? CircleAvatar(backgroundImage: AssetImage('assets/ahmad.png',),) : CircleAvatar(backgroundImage: NetworkImage("${_profile![0].url_photo}")),
+                          SizedBox(width: 10,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                              // width: width/1.8,
+                              // color: Colors.red,
+                              child: Text("${_profile![0].fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),)),
+                              Text("${_profile![0].position} ${_profile![0].departement}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
+                            ],
+                          ),
+                        ],
+                      );
+                    }else{
+                      return Row(
+                        children: [
+                          ShimmerWidget(width: 50, height: 50, isCircle: true),
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShimmerWidget(width: 100, height: 16, isCircle: false),
+                              SizedBox(height: 5,),
+                              ShimmerWidget(width: 80, height: 12, isCircle: false)
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                  }
+                ),
+
+              ],
+            ),
+          ),
+        ),
+
+        Container(),   // Required some widget in between to float AppBar
+
+        Positioned(
+          right: 10,
+          top: 36,
+          child: GestureDetector(
+            onTap: ()async{
+              final storage = new FlutterSecureStorage();
+              await storage.deleteAll();
+              Provider.of<MainState>(context, listen: false).changeLogin(false);
+            },
+            // child: Icon(Icons.logout, color: Colors.red,)
+            child: Image.asset("assets/logout.png", scale: 2,),
+          )
+        ),
+        Positioned(
+          right: 40,
+          top: 90,
+          child: GestureDetector(
+            onTap: (){
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
+            },
+            child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
+        ),
+
+        Positioned(
+          top: 125,
+          left: 0.0,
+          bottom: 0.0,
+          right: 0.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 5, top: 10),
+                child: Text('Quick Access',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
+              ),
+              // SizedBox(height: 20,),
+              Container(
+                height: 90,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    // CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
+                    CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "mdi_clock-plus.png",),
+                    CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
+                    // CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
+                    // CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
+                    // CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
+                    CardWidget(title: "Check\nHoliday", total: 5, img: "material-symbols_holiday-village-outline.png",),
+                    // CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
+
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+
+      ],
+    ),
+  );
+
+
   @override
   Widget build(BuildContext context) {
     var size, height, width;
@@ -80,113 +215,16 @@ class _DashboardState extends State<Dashboard> {
     //     throw Exception('Could not launch $_url');
     //   }
     // }
+    
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: _appBar(AppBar().preferredSize.height),
       body: SingleChildScrollView(
         child: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: width,
-                      // height: height/3.6,
-                      height: 211,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          // colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)],
-                          stops: [0.001, 0.7, 1],
-                          colors: [Color.fromRGBO(4, 19, 102, 1), Color.fromRGBO(0, 161, 199, 1), Color.fromRGBO(46, 167, 117, 1)]
-                        ),
-                        // color: Config().primary,
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50))
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20),
-                            Text('Hallo!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),),
-                            SizedBox(width: 10),
-                            SizedBox(height: 20,),
-                            FutureBuilder(
-                              future: _futureProfile,
-                              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState == ConnectionState.done) {
-                                  return Row(
-                                    children: [
-                                      _profile![0].url_photo == null ? CircleAvatar(backgroundImage: AssetImage('assets/ahmad.png',),) : CircleAvatar(backgroundImage: NetworkImage("${_profile![0].url_photo}")),
-                                      SizedBox(width: 10,),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: width/1.8,
-                                            // color: Colors.red,
-                                            child: Text("${_profile![0].fullname}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),)),
-                                          Text("${_profile![0].position} ${_profile![0].departement}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 12),),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                }else{
-                                  return Row(
-                                    children: [
-                                      ShimmerWidget(width: 50, height: 50, isCircle: true),
-                                      SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          ShimmerWidget(width: 100, height: 16, isCircle: false),
-                                          SizedBox(height: 5,),
-                                          ShimmerWidget(width: 80, height: 12, isCircle: false)
-                                        ],
-                                      )
-                                    ],
-                                  );
-                                }
-                              }
-                            ),
-                            
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 10,
-                      top: 36,
-                      child: GestureDetector(
-                        onTap: ()async{
-                          final storage = new FlutterSecureStorage();
-                          await storage.deleteAll();
-                          Provider.of<MainState>(context, listen: false).changeLogin(false);
-                        },
-                        // child: Icon(Icons.logout, color: Colors.red,)
-                        child: Image.asset("assets/logout.png", scale: 2,),
-                      )
-                    ),
-                    Positioned(
-                      right: 40,
-                      top: height/9,
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => AppCheckExample()));
-                          // void _showModalBottomSheet(BuildContext context) {
-                        },
-                        child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 55,
-                  // color: Colors.red,
-                ),
                 Container(
                   width: width,
                   height: 10,
@@ -615,75 +653,11 @@ class _DashboardState extends State<Dashboard> {
                 ),
 
                 SizedBox(height: 10,)
-
-
-
-
-
-
-
-
-
-
-
-
-                // ---- end ----
-                
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 20, top: 10),
-                //   child: Text("Announcement", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromARGB(221, 32, 32, 32)),),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                //   child: ListView(
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     children: [
-                //       CardArticle(width: width), 
-                //       CardArticle(width: width), 
-                //       CardArticle(width: width), 
-                //     ],
-                //   ),
-                // )
               ],
             ),
             Container(
               // color: Colors.red,
               height: height,
-            ),
-            Positioned(
-              top: 135,
-              left: 0.0,
-              bottom: 0.0,
-              right: 0.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 20, bottom: 5),
-                  //   child: Text('Quick Access',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                  // ),
-                  SizedBox(height: 20,),
-                  Container(
-                    height: 90,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: const [
-                        // CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
-                        CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "mdi_clock-plus.png",),
-                        CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
-                        // CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
-                        // CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
-                        // CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
-                        CardWidget(title: "Check\nHoliday", total: 5, img: "material-symbols_holiday-village-outline.png",),
-                        // CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
-
-                      ],
-                    ),
-                  )
-                ],
-              ),
             ),
           ],
         ),
