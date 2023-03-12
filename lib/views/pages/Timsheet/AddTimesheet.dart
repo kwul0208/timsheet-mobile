@@ -1981,6 +1981,8 @@ class _addTimsheetState extends State<addTimsheet> {
           return {"status": false, "message": "Time Not Valid!. Your finish attendance is $ApiTimeEnd"};
         }
       }
+    }else if(widget.work_from == null){
+      return {"status": false, "message": "Failed! Make sure you attend or please input remote working request if you are WFH"};
     }
     final storage = new FlutterSecureStorage();
     var employees_id = await storage.read(key: 'employees_id');
