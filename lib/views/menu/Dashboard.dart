@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:timsheet_mobile/Models/Dashboard/Announcement/AnnouncementApi.dart';
 import 'package:timsheet_mobile/Models/Dashboard/Announcement/AnnouncementModel.dart';
@@ -62,6 +63,23 @@ class _DashboardState extends State<Dashboard> {
     _futureEmptyTimesheet = getEmptyTimesheet();
     _futureAnnouncement = getAnnouncement();
   }
+
+  
+        List<_SalesData> data = [
+          _SalesData('Chargable', 10),
+          _SalesData('OA', 28),
+          _SalesData('Ishoma', 34),
+          _SalesData('Training', 32),
+          _SalesData('Suport', 40)
+        ];
+
+        List<_SalesData2> data2 = [
+          _SalesData2('Chargable', 20),
+          _SalesData2('OA', 30),
+          _SalesData2('Ishoma', 20),
+          _SalesData2('Training', 90),
+          _SalesData2('Suport', 50)
+        ];
 
   _appBar(height) => PreferredSize(
     preferredSize:  Size(MediaQuery.of(context).size.width, height+180 ),
@@ -153,7 +171,7 @@ class _DashboardState extends State<Dashboard> {
           top: 90,
           child: GestureDetector(
             onTap: (){
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
             },
             child: Image(image: AssetImage('assets/weather_sun.png',), width: 60,))
         ),
@@ -241,7 +259,7 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
-
+                SizedBox(height: 4),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: FutureBuilder(
@@ -414,9 +432,61 @@ class _DashboardState extends State<Dashboard> {
                   color: Config().line,
                 ),
 
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    children: [
+                      Image.asset("assets/carbon_carbon-for-ibm-product.png", scale: 2,),
+                      SizedBox(width: 10,),
+                      Text("Productivity", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                    ],
+                  ),
+                ),
+
+                SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  legend: Legend(isVisible: true, position: LegendPosition.bottom),
+                  onLegendTapped: (val){
+                    print('ok');
+                  },
+                  onLegendItemRender: null,
+                  // Enable tooltip
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <ChartSeries>[
+                    SplineSeries<_SalesData, String>(
+                      color: Config().primary2,
+                        dataSource: data,
+                        xValueMapper: (_SalesData sales, _) => sales.year,
+                        yValueMapper: (_SalesData sales, _) => sales.sales,
+                        name: '2022',
+                        yAxisName: 'y',
+                        xAxisName: "x",
+                        // Enable data label
+                        // dataLabelSettings: DataLabelSettings(isVisible: true)
+                      ),
+
+                    SplineSeries<_SalesData2, String>(
+                      color: Config().orangePallet,
+                        dataSource: data2,
+                        xValueMapper: (_SalesData2 sales, _) => sales.year,
+                        yValueMapper: (_SalesData2 sales, _) => sales.sales,
+                        name: '2023',
+                        yAxisName: "y",
+                        xAxisName: "x"
+                        // Enable data label
+                        // dataLabelSettings: DataLabelSettings(isVisible: true)
+                      )
+                  ]),
+
+                Container(
+                  width: width,
+                  height: 10,
+                  color: Config().line,
+                ),
+
                 // -- HC Announcement --
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                   child: Row(
                     children: [
                       Image.asset("assets/mdi_announcement.png", scale: 2,),
@@ -452,7 +522,7 @@ class _DashboardState extends State<Dashboard> {
 
                 // -- OT --
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                   child: Row(
                     children: [
                       Image.asset("assets/OT_inactive.png", scale: 2,),
@@ -574,7 +644,7 @@ class _DashboardState extends State<Dashboard> {
 
                 // -- RWD --
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                   child: Row(
                     children: [
                       Image.asset("assets/rwd_inactive.png", scale: 2,),
@@ -683,5 +753,19 @@ class _DashboardState extends State<Dashboard> {
     print(_announcement);
   }
 }
+
+    class _SalesData {
+      _SalesData(this.year, this.sales);
+
+      final String year;
+      final double sales;
+    }
+
+    class _SalesData2 {
+      _SalesData2(this.year, this.sales);
+
+      final String year;
+      final double sales;
+    }
 
 

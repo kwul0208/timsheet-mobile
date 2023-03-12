@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 
 class TestPage extends StatefulWidget {
@@ -9,12 +11,6 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> {
-  final chartData = [
-      Data(units: 1, color: const Color.fromRGBO(137, 69, 170, 1)),
-      Data(units: 2, color: const Color.fromRGBO(7, 84, 130, 1)),
-      Data(units: 4, color: const Color.fromRGBO(242, 154, 118, 1)),
-      Data(units: 3, color: const Color.fromRGBO(255, 204, 103, 1)),
-    ];
 
   @override
   void initState(){
@@ -22,262 +18,100 @@ class _TestPageState extends State<TestPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-        var size, height, width;
+    Widget build(BuildContext context) {
+
+          var size, height, width;
 
     // getting the size of the window
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: cardSummary(width: width, chartData: chartData),
-        ),
-      ),
-    );
-  }
-}
 
-class cardSummary extends StatelessWidget {
-  const cardSummary({
-    Key? key,
-    required this.width,
-    required this.chartData,
-  }) : super(key: key);
+        List<_SalesData> data = [
+          _SalesData('Chargable', 10),
+          _SalesData('OA', 28),
+          _SalesData('Ishoma', 34),
+          _SalesData('Training', 32),
+          _SalesData('Suport', 40)
+        ];
 
-  final width;
-  final List<Data> chartData;
+        List<_SalesData2> data2 = [
+          _SalesData2('Chargable', 20),
+          _SalesData2('OA', 30),
+          _SalesData2('Ishoma', 20),
+          _SalesData2('Training', 90),
+          _SalesData2('Suport', 50)
+        ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 400,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              blurRadius: 5,
-              color: Color.fromARGB(255, 221, 221, 221),
-              offset: Offset(0, 5))
-        ] //
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Summary of Working Time", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Scaffold(
+            body: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Working Time", style: TextStyle(color: Config().blue2, fontWeight: FontWeight.w700, fontSize: 16),),
-                    Text("10:00", style: TextStyle(fontSize: 16),)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Working Time", style: TextStyle(color: Config().blue2, fontWeight: FontWeight.w700, fontSize: 16),),
-                    Text("10:00", style: TextStyle(fontSize: 16),)
-                  ],
-                )
+                SizedBox(height: 200,),
+
+            SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              legend: Legend(isVisible: true, position: LegendPosition.top),
+              onLegendTapped: (val){
+                print('ok');
+              },
+              onLegendItemRender: null,
+              // Enable tooltip
+              tooltipBehavior: TooltipBehavior(enable: true),
+              series: <ChartSeries>[
+                SplineSeries<_SalesData, String>(
+                  color: Config().primary2,
+                    dataSource: data,
+                    xValueMapper: (_SalesData sales, _) => sales.year,
+                    yValueMapper: (_SalesData sales, _) => sales.sales,
+                    name: '2022',
+                    yAxisName: 'y',
+                    xAxisName: "x",
+                    // Enable data label
+                    // dataLabelSettings: DataLabelSettings(isVisible: true)
+                  ),
+
+                SplineSeries<_SalesData2, String>(
+                  color: Config().orangePallet,
+                    dataSource: data2,
+                    xValueMapper: (_SalesData2 sales, _) => sales.year,
+                    yValueMapper: (_SalesData2 sales, _) => sales.sales,
+                    name: '2023',
+                    yAxisName: "y",
+                    xAxisName: "x"
+                    // Enable data label
+                    // dataLabelSettings: DataLabelSettings(isVisible: true)
+                  )
+              ]),
+
+
+              SfSparkLineChart.custom(
+                //Enable the trackball
+                // trackball: SparkChartTrackball(
+                    // activationMode: SparkChartActivationMode.tap),
+                //Enable marker
+                // marker: SparkChartMarker(
+                    // displayMode: SparkChartMarkerDisplayMode.all),
+                //Enable data label
+                // labelDisplayMode: SparkChartLabelDisplayMode.all,
+                xValueMapper: (int index) => data[index].year,
+                yValueMapper: (int index) => data[index].sales,
+                dataCount: 5,
+              ),
               ],
-            ),
-            SizedBox(height: 20,),
-
-            SizedBox(
-              height: 20,
-              child: HorizontalBarChart(
-                data: chartData,
-              ),
-            ),
-            SizedBox(height: 30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Details", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
-                Image.asset("assets/details_summary.png", scale: 1.7,)
-              ],
-            ),
-            SizedBox(height: 14,),
-            
-            // -- Chargeable
-            Container(
-              width: width,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(137, 69, 170, 1),
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Chargeable", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.white, size: 20,),
-                        SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 6),
-
-            // -- ISHOMA
-            Container(
-              width: width,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(7, 84, 130, 1),
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("ISHOMA", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.white, size: 20,),
-                        SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 6),
-
-            // -- Office AD
-            Container(
-              width: width,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(242, 154, 118, 1),
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Office Administration", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.white, size: 20,),
-                        SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 6),
-
-            // -- Training
-            Container(
-              width: width,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 204, 103, 1),
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Training", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.white, size: 20,),
-                        SizedBox(width: 5,),
-                        Text("02:00", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
             )
-          ],
-        ),
-      ),
-    );
-  }
-}
+            );
+        }
+    }
+    class _SalesData {
+      _SalesData(this.year, this.sales);
 
-class HorizontalBarChart extends StatelessWidget {
-  final List<Data> data;
-  final double gap;
+      final String year;
+      final double sales;
+    }
 
-  const HorizontalBarChart({
-    Key? key,
-    required this.data,
-    this.gap = .02,
-  }) : super(key: key);
+    class _SalesData2 {
+      _SalesData2(this.year, this.sales);
 
-  List<double> get processedStops {
-    double totalGapsWith = gap * (data.length - 1);
-    double totalData = data.fold(0, (a, b) => a + b.units);
-    return data.fold(<double>[0.0], (List<double> l, d) {
-      l.add(l.last + d.units * (1 - totalGapsWith) / totalData);
-      l.add(l.last);
-      l.add(l.last + gap);
-      l.add(l.last);
-      return l;
-    })
-      ..removeLast()
-      ..removeLast()
-      ..removeLast();
-  }
-
-  List<Color> get processedColors {
-    return data.fold(
-        <Color>[],
-        (List<Color> l, d) => [
-              ...l,
-              d.color,
-              d.color,
-              Colors.transparent,
-              Colors.transparent,
-            ])
-      ..removeLast()
-      ..removeLast();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
-        ),
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          stops: processedStops,
-          colors: processedColors,
-        ),
-      ),
-    );
-  }
-}
-
-class Data {
-  final double units;
-  final Color color;
-
-  Data({required this.units, required this.color});
-}
+      final String year;
+      final double sales;
+    }
