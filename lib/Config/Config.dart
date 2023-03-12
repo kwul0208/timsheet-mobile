@@ -5,7 +5,9 @@ class Config{
   String url = "https://103.115.28.155:1985";
 
   // Color primary = Color.fromRGBO(91, 192, 248, 1);
-  Color blue2 = Color.fromRGBO(28, 119, 195, 1);
+  Color blue2 = Color.fromRGBO(0, 174, 239, 1);
+  // background: rgba(0, 174, 239, 1);
+
   Color primary2 = Color.fromRGBO(64, 188, 216, 1);
   Color primary = Color.fromRGBO(0, 176, 145, 1);
   Color line  = Color.fromRGBO(245, 245, 245, 1);

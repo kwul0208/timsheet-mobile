@@ -213,68 +213,68 @@ class _VerifiedState extends State<Verified> {
                   ),
                 ),
         
-                Consumer<WFHState>(
-                  builder: (context, data, _) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            year = 2021;
-                            Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
-                            Provider.of<WFHState>(context, listen: false).changeIndexYear(1);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: data.indexYear == 1 ? Config().orangePallet : null,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              child: Text("2021", style: TextStyle(color: data.indexYear == 1 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            year = 2022;
-                            Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
-                            Provider.of<WFHState>(context, listen: false).changeIndexYear(2);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: data.indexYear == 2 ? Config().orangePallet : null,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              child: Text("2022", style: TextStyle(color: data.indexYear == 2 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            year = 2023;
-                            Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
-                            Provider.of<WFHState>(context, listen: false).changeIndexYear(3);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: data.indexYear == 3 ? Config().orangePallet : null,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              child: Text("2023", style: TextStyle(color: data.indexYear == 3 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  }
-                ),
+              //   Consumer<WFHState>(
+              //     builder: (context, data, _) {
+              //       return Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //         children: [
+              //           GestureDetector(
+              //             onTap: (){
+              //               year = 2021;
+              //               Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
+              //               Provider.of<WFHState>(context, listen: false).changeIndexYear(1);
+              //             },
+              //             child: Container(
+              //               decoration: BoxDecoration(
+              //                 color: data.indexYear == 1 ? Config().orangePallet : null,
+              //                 borderRadius: BorderRadius.circular(10)
+              //               ),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              //                 child: Text("2021", style: TextStyle(color: data.indexYear == 1 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
+              //               ),
+              //             ),
+              //           ),
+              //           GestureDetector(
+              //             onTap: (){
+              //               year = 2022;
+              //               Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
+              //               Provider.of<WFHState>(context, listen: false).changeIndexYear(2);
+              //             },
+              //             child: Container(
+              //               decoration: BoxDecoration(
+              //                 color: data.indexYear == 2 ? Config().orangePallet : null,
+              //                 borderRadius: BorderRadius.circular(10)
+              //               ),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              //                 child: Text("2022", style: TextStyle(color: data.indexYear == 2 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
+              //               ),
+              //             ),
+              //           ),
+              //           GestureDetector(
+              //             onTap: (){
+              //               year = 2023;
+              //               Provider.of<WFHState>(context, listen: false).changeIndexMonth(0);
+              //               Provider.of<WFHState>(context, listen: false).changeIndexYear(3);
+              //             },
+              //             child: Container(
+              //               decoration: BoxDecoration(
+              //                 color: data.indexYear == 3 ? Config().orangePallet : null,
+              //                 borderRadius: BorderRadius.circular(10)
+              //               ),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              //                 child: Text("2023", style: TextStyle(color: data.indexYear == 3 ? Colors.white : Colors.black, fontWeight: FontWeight.w700, fontSize: 20),),
+              //               ),
+              //             ),
+              //           )
+              //         ],
+              //       );
+              //     }
+              //   ),
 
-              SizedBox(height: 16,),
+              // SizedBox(height: 16,),
               Container(
                 width: width,
                 height: 10,
@@ -292,14 +292,31 @@ class _VerifiedState extends State<Verified> {
                       future: _futureWFH,
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if(snapshot.connectionState == ConnectionState.done){
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _wfh!.length,
-                            itemBuilder: (context, i){
-                              return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!);
-                            }
-                        );
+                          if (_wfh!.length >= 1) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: _wfh!.length,
+                              itemBuilder: (context, i){
+                                return CardRWD(date: _wfh![i].date, duration: _wfh![i].duration, description: _wfh![i].description, condition: _wfh![i].condition, is_overtime: _wfh![i].is_overtime, status_id: _wfh![i].status_id, start_hour: _wfh![i].start_hour, finish_hour: _wfh![i].finish_hour, id: _wfh![i].id, wfh: _wfh!);
+                              }
+                            );
+                          }else{
+                            return Column(
+                              children: [
+                                SizedBox(height: 30,),
+                                Image.asset('assets/empty2.jpg'),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Your RWD for this month is empty.", 
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ) 
+                                )
+                              ],
+                            );
+                          }
                         }else{
                           return ListView.builder(
                             shrinkWrap: true,
