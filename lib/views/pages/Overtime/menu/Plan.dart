@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -67,6 +69,29 @@ class _PlanState extends State<Plan> {
     print(_fullname);
   }
 
+  Future<void> _displaySecondView(Widget view) async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => view));
+    print('asd');
+    print(result);
+// setState(() {
+//           _scrollDate = "2023-01-15";
+//         });
+
+    if (!mounted) return;
+      DateTime dt = DateTime.parse(DateTime.now().toString());
+      String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
+      if (result != null) {
+      Timer(Duration(milliseconds: 100), () async {
+        await getDataOT(formattedDate, false);
+        print('reloaddd');
+        setState(() {
+          
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size, height, width;
@@ -76,6 +101,7 @@ class _PlanState extends State<Plan> {
     height = size.height;
     width = size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -257,7 +283,8 @@ class _PlanState extends State<Plan> {
         child: Icon(Icons.add),
         onPressed: (){
           // Provider.of<TimesheetState>(context, listen: false).reset();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
+          _displaySecondView(AddOT());
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
         },
             ),
     );
