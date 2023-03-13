@@ -123,20 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _children.elementAt(_curentIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Container(child: _curentIndex == 0 ? Image.asset("assets/dashboard_active.png", scale: 2,) : Image.asset("assets/dashboard_inactive.png", scale: 2,)), label: ""),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 0 ? Image.asset("assets/dashboard_active.png", scale: 2,) : Image.asset("assets/dashboard_inactive.png", scale: 2,)), label: "Dashboard"),
           BottomNavigationBarItem(
               icon: Container(child: Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: Container(child: _curentIndex == 1 ? Image.asset("assets/timesheet_active.png", scale: 2,) : Image.asset("assets/timesheet_inactive.png", scale: 2,)),
-              )), label: ""),
-          BottomNavigationBarItem(icon: Container(child: _curentIndex == 2 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: ""),
-          BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/rwd_active.png", scale: 2,) : Image.asset("assets/rwd_inactive.png", scale: 2,)), label: ""),
+              )), label: "Timesheet"),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 2 ? Image.asset("assets/OT_active.png", scale: 2,) : Image.asset("assets/OT_inactive.png", scale: 2,)), label: "Overtime"),
+          BottomNavigationBarItem(icon: Container(child: _curentIndex == 3 ? Image.asset("assets/rwd_active.png", scale: 2,) : Image.asset("assets/rwd_inactive.png", scale: 2,)), label: "RWD"),
 
           // BottomNavigationBarItem(icon: Container(child: _curentIndex == 4 ? Image.asset("assets/cuti_active.png", scale: 2.2,) : Image.asset("assets/cuti_inactive.png", scale: 2.2,)), label: ""),
         ],
         onTap: onTapBar,
         currentIndex: _curentIndex,
-        selectedItemColor: Config().primary,
+        selectedItemColor: Config().blue2,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
