@@ -192,7 +192,6 @@ class _DashboardState extends State<Dashboard> {
               Container(
                 height: 90,
                 child: ListView(
-                  clipBehavior: Clip.hardEdge,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children:  [
