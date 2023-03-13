@@ -135,12 +135,27 @@ class _EditWFHState extends State<EditWFH> {
       }
 
     } else if (Platform.isIOS) {
+      print("ios");
       // iOS doesn't allow to get installed apps.
       installedApps = iOSApps;
 
-      await AppCheck.checkAvailability("calshow://").then(
-        (app) => debugPrint(app.toString()),
-      );
+      // await AppCheck.checkAvailability("https://itunes.apple.com/lookup?id=id1219301037").then(
+      //   (app) => debugPrint(app.toString()),
+      // );
+
+
+      try {
+        await AppCheck.checkAvailability("https://itunes.apple.com/lookup?id=id1219301037").then(
+          (app) {
+            debugPrint(app.toString());
+          } 
+        );
+        print('ada');
+        return true;
+      } catch (e) {
+        print('gada');
+        return false;
+      }
     }
 
     setState(() {
@@ -160,6 +175,14 @@ class _EditWFHState extends State<EditWFH> {
   final Uri _urlPlaystore = Uri.parse('https://play.google.com/store/apps/details?id=com.microsoft.planner');
   Future<void> _launchUrlPlaystore() async {
       if (!await launchUrl(_urlPlaystore, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_url');
+      }
+  }
+
+  // --- launch playstore(download planner)
+  final Uri _urlAppStore = Uri.parse('https://apps.apple.com/us/app/microsoft-planner/id1219301037');
+  Future<void> _launchUrlAppStore() async {
+      if (!await launchUrl(_urlAppStore, mode: LaunchMode.externalApplication)) {
         throw Exception('Could not launch $_url');
       }
   }
@@ -466,7 +489,11 @@ class _EditWFHState extends State<EditWFH> {
                                                 ));
                                                 await Future.delayed(
                                                     const Duration(seconds: 2));
+                                                if(Platform.isAndroid){
                                                 _launchUrlPlaystore();
+                                              }else{
+                                                _launchUrlAppStore();
+                                              }
                                               }
                                             });
                                           },
