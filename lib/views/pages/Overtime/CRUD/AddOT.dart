@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:timsheet_mobile/Config/Config.dart';
 import 'package:intl/intl.dart';
@@ -27,11 +28,12 @@ class _AddOTState extends State<AddOT> {
   TextEditingController timeEnd = TextEditingController();
   TextEditingController desc = TextEditingController();
   TextEditingController employeeNameC = TextEditingController();
+  TextEditingController internNameC = TextEditingController();
 
-  late int employeeId ;
+  int employeeId = 0 ;
  
   // Group Value for Radio Button.
-  int id = 1;
+  String forU = "my_self";
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,23 @@ class _AddOTState extends State<AddOT> {
             style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600)),
         elevation: 0,
         actions: [
-          Image.asset("assets/check.png", scale: 1.8,)
+          GestureDetector(
+            onTap: ()async{
+              await postOvertime().then((value){
+                if (value['status'] == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 4),
+                    content: Text("${value['message']}"),
+                  ));
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 4),
+                    content: Text("${value['message']}"),
+                  ));
+                }
+              });
+            },
+            child: Image.asset("assets/check.png", scale: 1.8,))
         ],
       ),
       body: SingleChildScrollView(
@@ -73,11 +91,11 @@ class _AddOTState extends State<AddOT> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Radio(
-                      value: 1,
-                      groupValue: id,
+                      value: 'my_self',
+                      groupValue: forU,
                       onChanged: (val) {
                         setState(() {
-                          id = 1;
+                          forU = 'my_self';
                         });
                       },
                     ),
@@ -87,11 +105,11 @@ class _AddOTState extends State<AddOT> {
                     ),
         
                     Radio(
-                      value: 2,
-                      groupValue: id,
+                      value: 'other',
+                      groupValue: forU,
                       onChanged: (val) {
                         setState(() {
-                          id = 2;
+                          forU = 'other';
                         });
                       },
                     ),
@@ -103,11 +121,11 @@ class _AddOTState extends State<AddOT> {
                     ),
                     
                     Radio(
-                      value: 3,
-                      groupValue: id,
+                      value: 'intern',
+                      groupValue: forU,
                       onChanged: (val) {
                         setState(() {
-                          id = 3;
+                          forU = 'intern';
                         });
                       },
                     ),
@@ -121,7 +139,7 @@ class _AddOTState extends State<AddOT> {
                 ),
 
               // --- EMPLOYEE ---
-              id == 2 ?
+              forU == 'other' ?
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Consumer<TimesheetState>(
@@ -149,6 +167,28 @@ class _AddOTState extends State<AddOT> {
                 ),
               )
               : SizedBox(),
+
+              forU == 'intern' ?
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Consumer<TimesheetState>(
+                  builder: (context, data, _) {
+                    if(data.indexSelectedEmployee != null){
+                      employeeId = data.indexSelectedEmployee!;
+                    }
+                    return TextField(
+                      // enabled: true,
+                      controller: internNameC,
+                      decoration: InputDecoration(
+                        labelText: "Employee", //label text of field
+                      ),
+                      onTap: null
+                    );
+                  }
+                ),
+              )
+              : SizedBox(),
+
               // --- DATE ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -165,7 +205,12 @@ class _AddOTState extends State<AddOT> {
                       firstDate: new DateTime(2016),
                       lastDate: new DateTime(2024),
                     );
-                      if(date != null) print(date);
+                      if(date != null) {
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+                        setState(() {
+                          dateinput.text = formattedDate;
+                        });
+                      };
                   }
                 ),
               ),
@@ -292,28 +337,91 @@ class _AddOTState extends State<AddOT> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Config().primary,
-                    minimumSize: const Size.fromHeight(50), // NEW
-                  ),
-                  onPressed: (){
-                    if(_formKey.currentState!.validate()){
-                      print([dateinput.text, employeeId, timeStart.text, timeEnd, desc.text]);
-                    }
-                  },
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              //   child: ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       primary: Config().primary,
+              //       minimumSize: const Size.fromHeight(50), // NEW
+              //     ),
+              //     onPressed: (){
+              //       if(_formKey.currentState!.validate()){
+              //         print([dateinput.text, employeeId, timeStart.text, timeEnd, desc.text]);
+              //       }
+              //     },
+              //     child: const Text(
+              //       'Save',
+              //       style: TextStyle(fontSize: 24),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future postOvertime()async{
+    final storage = new FlutterSecureStorage();
+    var employees_id = await storage.read(key: 'employees_id');
+
+    Map formData = {};
+
+    // -- validation form
+    // my self
+    if (forU == 'my_self') {
+      if(dateinput.text == '' || timeStart.text == '' || timeEnd.text == '' || desc.text == ''){
+        return {"status": false, "message": "Your form is not complete!"};
+      }
+      formData = {
+        'date': '${dateinput.text}',
+        'for_employees_id': '${employees_id}',
+        'timestart': '${timeStart.text}',
+        'timefinish': '${timeEnd.text}',
+        'reason': '${desc.text}',
+        'plan_for': 'my_self',
+      };
+    // other
+    }
+    if(forU == 'other'){
+      if(dateinput.text == '' || timeStart.text == '' || timeEnd.text == '' || desc.text == '' || employeeId == 0){
+        return {"status": false, "message": "Your form is not complete! x"};
+      }
+      formData = {
+        'date': '${dateinput.text}',
+        'for_employees_id': '$employeeId',
+        'timestart': '${timeStart.text}',
+        'timefinish': '${timeEnd.text}',
+        'reason': '${desc.text}',
+        'plan_for': 'other',
+        'by_employees_id': '${employees_id}'
+      };
+    // intern
+    } 
+    if(forU == 'intern'){
+      if(dateinput.text == '' || timeStart.text == '' || timeEnd.text == '' || desc.text == '' || internNameC.text == ''){
+        return {"status": false, "message": "Your form is not complete! z"};
+      }
+      formData = {
+        'date': '${dateinput.text}',
+        'for_employees_name': '${internNameC.text}',
+        'timestart': '${timeStart.text}',
+        'timefinish': '${timeEnd.text}',
+        'reason': '${desc.text}',
+        'plan_for': 'intern',
+        
+        
+      };
+    }
+
+
+    print(formData);
+
+
+
+    return {"status": true, "message": "success"};
+
+
   }
 }
