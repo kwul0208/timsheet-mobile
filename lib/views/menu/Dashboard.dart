@@ -192,18 +192,38 @@ class _DashboardState extends State<Dashboard> {
               Container(
                 height: 90,
                 child: ListView(
+                  clipBehavior: Clip.hardEdge,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  children: const [
+                  children:  [
                     // CardWidget(title: "Overtime Plan", total: 3, img: "mdi_briefcase-clock.png",),
-                    CardWidget(title: "Unlock Request for OT Plan", total: 5, img: "mdi_clock-plus.png",),
+                    CardWidget(title: "Unlock\nOT Plan", total: 5, img: "mdi_clock-plus.png",),
                     CardWidget(title: "Unlock Request for Timesheet", total: 1, img: "mdi_calendar-lock-open-outline.png",),
                     // CardWidget(title: "Total Overtime", total: 5, img: "mdi_briefcase-clock.png",),
                     // CardWidget(title: "RWD", total: 5, img: "carbon_laptop.png",),
                     // CardWidget(title: "Leave", total: 5, img: "mdi_exit-run.png",),
                     CardWidget(title: "Check\nHoliday", total: 5, img: "material-symbols_holiday-village-outline.png",),
                     // CardWidget(title: "My\nSummary", total: 5, img: "ic_baseline-menu.png",),
-
+                    Align(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 5,
+                                  color: Color.fromARGB(221, 180, 180, 180),
+                                  offset: Offset(1, 5))
+                            ],
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white
+                          ),
+                          child: Image.asset("assets/Vector.png", scale: 2,),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )
@@ -520,207 +540,207 @@ class _DashboardState extends State<Dashboard> {
 
                 SizedBox(height: 30,),
 
-                // -- OT --
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      Image.asset("assets/OT_inactive.png", scale: 2,),
-                      SizedBox(width: 10,),
-                      Text("Overtime", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
-                    ],
-                  ),
-                ),
+                // // -- OT --
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                //   child: Row(
+                //     children: [
+                //       Image.asset("assets/OT_inactive.png", scale: 2,),
+                //       SizedBox(width: 10,),
+                //       Text("Overtime", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                //     ],
+                //   ),
+                // ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                            ] 
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: AssetImage("assets/ahmad.png"),
-                            ),
-                            title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Approve your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                                Text("")
-                                // SizedBox(height: 8,),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     border: Border(
-                                //       left: BorderSide(
-                                //         width: 2,
-                                //         color: Color.fromARGB(255, 199, 199, 199)
-                                //       )
-                                //     )
-                                //   ),
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.only(left: 4),
-                                //     child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
-                                //   )
-                                // )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 5,
-                              color: Color.fromRGBO(0, 0, 0, 0.25),
-                              offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/ahmad.png"),
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Reject your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                              SizedBox(height: 8,),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                      width: 2,
-                                      color: Color.fromARGB(255, 199, 199, 199)
-                                    )
-                                  )
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
-                                )
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: ListView(
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.only(bottom: 10),
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //             borderRadius: BorderRadius.circular(10),
+                //             color: Colors.white,
+                //             boxShadow: [
+                //               BoxShadow(
+                //                 blurRadius: 5,
+                //                 color: Color.fromRGBO(0, 0, 0, 0.25),
+                //                 offset: Offset(0, 4))
+                //             ] 
+                //           ),
+                //           child: ListTile(
+                //             leading: CircleAvatar(
+                //               backgroundImage: AssetImage("assets/ahmad.png"),
+                //             ),
+                //             title: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                //               Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                //             ],
+                //           ),
+                //             contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                //             subtitle: Column(
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Text("Approve your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                //                 Text("")
+                //                 // SizedBox(height: 8,),
+                //                 // Container(
+                //                 //   decoration: BoxDecoration(
+                //                 //     border: Border(
+                //                 //       left: BorderSide(
+                //                 //         width: 2,
+                //                 //         color: Color.fromARGB(255, 199, 199, 199)
+                //                 //       )
+                //                 //     )
+                //                 //   ),
+                //                 //   child: Padding(
+                //                 //     padding: const EdgeInsets.only(left: 4),
+                //                 //     child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
+                //                 //   )
+                //                 // )
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           color: Colors.white,
+                //           boxShadow: [
+                //             BoxShadow(
+                //               blurRadius: 5,
+                //               color: Color.fromRGBO(0, 0, 0, 0.25),
+                //               offset: Offset(0, 4))
+                //           ] 
+                //         ),
+                //         child: ListTile(
+                //           leading: CircleAvatar(
+                //             backgroundImage: AssetImage("assets/ahmad.png"),
+                //           ),
+                //           title: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                //               Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                //             ],
+                //           ),
+                //           contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                //           subtitle: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Text("Reject your overtime", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                //               SizedBox(height: 8,),
+                //               Container(
+                //                 decoration: BoxDecoration(
+                //                   border: Border(
+                //                     left: BorderSide(
+                //                       width: 2,
+                //                       color: Color.fromARGB(255, 199, 199, 199)
+                //                     )
+                //                   )
+                //                 ),
+                //                 child: Padding(
+                //                   padding: const EdgeInsets.only(left: 4),
+                //                   child: Text("Masih bisa dikerjakan di lain waktu", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400,)),
+                //                 )
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
 
-                SizedBox(height: 30),
+                // SizedBox(height: 30),
 
-                // -- RWD --
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      Image.asset("assets/rwd_inactive.png", scale: 2,),
-                      SizedBox(width: 10,),
-                      Text("RWD", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
-                    ],
-                  ),
-                ),
+                // // -- RWD --
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                //   child: Row(
+                //     children: [
+                //       Image.asset("assets/rwd_inactive.png", scale: 2,),
+                //       SizedBox(width: 10,),
+                //       Text("RWD", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)
+                //     ],
+                //   ),
+                // ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4))
-                            ] 
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: AssetImage("assets/ahmad.png"),
-                            ),
-                            title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            subtitle: Text("Approve your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 5,
-                              color: Color.fromRGBO(0, 0, 0, 0.25),
-                              offset: Offset(0, 4))
-                          ] 
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/ahmad.png"),
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
-                              Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                            ],
-                          ),
-                          // trailing: Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          subtitle: Text("Reject your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: ListView(
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.only(bottom: 10),
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //             borderRadius: BorderRadius.circular(10),
+                //             color: Colors.white,
+                //             boxShadow: [
+                //               BoxShadow(
+                //                 blurRadius: 5,
+                //                 color: Color.fromRGBO(0, 0, 0, 0.25),
+                //                 offset: Offset(0, 4))
+                //             ] 
+                //           ),
+                //           child: ListTile(
+                //             leading: CircleAvatar(
+                //               backgroundImage: AssetImage("assets/ahmad.png"),
+                //             ),
+                //             title: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                //               Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                //             ],
+                //           ),
+                //             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                //             subtitle: Text("Approve your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                //           ),
+                //         ),
+                //       ),
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           color: Colors.white,
+                //           boxShadow: [
+                //             BoxShadow(
+                //               blurRadius: 5,
+                //               color: Color.fromRGBO(0, 0, 0, 0.25),
+                //               offset: Offset(0, 4))
+                //           ] 
+                //         ),
+                //         child: ListTile(
+                //           leading: CircleAvatar(
+                //             backgroundImage: AssetImage("assets/ahmad.png"),
+                //           ),
+                //           title: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Flexible(child: Text("Mahrizal", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),)),
+                //               Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                //             ],
+                //           ),
+                //           // trailing: Text("12/02/2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+                //           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                //           subtitle: Text("Reject your RWD plan created on January, 28 2023", style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black),),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
 
                 SizedBox(height: 10,)
               ],
