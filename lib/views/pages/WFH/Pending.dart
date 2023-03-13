@@ -387,7 +387,7 @@ class _PendingState extends State<Pending> {
         ),
       ),
       floatingActionButton:  FloatingActionButton(
-        backgroundColor: Config().primary,
+        backgroundColor: Config().primary2,
         child: Icon(Icons.add),
         onPressed: (){
           _displaySecondView(AddWFH());
