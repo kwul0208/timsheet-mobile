@@ -28,7 +28,8 @@ import 'package:draggable_fab/draggable_fab.dart';
 
 
 class Timesheet extends StatefulWidget {
-  const Timesheet({super.key});
+  const Timesheet({super.key, this.date});
+  final String ? date;
 
   @override
   State<Timesheet> createState() => _TimesheetState();
@@ -59,11 +60,13 @@ class _TimesheetState extends State<Timesheet> {
   void initState() {
     super.initState();
 
+    _scrollDate = widget.date == null ? DateFormat("yyyy-MM-dd").format(DateTime.now()) : widget.date!;
+
     // time now
     DateTime dt = DateTime.parse(DateTime.now().toString());
     String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
     dateForAdd = formattedDate;
-    _futureTimesheet = getTimesheet(formattedDate, false);
+    _futureTimesheet = getTimesheet(widget.date ?? formattedDate, false);
     isConsultant();
     Future.delayed(Duration.zero).then((value){
       Provider.of<TimesheetState>(context, listen: false).changeError(false, '');
@@ -274,6 +277,11 @@ class _TimesheetState extends State<Timesheet> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: widget.date != null ? GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Image.asset("assets/x_wht.png", scale: 1.8,)) : SizedBox(),
         backgroundColor: Config().primary,
         title: Text("Timesheet", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, fontFamily: "Inter")),
         centerTitle: true,
@@ -457,31 +465,46 @@ class _TimesheetState extends State<Timesheet> {
                                           _timesheet![0].status == "locked" || _timesheet![0].status == "unlock_request" ?
                                             // kondisi masih ke lock
                                             _timesheet![0].relocked_date == null ? 
-                                              Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: Container(
-                                                  width: width,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                      color: Config().redPallet,
-                                                      borderRadius: BorderRadius.circular(10)),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.lock_outline,
-                                                        size: 26,
-                                                        color: Colors.white,
+                                              Builder(
+                                                builder: (context) {
+                                                  // 1. check tanggal locknya == today ? lock : no
+                                                  DateTime forlockDate = DateTime.parse("${_timesheet![0].locked_date} 23:00:00");
+                                                  DateTime forTodayDate = DateTime.parse("${DateTime.now()}");
+                                                  // -- unlock --
+                                                  if(forlockDate.compareTo(forTodayDate) > 0){
+                                                    return SizedBox();
+
+                                                  // -- lock --
+                                                  
+                                                  }else{
+                                                    return Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: Container(
+                                                        width: width,
+                                                        height: 50,
+                                                        decoration: BoxDecoration(
+                                                            color: Config().redPallet,
+                                                            borderRadius: BorderRadius.circular(10)),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.lock_outline,
+                                                              size: 26,
+                                                              color: Colors.white,
+                                                            ),
+                                                            Text(
+                                                              "Locked",
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.w600, color: Colors.white),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Text(
-                                                        "Locked",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.w600, color: Colors.white),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
+                                                    );
+                                                  }
+                                                }
                                               ) 
                                               :
                                               // kodisi udah ke unlock
@@ -1486,7 +1509,7 @@ class _TimesheetState extends State<Timesheet> {
                             setState(() {
                               _scrollDate = dateForAdd;
                             });
-                            _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
+                            _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from, wfo_start: _timesheet![0].wfo_start, wfo_end: _timesheet![0].wfo_finish,));
                           }else{
                             _showDialogLocked("This timesheet is locked. Request for unlock if you want to add or update an activity in this timesheet");
                           }
@@ -1502,7 +1525,7 @@ class _TimesheetState extends State<Timesheet> {
                               setState(() {
                                 _scrollDate = dateForAdd;
                               });
-                              _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from,));
+                              _displaySecondView(addTimsheet(date: dateForAdd, is_consultant: is_consultant, work_from: _timesheet![0].work_from, wfo_start: _timesheet![0].wfo_start, wfo_end: _timesheet![0].wfo_finish,));
                             }
 
                             }

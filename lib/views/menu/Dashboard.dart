@@ -20,6 +20,7 @@ import 'package:timsheet_mobile/Widget/Shimmer/ShimmerWidget.dart';
 import 'package:timsheet_mobile/views/TestPage.dart';
 import 'package:timsheet_mobile/views/menu/AppCheckExample.dart';
 import 'package:intl/intl.dart';
+import 'package:timsheet_mobile/views/menu/Timsheet.dart';
 // import 'package:flutter_linkify/flutter_linkify.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
@@ -309,33 +310,39 @@ class _DashboardState extends State<Dashboard> {
                             itemCount: _emptyTimesheet!.length,
                             itemBuilder: (BuildContext context, i){
                               DateTime dt = DateTime.parse(_emptyTimesheet![i].date);
+                              print(_emptyTimesheet![i].date);
                               String formattedDate = DateFormat("dd \n MMMM").format(dt);
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                                child: Container(
-                                    width: 64,
-                                    height: 64,
-                                    decoration: BoxDecoration(
-                                      color: _emptyTimesheet![i].status == "open" ? Config().bgLock : Config().redPallet,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 5,
-                                            color: Color.fromRGBO(0, 0, 0, 0.25),
-                                            offset: Offset(0, 4))
-                                      ] 
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(3.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _emptyTimesheet![i].status == "open" ? Icon(Icons.lock_open_outlined, color: Colors.white,) : Icon(Icons.lock_outline, color: Colors.white,),
-                                          Text("$formattedDate", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
-                                        ],
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Timesheet(date: "${_emptyTimesheet![i].date}",)));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                  child: Container(
+                                      width: 64,
+                                      height: 64,
+                                      decoration: BoxDecoration(
+                                        color: _emptyTimesheet![i].status == "open" ? Config().bgLock : Config().redPallet,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 5,
+                                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                                              offset: Offset(0, 4))
+                                        ] 
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _emptyTimesheet![i].status == "open" ? Icon(Icons.lock_open_outlined, color: Colors.white,) : Icon(Icons.lock_outline, color: Colors.white,),
+                                            Text("$formattedDate", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),)
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                ),
                               );
                             }
                           );

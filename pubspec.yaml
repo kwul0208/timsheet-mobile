@@ -61,14 +61,14 @@ dev_dependencies:
 #run flutter pub run flutter_native_splash:create when you want to change splachscreen
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/logo.png
+  image: assets/logo2.png
 
 #icon apps
 #run flutter pub run flutter_launcher_icons:main when you want to change icon apps
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/logo.png"
+  image_path: "assets/logo2.png"
   remove_alpha_ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
