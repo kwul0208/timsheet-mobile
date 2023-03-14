@@ -213,6 +213,8 @@ class _PlanState extends State<Plan> {
     );
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     var size, height, width;
@@ -357,6 +359,8 @@ class _PlanState extends State<Plan> {
                                                             SizedBox(width: 8,),
                                                             GestureDetector(
                                                               onTap: (){
+                                                                Provider.of<TimesheetState>(context, listen: false).reset();
+                                                                _displaySecondView(EditOT(date: "2023-03-11", timeStart: "08:00", timefinish: "09:00", desc: "test", otFor: "other", employee_name: "Danti", employee_id: 1,));
                                                                 // widget.secondView(EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour, status_id: widget.status_id,));
                                                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,)));
                                                               },
@@ -439,7 +443,7 @@ class _PlanState extends State<Plan> {
         backgroundColor: Config().primary2,
         child: Icon(Icons.add),
         onPressed: (){
-          // Provider.of<TimesheetState>(context, listen: false).reset();
+          Provider.of<TimesheetState>(context, listen: false).reset();
           _displaySecondView(AddOT());
           // Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
         },
@@ -460,7 +464,6 @@ class _PlanState extends State<Plan> {
     Provider.of<OvertimeState>(context, listen: false).changeIsLoading(true);
 
     _ot = await OTPlanApi.getDataApi(context, date);
-    print(_ot);
 
     Provider.of<OvertimeState>(context, listen: false).changeIsLoading(false);
 
