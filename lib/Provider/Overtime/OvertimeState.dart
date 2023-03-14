@@ -59,5 +59,12 @@ class OvertimeState extends ChangeNotifier{
     _isLoad = val;
     notifyListeners();
   }
+
+  String _date = '';
+  String get date => _date;
+  void changeDate(date){
+    _date = date;
+    notifyListeners();
+  }
   
 }

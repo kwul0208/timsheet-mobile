@@ -20,6 +20,7 @@ import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EditOT.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:timsheet_mobile/views/pages/Overtime/CRUD/RequestUnlockOTPlan.dart';
 
 class Plan extends StatefulWidget {
   const Plan({super.key});
@@ -67,7 +68,9 @@ class _PlanState extends State<Plan> {
 
     Future.delayed(Duration.zero).then((value){
       Provider.of<OvertimeState>(context, listen: false).changeError(false, '');
+      Provider.of<OvertimeState>(context, listen: false).changeDate("${formattedDate}  23:59:00");
     });
+
   }
 
   
@@ -234,6 +237,7 @@ class _PlanState extends State<Plan> {
               lastDate: DateTime(2024, 01, 01),
               onDateSelected: (date) {
                 String formattedDate = DateFormat("yyyy-MM-dd").format(date);
+                Provider.of<OvertimeState>(context, listen: false).changeDate("${formattedDate} 23:59:00");
                 Provider.of<OvertimeState>(context, listen: false).changeError(false, '');
                 getDataOT(formattedDate, true);
               },
@@ -439,15 +443,35 @@ class _PlanState extends State<Plan> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Config().primary2,
-        child: Icon(Icons.add),
-        onPressed: (){
-          Provider.of<TimesheetState>(context, listen: false).reset();
-          _displaySecondView(AddOT());
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
-        },
-            ),
+      floatingActionButton: Consumer<OvertimeState>(
+        builder: (context, data, _) {
+            DateTime dt = DateTime.parse(DateTime.now().toString());
+            String formattedDate = DateFormat("yyyy-MM-dd").format(dt);
+          if(data.date.compareTo(formattedDate) > 0) {
+            return FloatingActionButton(
+              backgroundColor: Config().primary2,
+              child: Icon(Icons.add),
+              onPressed: (){
+                Provider.of<TimesheetState>(context, listen: false).reset();
+                _displaySecondView(AddOT());
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
+              },
+            );
+          }else{
+            return FloatingActionButton(
+              backgroundColor: Config().bgLock,
+              child: Icon(Icons.lock_open_outlined),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RequestUnlockOTPlan(date: data.date,)));
+                // Provider.of<TimesheetState>(context, listen: false).reset();
+                // _displaySecondView(AddOT());
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => AddOT()));
+              },
+            );
+          }
+          
+        }
+      ),
     );
   }
 
