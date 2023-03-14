@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:timsheet_mobile/views/pages/Overtime/CRUD/AddOT.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/DetailOT.dart';
 import 'package:timsheet_mobile/views/pages/Overtime/CRUD/EditOT.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class Plan extends StatefulWidget {
   const Plan({super.key});
@@ -27,6 +29,13 @@ class Plan extends StatefulWidget {
 }
 
 class _PlanState extends State<Plan> {
+  // state
+  int? indexDetail;
+  // status loading
+  bool _isLoading = false;
+  String _isStatus = 'false';
+  // endStatus loading
+
   // data Dropdown
   InputFor? selectedUser;
   List<InputFor> users = <InputFor>[
@@ -90,6 +99,118 @@ class _PlanState extends State<Plan> {
         });
       });
     }
+  }
+
+  _showConfirm(overtimeplan_id, overtimeplan_by_id) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            // title: Text("Delete"),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.delete_outline),
+                      Text(
+                        "Delete",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(height: 10,),
+                  _isStatus == 'false'
+                      ? Text("Are you sure want to delete your Overtime?",style: TextStyle(fontSize: 16),)
+                      : _isStatus == 'load'
+                          ? Center(child: CircularProgressIndicator())
+                          : _isStatus == 'success'
+                              ? Center(
+                                  child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle,
+                                      size: 50,
+                                      color: Color.fromRGBO(47, 158, 95, 1),
+                                    ),
+                                    Text('Success')
+                                  ],
+                                ))
+                              : SizedBox(),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              Column(
+                children: [
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _isStatus == 'false'
+                        ? TextButton(
+                            child: const Text('ok', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),),
+                            onPressed: () {
+                              setState(() {
+                                _isStatus = 'load';
+                              });
+                              deleteOT(overtimeplan_id, overtimeplan_by_id).then((value) {
+                                if (value['status'] == true) {
+                                  setState(() {
+                                    _isStatus = 'success';
+                                  });
+                                  Timer(Duration(seconds: 1), () {
+                                    Navigator.pop(context);
+                                    _ot!.removeWhere((e) => e.overtimeplan_id == overtimeplan_id);
+                                    Provider.of<OvertimeState>(context,listen: false).changeRefresh();
+                                    setState(() {
+                                      _isStatus = 'false';
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Success"),
+                                          duration: Duration(seconds: 4)
+                                    ));
+                                  });
+                                } else {
+                                  setState(() {
+                                    _isLoading = false;
+                                    _isStatus = 'false';
+                                  });
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Failed! try again later please."),
+                                        duration: Duration(seconds: 4),
+                                  ));
+                                }
+                              });
+                            },
+                          )
+                        : SizedBox(),
+                    _isStatus == 'false'
+                        ? TextButton(
+                            child: const Text('cancel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        : SizedBox(),
+                    ],
+                  )
+                ],
+              ),
+              
+            ],
+          );
+        });
+      },
+    );
   }
 
   @override
@@ -217,6 +338,42 @@ class _PlanState extends State<Plan> {
                                                 }
                                               }
                                             ),
+                                            FutureBuilder(
+                                              future: _futureFullname,
+                                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.done) {
+                                                  if (_ot![i].employees_name == _fullname) {
+                                                    return Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(""),
+                                                        Row(
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: (){
+                                                                _showConfirm(_ot![i].overtimeplan_id, _ot![i].overtimeplan_by_id);
+                                                              },
+                                                              child: Image.asset("assets/delete.png", scale: 2.3,)),
+                                                            SizedBox(width: 8,),
+                                                            GestureDetector(
+                                                              onTap: (){
+                                                                // widget.secondView(EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour, status_id: widget.status_id,));
+                                                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditWFH(id: widget.id, date: widget.date, duration: widget.duration, condition: widget.condition, description: widget.description, startTime: widget.start_hour, finishTime: widget.finish_hour,)));
+                                                              },
+                                                              child: Image.asset("assets/edit_active.png", scale: 2.3,)),
+                                                            SizedBox(width: 8,),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }else{
+                                                    return SizedBox();
+                                                  }
+                                                }else{
+                                                  return SizedBox();
+                                                }
+                                              }
+                                            )
                                           ],
                                         ),
                                       ),
@@ -309,5 +466,41 @@ class _PlanState extends State<Plan> {
 
     Provider.of<OvertimeState>(context, listen: false).changeRefresh();
   }
+
+  Future deleteOT(overtimeplan_id, overtimeplan_by_id)async{
+    await Future.delayed(Duration(seconds: 2));
+    print([overtimeplan_id, overtimeplan_by_id]);
+    // return {"status": true, "message": "success"};
+
+    try {
+      String baseUrl = Config().url;
+      
+      var headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      };
+      var request = http.Request('POST', Uri.parse('$baseUrl/mucnet_api/api/overtimeplan/delete'));
+      request.bodyFields = {
+        'overtimeplan_id': overtimeplan_id,
+        'overtimeplan_by_id': overtimeplan_by_id
+      };
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+          return {"status": true, "message": "success"};
+      }
+      else {
+          print('40000');
+        return {"status": false, "message": "${response.reasonPhrase}"};
+      }
+    } catch (e) {
+      print(e);
+      print('50000');
+      return {"status": false, "message": "${e}"};
+    }
+    
+  }
+
 
 }
